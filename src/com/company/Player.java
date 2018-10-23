@@ -1,17 +1,22 @@
 package com.company;
 
-public class Player {
+public class Player extends Char {
     private final int DEFAULT_HP = 20;
     private final int DEFAULT_LVL = 0;
     private final int DEFAULT_MONEY = 0;
     private final int DEFAULT_X_POS = 1;
     private final int DEFAULT_Y_POS = 1;
+    private final int DEFAULT_DAMAGE = 5;
 
+    private final int DEFAULT_DAMAGE_RAISE = 2;
+    private final int DEFAULT_HP_RISE = 2;
 
     private String name;
     private int hp;
+    private int maxHP;
     private int lvl;
     private int money;
+    private int damage;
     private int xPos;
     private int yPos; //todo need inventory
 
@@ -23,32 +28,48 @@ public class Player {
         this.money = DEFAULT_MONEY;
         this.xPos = DEFAULT_X_POS;
         this.yPos = DEFAULT_Y_POS;
+        this.damage = DEFAULT_DAMAGE;
     }
 
     public void moveL(){
-        if (new Map().notWall(yPos,xPos+1)){
-            xPos++;
+        if (new Map().notWall(yPos,xPos-1)){
+            xPos--;
         } //todo err msg L
     }
 
 
     public void moveR(){
-        if (new Map().notWall(yPos,xPos-1)){
-            xPos--;
+        if (new Map().notWall(yPos,xPos+ 1)){
+            xPos++;
         }//todo err msg R
     }
 
 
     public void moveU(){
-        if (new Map().notWall(yPos+1,xPos)){
-            yPos++;
+        if (new Map().notWall(yPos-1,xPos)){
+            yPos--;
         }//todo err msg U
     }
 
 
     public void moveD(){
-        if (new Map().notWall(yPos-1,xPos)){
-            yPos--;
+        if (new Map().notWall(yPos+1,xPos)){
+            yPos++;
         }//todo err msg D
+    }
+
+    public int getxPos(){
+        return xPos;
+    }
+
+    public int getyPos(){
+        return yPos;
+    }
+
+    public void statUpdate(){
+        this.lvl++;
+        this.damage = DEFAULT_DAMAGE + this.lvl * DEFAULT_DAMAGE_RAISE;
+        this.maxHP = DEFAULT_HP + this.lvl * DEFAULT_HP_RISE;
+
     }
 }

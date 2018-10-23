@@ -28,8 +28,8 @@ public class Map {
     // 0 - no enemy
     // 1 - random enemy
 
-    public boolean notWall(int x, int y){
-        if ( groundMap[x][y] == 0 || groundMap[x][y] == 1){
+    public boolean notWall(int y, int x){
+        if ( groundMap[y][x] == 0 || groundMap[y][x] == 1){
             return false;
         } else{
             return true;
