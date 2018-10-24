@@ -9,12 +9,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
 public class graphic extends Application {
-    private static final int X_SIZE = 512;
-    private static final int Y_SIZE = 512;
+    private static final int X_SIZE = 1024;
+    private static final int Y_SIZE = 720;
 
-    public static Canvas canvas = new Canvas(X_SIZE,Y_SIZE);
+    public static Canvas canvas = new Canvas();
     public static Group root = new Group();
-    public static Scene theScene = new Scene( root );
+    public static Scene theScene = new Scene( root, X_SIZE, Y_SIZE );
 
 
     @Override
@@ -31,6 +31,9 @@ public class graphic extends Application {
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 double time = (currentNanoTime - startNanoTime) / 1000000000.0;
+
+                canvasSizeUpdate();
+
                 Menu.drawMenu(currentNanoTime);
 
 
@@ -38,5 +41,10 @@ public class graphic extends Application {
         }.start();
 
         stage.show();
+    }
+
+    private static void canvasSizeUpdate (){
+        canvas.setHeight(theScene.getHeight());
+        canvas.setWidth(theScene.getWidth());
     }
 }

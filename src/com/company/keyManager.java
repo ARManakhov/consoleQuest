@@ -7,14 +7,14 @@ import java.util.HashSet;
 
 public class keyManager {
 
-    public static HashSet<String> activeKeyHash;    //hash with pressed buttons
+    public static HashSet<String> activeKeyHash;    //hashset со всеми нажатыми в данный момент кнопками
 
 
     public static void prepareActionHandlers() {
 
-        activeKeyHash = new HashSet<String>();  //hash with presst keys
+        activeKeyHash = new HashSet<String>();
 
-        graphic.theScene.setOnKeyPressed(new EventHandler<KeyEvent>()   //add button to hash when pressed
+        graphic.theScene.setOnKeyPressed(new EventHandler<KeyEvent>()   //добавляем кнопки если нажаты и не были в хэше до этого
         {
             @Override
             public void handle(KeyEvent event)
@@ -23,7 +23,7 @@ public class keyManager {
             }
         });
 
-        graphic.theScene.setOnKeyReleased(new EventHandler<KeyEvent>()  //remove button from hash when released
+        graphic.theScene.setOnKeyReleased(new EventHandler<KeyEvent>()  //убираем кнопку если она отжата
         {
             @Override
             public void handle(KeyEvent event)
@@ -33,7 +33,7 @@ public class keyManager {
         });
     }
 
-   /* For test only
+   /* ТОЛЬКО ДЛЯ ТЕСТИРОВАНИЯ
    public static void printKeyArr(){
         String[] activeKeyArr = activeKeyHash.toArray(new String[activeKeyHash.size()]);
         if(activeKeyArr.length != 0 ){
