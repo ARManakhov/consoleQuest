@@ -17,10 +17,10 @@ public class Map {
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -79,21 +79,16 @@ public class Map {
         }
     }
 
-    public static void moveMapUp() {
+    public static void moveMapUp(int speed) { currentYPos-=speed; }
 
-            currentYPos--;
-
-    }
-    public static void moveMapDown() {
-          currentYPos++;
+    public static void moveMapDown(int speed) {
+          currentYPos+=speed;
     }
 
-    public static void moveMapLeft(){
-            currentXPos--;
-    }
+    public static void moveMapLeft(int speed) { currentXPos-=speed; }
 
-    public static void moveMapRight(){
-            currentXPos++;
+    public static void moveMapRight(int speed){
+            currentXPos+=speed;
     }
 
 

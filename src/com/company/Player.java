@@ -9,6 +9,7 @@ public class Player extends Char {
     private final int DEFAULT_LVL = 0;
     private final int DEFAULT_MONEY = 0;
     private final int DEFAULT_DAMAGE = 5;
+    private final int DEFAULT_SPEED  = 3;
 
     private final int DEFAULT_DAMAGE_RAISE = 2;
     private final int DEFAULT_HP_RISE = 2;
@@ -19,6 +20,7 @@ public class Player extends Char {
     private int lvl;
     private int money;
     private int damage;
+    private int speed;
     private int screenXPos;
     private int screenYPos;
     private static int limX1;
@@ -38,6 +40,7 @@ public class Player extends Char {
         this.screenXPos = (int) graphic.theScene.getWidth()/2;
         this.screenYPos = (int) graphic.theScene.getHeight()/2;
         this.damage = DEFAULT_DAMAGE;
+        this.speed = DEFAULT_SPEED;
     }
 
  // todo плавное движение с ускорением , и вообще двигать карту , иногда персонажа
@@ -54,34 +57,50 @@ public class Player extends Char {
 
         limFinder();
 
-        if (screenXPos > limX1 && KeyManager.activeKeyHash.contains("LEFT")) {
-            screenXPos--;
-        }
-        if (screenXPos == limX1 && KeyManager.activeKeyHash.contains("LEFT")) {
-            Map.moveMapRight();
-        }
+        if(KeyManager.activeKeyHash.contains("LEFT")){
 
-        if (screenXPos < limX2 && KeyManager.activeKeyHash.contains("RIGHT")) {
-            screenXPos++;
-        }
-        if (screenXPos == limX2 && KeyManager.activeKeyHash.contains("RIGHT")) {
-            Map.moveMapLeft();
-        }
+            if (screenXPos > limX1) {
+                screenXPos-=speed;
+            } else {
+                Map.moveMapRight(speed);
+            }
 
-        if (screenYPos > limY1 && KeyManager.activeKeyHash.contains("UP")) {
-            screenYPos--;
-        }
-        if (screenYPos == limY1 && KeyManager.activeKeyHash.contains("UP")) {
-            Map.moveMapDown();
+            realXPos-=speed;
         }
 
 
-        if (screenYPos < limY2 && KeyManager.activeKeyHash.contains("DOWN")) {
-            screenYPos++;
+        if (KeyManager.activeKeyHash.contains("RIGHT")){
+            if (screenXPos < limX2 ) {
+                screenXPos+=speed;
+            } else {
+                Map.moveMapLeft(speed);
+            }
+            realXPos+=speed;
+
         }
-        if (screenYPos == limY2 && KeyManager.activeKeyHash.contains("DOWN")) {
-            Map.moveMapUp();
+
+
+        if(KeyManager.activeKeyHash.contains("UP")) {
+            if (screenYPos > limY1 ) {
+                screenYPos-=speed;
+            } else {
+                Map.moveMapDown(speed);
+            }
+            realYPos-=speed;
+
         }
+
+        if(KeyManager.activeKeyHash.contains("DOWN")){
+            if (screenYPos < limY2) {
+                screenYPos+=speed;
+            } else {
+                Map.moveMapUp(speed);
+            }
+            realYPos+=speed;
+
+        }
+        System.out.println(realXPos+ " " + realYPos);
+
 
         gc.drawImage(playerTexture, this.screenXPos, this.screenYPos);
 
