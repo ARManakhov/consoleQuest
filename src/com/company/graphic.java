@@ -5,7 +5,6 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
 public class graphic extends Application {
@@ -16,14 +15,17 @@ public class graphic extends Application {
     public static Group root = new Group();
     public static Scene theScene = new Scene( root, X_SIZE, Y_SIZE );
 
+    public static byte mode = 0;
+
 
     @Override
     public void start(Stage stage) throws Exception{
+        Player sirossh = new Player("sirossh");
         stage.setTitle( "Enima" );
         stage.setScene( theScene );
         root.getChildren().add( canvas );
 
-        keyManager.prepareActionHandlers();
+        KeyManager.prepareActionHandlers();
 
 
         final long startNanoTime = System.nanoTime();
@@ -33,9 +35,14 @@ public class graphic extends Application {
                 double time = (currentNanoTime - startNanoTime) / 1000000000.0;
 
                 canvasSizeUpdate();
+                if (mode == 0) {
+                    Menu.drawMenu(currentNanoTime);
+                }
+                if (mode == 1){
 
-                Menu.drawMenu(currentNanoTime);
-
+                    Map.drawMap(currentNanoTime);
+                    sirossh.drawPlayer(currentNanoTime);
+                }
 
             }
         }.start();

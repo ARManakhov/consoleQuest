@@ -5,7 +5,7 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.HashSet;
 
-public class keyManager {
+public class KeyManager {
 
     public static HashSet<String> activeKeyHash;    //hashset со всеми нажатыми в данный момент кнопками
 

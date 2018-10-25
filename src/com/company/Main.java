@@ -6,6 +6,4 @@ public class Main  {
     {
             graphic.launch(args); //запуск javaFX
     }
-
-
 }

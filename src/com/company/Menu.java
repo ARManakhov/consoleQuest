@@ -17,7 +17,7 @@ public class Menu {// todo еще больше поменять !
 
 
 
-    private static final String VERSION = "Ver: 0.2";                        //версия игры в main menu
+    private static final String VERSION = "Ver: 0.3";                        //версия игры в main menu
     private static final String VERSION_FONT_NAME = "Arial";                //задаем константы для шрифта для надписи версия
     private static final int VERSION_FONT_SIZE = 25;
     private static final FontWeight FONT_WEIGHT = FontWeight.BOLD;
@@ -62,25 +62,19 @@ public class Menu {// todo еще больше поменять !
                 
             }
 
-            System.out.println(LOGO_IMG.getHeight());
-
-            if (keyManager.activeKeyHash.contains("DOWN") && chosenButt != 2) {
+            if (KeyManager.activeKeyHash.contains("DOWN") && chosenButt != 2) {
                 chosenButt++;
                 prevTime = currentNanoTime;
-            } else if (keyManager.activeKeyHash.contains("DOWN") && chosenButt == 2) {
+            } else if (KeyManager.activeKeyHash.contains("DOWN") && chosenButt == 2) {
                 chosenButt = 0;
                 prevTime = currentNanoTime;
-            } else if (keyManager.activeKeyHash.contains("UP") && chosenButt != 0) {
+            } else if (KeyManager.activeKeyHash.contains("UP") && chosenButt != 0) {
                 chosenButt--;
                 prevTime = currentNanoTime;
-            } else if (keyManager.activeKeyHash.contains("UP") && chosenButt == 0) {
+            } else if (KeyManager.activeKeyHash.contains("UP") && chosenButt == 0) {
                 chosenButt = 2;
                 prevTime = currentNanoTime;
             }
-
-
-
-
 
             logoPosX = ((int) graphic.theScene.getWidth() - LOGO_WIDTH) / 2;
             logoPosY = ((int) graphic.theScene.getHeight() - LOGO_HEIGH) / 2 - LOGO_HEIGH;
@@ -90,7 +84,6 @@ public class Menu {// todo еще больше поменять !
 
             butt0PosX = ((int) graphic.theScene.getWidth() - BUTT_WIDTH) / 2;
             butt0PosY = ((int) graphic.theScene.getHeight() - BUTT_HEIGH) / 2;
-
 
             if (chosenButt == 0) {
                 gc.drawImage(BUTTON_IMG_2, butt0PosX, butt0PosY);
@@ -114,9 +107,14 @@ public class Menu {// todo еще больше поменять !
             gc.setFont(theFont);
 
 
+
             gc.fillText(VERSION, graphic.theScene.getWidth() - 0.5 * VERSION_FONT_SIZE * VERSION.length(), graphic.theScene.getHeight() - 0.5 * VERSION_FONT_SIZE);
 
-
+            if(KeyManager.activeKeyHash.contains("ENTER")){
+                if (chosenButt == 0) graphic.mode = 1;
+                if (chosenButt == 1) graphic.mode = 2;
+                if (chosenButt == 2) graphic.mode = 3;
+            }
         }
     }
 }
