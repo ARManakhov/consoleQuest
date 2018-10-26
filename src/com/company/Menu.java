@@ -6,7 +6,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 
-public class Menu {// todo еще больше поменять !
+public class Menu  {// todo еще больше поменять !
     private static final Image BUTTON_IMG_0 = new Image( "/resources/menu/button_0.png");   //выбор картинок для кнопок
     private static final Image BUTTON_IMG_1 = new Image( "/resources/menu/button_1.png");
     private static final Image BUTTON_IMG_2 = new Image( "/resources/menu/button_2.png");
@@ -22,15 +22,15 @@ public class Menu {// todo еще больше поменять !
     private static final int VERSION_FONT_SIZE = 25;
     private static final FontWeight FONT_WEIGHT = FontWeight.BOLD;
 
-    private static final int BUTT_HEIGH = (int) BUTTON_IMG_0.getHeight();   //размеры кнопок
+    private static final int BUTT_HEIGHT = (int) BUTTON_IMG_0.getHeight();   //размеры кнопок
     private static final int BUTT_WIDTH = (int) BUTTON_IMG_0.getWidth();
 
-    private static final int LOGO_HEIGH = (int) LOGO_IMG.getHeight();
+    private static final int LOGO_HEIGHT = (int) LOGO_IMG.getHeight();
     private static final int LOGO_WIDTH = (int) LOGO_IMG.getWidth();
 
 
 
-    private static final int BACKGROUND_HEIGH = 16;
+    private static final int BACKGROUND_HEIGHT = 16;
     private static final int BACKGROUND_WIDTH = 16;
 
 
@@ -55,35 +55,35 @@ public class Menu {// todo еще больше поменять !
             gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
 
             for (int i = 0; i < graphic.theScene.getWidth() ; i+=BACKGROUND_WIDTH) {
-                for (int j = 0; j < graphic.theScene.getHeight() ; j+=BACKGROUND_HEIGH) {
+                for (int j = 0; j < graphic.theScene.getHeight() ; j+= BACKGROUND_HEIGHT) {
                 gc.drawImage(BACKGROUND_IMG, i,j);
 
                 }
                 
             }
 
-            if (KeyManager.activeKeyHash.contains("DOWN") && chosenButt != 2) {
+            if (KeyManager.pressedDOWN() && chosenButt != 2) {
                 chosenButt++;
                 prevTime = currentNanoTime;
-            } else if (KeyManager.activeKeyHash.contains("DOWN") && chosenButt == 2) {
+            } else if (KeyManager.pressedDOWN() && chosenButt == 2) {
                 chosenButt = 0;
                 prevTime = currentNanoTime;
-            } else if (KeyManager.activeKeyHash.contains("UP") && chosenButt != 0) {
+            } else if (KeyManager.pressedUP() && chosenButt != 0) {
                 chosenButt--;
                 prevTime = currentNanoTime;
-            } else if (KeyManager.activeKeyHash.contains("UP") && chosenButt == 0) {
+            } else if (KeyManager.pressedUP() && chosenButt == 0) {
                 chosenButt = 2;
                 prevTime = currentNanoTime;
             }
 
             logoPosX = ((int) graphic.theScene.getWidth() - LOGO_WIDTH) / 2;
-            logoPosY = ((int) graphic.theScene.getHeight() - LOGO_HEIGH) / 2 - LOGO_HEIGH;
+            logoPosY = ((int) graphic.theScene.getHeight() - LOGO_HEIGHT) / 2 - LOGO_HEIGHT;
 
             gc.drawImage(LOGO_IMG, logoPosX, logoPosY);
 
 
             butt0PosX = ((int) graphic.theScene.getWidth() - BUTT_WIDTH) / 2;
-            butt0PosY = ((int) graphic.theScene.getHeight() - BUTT_HEIGH) / 2;
+            butt0PosY = ((int) graphic.theScene.getHeight() - BUTT_HEIGHT) / 2;
 
             if (chosenButt == 0) {
                 gc.drawImage(BUTTON_IMG_2, butt0PosX, butt0PosY);
@@ -92,15 +92,15 @@ public class Menu {// todo еще больше поменять !
             }
 
             if (chosenButt == 1) {
-                gc.drawImage(BUTTON_IMG_2, butt0PosX, butt0PosY + BUTT_HEIGH + buttMove);
+                gc.drawImage(BUTTON_IMG_2, butt0PosX, butt0PosY + BUTT_HEIGHT + buttMove);
             } else {
-                gc.drawImage(BUTTON_IMG_0, butt0PosX, butt0PosY + BUTT_HEIGH + buttMove);
+                gc.drawImage(BUTTON_IMG_0, butt0PosX, butt0PosY + BUTT_HEIGHT + buttMove);
             }
 
             if (chosenButt == 2) {
-                gc.drawImage(BUTTON_IMG_2, butt0PosX, butt0PosY + 2 * (BUTT_HEIGH + buttMove));
+                gc.drawImage(BUTTON_IMG_2, butt0PosX, butt0PosY + 2 * (BUTT_HEIGHT + buttMove));
             } else {
-                gc.drawImage(BUTTON_IMG_0, butt0PosX, butt0PosY + 2 * (BUTT_HEIGH + buttMove));
+                gc.drawImage(BUTTON_IMG_0, butt0PosX, butt0PosY + 2 * (BUTT_HEIGHT + buttMove));
             }
 
             Font theFont = Font.font(VERSION_FONT_NAME, FONT_WEIGHT, VERSION_FONT_SIZE);
@@ -110,11 +110,19 @@ public class Menu {// todo еще больше поменять !
 
             gc.fillText(VERSION, graphic.theScene.getWidth() - 0.5 * VERSION_FONT_SIZE * VERSION.length(), graphic.theScene.getHeight() - 0.5 * VERSION_FONT_SIZE);
 
-            if(KeyManager.activeKeyHash.contains("ENTER")){
+            if(KeyManager.pressedCHOSE()){
                 if (chosenButt == 0) graphic.mode = 1;
                 if (chosenButt == 1) graphic.mode = 2;
                 if (chosenButt == 2) graphic.mode = 3;
             }
         }
+        //KeyManager.loadButt();
+
+        //для отладки
+        /*
+        String[] activeKeyArr = KeyManager.activeKeyHash.toArray(new String[KeyManager.activeKeyHash.size()]);
+        if (activeKeyArr.length > 0){
+            System.out.println( activeKeyArr[0]);
+        }*/
     }
 }

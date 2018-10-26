@@ -36,11 +36,12 @@ public class graphic extends Application {
 
                 canvasSizeUpdate();
                 if (mode == 0) {
+
                     Menu.drawMenu(currentNanoTime);
                 }
                 if (mode == 1){
 
-                    Map.drawMap(currentNanoTime);
+                    MapManager.drawMap(currentNanoTime);
                     sirossh.drawPlayer(currentNanoTime);
                 }
 

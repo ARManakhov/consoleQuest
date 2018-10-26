@@ -3,16 +3,20 @@ package com.company;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+//todo отделить данные о игроке от отрисовки
 
 public class Player extends Char {
     private final int DEFAULT_HP = 20;
     private final int DEFAULT_LVL = 0;
     private final int DEFAULT_MONEY = 0;
     private final int DEFAULT_DAMAGE = 5;
-    private final int DEFAULT_SPEED  = 3;
+    private final double DEFAULT_SPEED  = 2.5;
 
     private final int DEFAULT_DAMAGE_RAISE = 2;
     private final int DEFAULT_HP_RISE = 2;
+
+    private final double PLAYER_SIZE_X = 32;
+    private final double PLAYER_SIZE_Y = 32;
 
     private String name;
     private int hp;
@@ -20,15 +24,16 @@ public class Player extends Char {
     private int lvl;
     private int money;
     private int damage;
-    private int speed;
-    private int screenXPos;
-    private int screenYPos;
-    private static int limX1;
-    private static int limY1;
-    private static int limX2;
-    private static int limY2;
-    private int realXPos;
-    private int realYPos; //todo need inventory
+    private double speed;
+    private double screenXPos;
+    private double screenYPos;
+    private static double limX1;
+    private static double limY1;
+    private static double limX2;
+    private static double limY2;
+    private double realXPos;
+    private double realYPos;
+    //todo need inventory
     private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
     private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");
 
@@ -37,13 +42,18 @@ public class Player extends Char {
         this.hp = DEFAULT_HP;
         this.lvl = DEFAULT_LVL;
         this.money = DEFAULT_MONEY;
-        this.screenXPos = (int) graphic.theScene.getWidth()/2;
-        this.screenYPos = (int) graphic.theScene.getHeight()/2;
+        this.screenXPos =  graphic.theScene.getWidth()/2;
+        this.screenYPos =  graphic.theScene.getHeight()/2;
+
+        this.realXPos =  32 * Map0.spawnPosX;
+        this.realYPos =  32 * Map0.spawnPosY;
+
+
         this.damage = DEFAULT_DAMAGE;
         this.speed = DEFAULT_SPEED;
     }
 
- // todo плавное движение с ускорением , и вообще двигать карту , иногда персонажа
+
 
 
     public void statUpdate(){
@@ -57,49 +67,50 @@ public class Player extends Char {
 
         limFinder();
 
-        if(KeyManager.activeKeyHash.contains("LEFT")){
+        //todo наискасок скорость через корень
+
+        if(KeyManager.pressedLEFT()  ){
 
             if (screenXPos > limX1) {
                 screenXPos-=speed;
             } else {
-                Map.moveMapRight(speed);
+                MapManager.moveMapRight(speed);
             }
 
             realXPos-=speed;
         }
 
 
-        if (KeyManager.activeKeyHash.contains("RIGHT")){
+        if (KeyManager.pressedRIGHT() ){
             if (screenXPos < limX2 ) {
                 screenXPos+=speed;
             } else {
-                Map.moveMapLeft(speed);
+                MapManager.moveMapLeft(speed);
             }
             realXPos+=speed;
 
         }
 
 
-        if(KeyManager.activeKeyHash.contains("UP")) {
+        if(KeyManager.pressedUP()) {
             if (screenYPos > limY1 ) {
                 screenYPos-=speed;
             } else {
-                Map.moveMapDown(speed);
+                MapManager.moveMapDown(speed);
             }
             realYPos-=speed;
 
         }
 
-        if(KeyManager.activeKeyHash.contains("DOWN")){
+        if(KeyManager.pressedDOWN() ){
             if (screenYPos < limY2) {
                 screenYPos+=speed;
             } else {
-                Map.moveMapUp(speed);
+                MapManager.moveMapUp(speed);
             }
             realYPos+=speed;
 
         }
-        System.out.println(realXPos+ " " + realYPos);
 
 
         gc.drawImage(playerTexture, this.screenXPos, this.screenYPos);
