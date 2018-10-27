@@ -1,6 +1,5 @@
 package com.company;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
@@ -68,16 +67,16 @@ public class MainMenu {// todo еще больше поменять !
                 
             }
 
-            if (KeyManager.pressedDOWN() && chosenButt != 2) {
+            if (KeyManager.pressedButt("DOWN") && chosenButt != 2) {
                 chosenButt++;
                 prevTime = currentNanoTime;
-            } else if (KeyManager.pressedDOWN() && chosenButt == 2) {
+            } else if (KeyManager.pressedButt("DOWN") && chosenButt == 2) {
                 chosenButt = 0;
                 prevTime = currentNanoTime;
-            } else if (KeyManager.pressedUP() && chosenButt != 0) {
+            } else if (KeyManager.pressedButt("UP") && chosenButt != 0) {
                 chosenButt--;
                 prevTime = currentNanoTime;
-            } else if (KeyManager.pressedUP() && chosenButt == 0) {
+            } else if (KeyManager.pressedButt("UP") && chosenButt == 0) {
                 chosenButt = 2;
                 prevTime = currentNanoTime;
             }
@@ -116,7 +115,7 @@ public class MainMenu {// todo еще больше поменять !
 
             gc.fillText(VERSION, graphic.theScene.getWidth() - 0.5 * VERSION_FONT_SIZE * VERSION.length(), graphic.theScene.getHeight() - 0.5 * VERSION_FONT_SIZE);
 
-            if(KeyManager.pressedCHOSE()){
+            if(KeyManager.pressedButt("CHOSE")){
                 if (chosenButt == 0) graphic.mode = 1;
                 if (chosenButt == 1) graphic.mode = 2;
                 if (chosenButt == 2) graphic.mode = 3;

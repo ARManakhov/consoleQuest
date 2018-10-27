@@ -18,6 +18,8 @@ public class graphic extends Application {
 
     public static Scene theScene = new Scene( root, X_SIZE, Y_SIZE );   //новая сцена стандартного размера
 
+    public static int currentMapNumber = 0;
+
     /**
      * переменная которая выбирает "режим работы" программы
      * если равна 0 то в главном меню
@@ -59,9 +61,9 @@ public class graphic extends Application {
                     MainMenu.drawMenu(currentNanoTime);
                 }
                 if (mode == 1){
-
+                    currentMapNumber = 0;
                     MapManager.drawMap(currentNanoTime);
-                    sirossh.drawPlayer(currentNanoTime);
+                    sirossh.drawPlayer(currentNanoTime,currentMapNumber);
                 }
 
             }

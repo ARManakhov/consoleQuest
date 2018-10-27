@@ -12,49 +12,40 @@ public class MapManager {
     private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
 
                                                                                     //координаты расположения блока[0][0] на экране
-    private static double currentXPos = graphic.theScene.getWidth() / 2 - BLOCK_SIZE*Map0.spawnPosX;
-    private static double currentYPos = graphic.theScene.getHeight() / 2 - BLOCK_SIZE*Map0.spawnPosY;
+    private static double currentXPos = 0;
+    private static double currentYPos = 0;
+
+    private static boolean firstCall = true;
+
 
     /**
      *
      * @param currentNanoTime текущее время в наносекундах
      */
     public static void drawMap(long currentNanoTime){
+        if(firstCall){
+            currentXPos = graphic.theScene.getWidth() / 2 - BLOCK_SIZE* Maps.worldMap[graphic.currentMapNumber].spawnPosX;
+            currentYPos = graphic.theScene.getHeight() / 2 - BLOCK_SIZE* Maps.worldMap[graphic.currentMapNumber].spawnPosY;
+            firstCall = false;
+        }
         gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
-        for (int i = 0; i < Map0.groundMap.length ; i++) {
-            for (int j = 0; j < Map0.groundMap[i].length ; j++) {
-                gc.drawImage(Block.blockTexture[Map0.groundMap[i][j]],j*BLOCK_SIZE+currentXPos,i*BLOCK_SIZE+currentYPos);
+        for (int i = 0; i < Maps.worldMap[graphic.currentMapNumber].groundMap.length ; i++) {
+            for (int j = 0; j < Maps.worldMap[graphic.currentMapNumber].groundMap[i].length ; j++) {
+                gc.drawImage(Block.blockTexture[Maps.worldMap[graphic.currentMapNumber].groundMap[i][j]],j*BLOCK_SIZE+currentXPos,i*BLOCK_SIZE+currentYPos);
             }
         }
     }
 
     /**
-     * метод который передвигает карту вверх //todo объеденить следующие 4 класса
+     * метод который передвигает карту вверх
      * @param speed
      */
-    public static void moveMapUp(double speed) { currentYPos-=speed; }
-
-    /**
-     * метод который передвигает карту вниз
-     * @param speed
-     */
-    public static void moveMapDown(double speed) {
-          currentYPos+=speed;
-    }
-
-    /**
-     * метод который передвигает карту влево
-     * @param speed
-     */
-    public static void moveMapLeft(double speed) { currentXPos-=speed; }
-
-    /**
-     * метод который передвигает карту вправо
-     * @param speed
-     */
-    public static void moveMapRight(double speed){
+    public static void moveMap(double speed, String dir) {
+        if (dir == "V") {
+            currentYPos -= speed;
+        } else if (dir == "H") {
             currentXPos+=speed;
+        }
     }
-
 
 }

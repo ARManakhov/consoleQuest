@@ -15,7 +15,7 @@ import java.util.Scanner;
  */
 public class KeyManager {
 
-    public static HashSet<String> activeKeyHash;                    //hashset со всеми нажатыми в данный момент кнопками
+    private static HashSet<String> activeKeyHash;                    //hashset со всеми нажатыми в данный момент кнопками
 
     private static boolean gettedSavedButtonSettings = false;       //флаг который определяет , загружено ли последнее сохранения с параметрами кнопками
 
@@ -88,47 +88,27 @@ public class KeyManager {
     }
 
     /**
-     * //todo объеденить все методы ниже
-     * @return если нажата кнопка вверх возвращает true
+     *
+     * @param buttCode кнопка которую необходимо проверить
+     * @return состояние кнопки (true если нажата)
      */
-    public static boolean pressedUP(){
-        return activeKeyHash.contains(buttUP);
-    }
+    public static boolean pressedButt(String buttCode){
+        if (buttCode == "UP"){
+            return activeKeyHash.contains(buttUP);
+        }else
+        if (buttCode == "DOWN"){
+            return activeKeyHash.contains(buttDOWN);
+        }else
+        if (buttCode == "LEFT"){
+            return activeKeyHash.contains(buttLEFT);
+        }else
+        if (buttCode == "RIGHT"){
+            return activeKeyHash.contains(buttRIGHT);
+        }else
+        if (buttCode == "CHOSE"){
+            return activeKeyHash.contains(buttCHOSE);
+        } else return false;
 
-
-    /**
-     * //todo вот этот
-     * @return если нажата кнопка вниз возвращает true
-     */
-    public static boolean pressedDOWN(){
-        return activeKeyHash.contains(buttDOWN);
-    }
-
-
-    /**
-     * //todo и этот
-     * @return если нажата кнопка влево возвращает true
-     */
-    public static boolean pressedLEFT(){
-        return activeKeyHash.contains(buttLEFT);
-    }
-
-
-    /**
-     * //todo этот тоже
-     * @return если нажата кнопка вправо возвращает true
-     */
-    public static boolean pressedRIGHT(){
-        return activeKeyHash.contains(buttRIGHT);
-    }
-
-
-    /**
-     * //todo это тоже
-     * @return если нажата кнопка ввыбора возвращает true
-     */
-    public static boolean pressedCHOSE(){
-        return activeKeyHash.contains(buttCHOSE);
     }
 
     /**
