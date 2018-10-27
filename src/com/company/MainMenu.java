@@ -6,50 +6,55 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+/**
+ * операции и отрисовки в главном меню
+ */
+public class MainMenu {// todo еще больше поменять !
+                                                                                                    //спрайты кнопок
+    private static final Image BUTTON_IMG_0 = new Image( "/resources/menu/button_0.png");       //обычная
+    private static final Image BUTTON_IMG_1 = new Image( "/resources/menu/button_1.png");       //выбранная
+    private static final Image BUTTON_IMG_2 = new Image( "/resources/menu/button_2.png");       //нажатая
 
-public class Menu  {// todo еще больше поменять !
-    private static final Image BUTTON_IMG_0 = new Image( "/resources/menu/button_0.png");   //выбор картинок для кнопок
-    private static final Image BUTTON_IMG_1 = new Image( "/resources/menu/button_1.png");
-    private static final Image BUTTON_IMG_2 = new Image( "/resources/menu/button_2.png");
+    private static final Image LOGO_IMG = new Image( "/resources/menu/logo.png");               //логотип
+    private static final Image BACKGROUND_IMG = new Image( "/resources/menu/background.png");   //задник меню
 
-    private static final Image LOGO_IMG = new Image( "/resources/menu/logo.png");           //логотип
+    private static final String VERSION = "Ver: 0.3";                           //версия игры в main menu
+    private static final String VERSION_FONT_NAME = "Arial";                    //задаем константы для шрифта для надписи версия
+    private static final int VERSION_FONT_SIZE = 25;                            //размер текста
+    private static final FontWeight FONT_WEIGHT = FontWeight.BOLD;              //название шрифта
 
-    private static final Image BACKGROUND_IMG = new Image( "/resources/menu/background.png");           //задник
+                                                                                //размеры кнопок
+    private static final int BUTT_HEIGHT = (int) BUTTON_IMG_0.getHeight();      //выстоа
+    private static final int BUTT_WIDTH = (int) BUTTON_IMG_0.getWidth();        //ширина
 
+                                                                                //размер логотипа
+    private static final int LOGO_HEIGHT = (int) LOGO_IMG.getHeight();          //высота
+    private static final int LOGO_WIDTH = (int) LOGO_IMG.getWidth();            //ширина
 
+                                                                                //размеры спрайтов задника
+    private static final int BACKGROUND_HEIGHT = 16;                            //высота
+    private static final int BACKGROUND_WIDTH = 16;                             //ширина
 
-    private static final String VERSION = "Ver: 0.3";                        //версия игры в main menu
-    private static final String VERSION_FONT_NAME = "Arial";                //задаем константы для шрифта для надписи версия
-    private static final int VERSION_FONT_SIZE = 25;
-    private static final FontWeight FONT_WEIGHT = FontWeight.BOLD;
-
-    private static final int BUTT_HEIGHT = (int) BUTTON_IMG_0.getHeight();   //размеры кнопок
-    private static final int BUTT_WIDTH = (int) BUTTON_IMG_0.getWidth();
-
-    private static final int LOGO_HEIGHT = (int) LOGO_IMG.getHeight();
-    private static final int LOGO_WIDTH = (int) LOGO_IMG.getWidth();
-
-
-
-    private static final int BACKGROUND_HEIGHT = 16;
-    private static final int BACKGROUND_WIDTH = 16;
-
-
-    private static int butt0PosX;       //Левая верхнаяя позиция всех кнопок, адаптируется под размер окна
+                                                                                //позиция первно кнопки (остальные подстраиваются под нее)
+    private static int butt0PosX;
     private static int butt0PosY;
-
+                                                                                //позиция логотива
     private static int logoPosX;
     private static int logoPosY;
 
-    private static int buttMove = (int) BUTTON_IMG_0.getHeight();
+    private static int buttMove = (int) BUTTON_IMG_0.getHeight();               //расстояние между кнопками
 
-    private static byte chosenButt = 0;
+    private static byte chosenButt = 0;                                         //выбранная кнопка в меню
 
-    private static long prevTime;   //cчетчик для корректного переключения кнопок
+    private static long prevTime;                                               //прошлое время нажатие на кнопку (нужен корректного переключения кнопок с клавиатуры)
 
     private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
 
 
+    /**
+     * метод отрисовывающий главное меню
+     * @param currentNanoTime
+     */
     public static void drawMenu(long currentNanoTime){
 
         if (currentNanoTime - prevTime >= 100000000) {      //задержка с помощью счетчика чтобы кнопки переключались корректно (не с сумашедшой скоростью)
@@ -118,13 +123,5 @@ public class Menu  {// todo еще больше поменять !
             }
         }
 
-        //KeyManager.loadButt();
-
-        //для отладки
-        /*
-        String[] activeKeyArr = KeyManager.activeKeyHash.toArray(new String[KeyManager.activeKeyHash.size()]);
-        if (activeKeyArr.length > 0){
-            System.out.println( activeKeyArr[0]);
-        }*/
     }
 }

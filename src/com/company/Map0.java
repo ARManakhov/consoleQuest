@@ -1,15 +1,22 @@
 package com.company;
 
+/**
+ * класс содержащий параметры карты
+ */
 public  class Map0  {
 
     //todo сделать карту загружаемой с файла и класс
-
+    /**
+     *
+     */
     public static final int spawnPosX = 2;
     public static final int spawnPosY = 2;
 
 
-
-    public static final byte[][] groundMap = {     //карта мира
+    /**
+     * карта местности , где какую текстуру применить
+     */
+    public static final byte[][] groundMap = {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
             {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -30,8 +37,10 @@ public  class Map0  {
 
     };
 
-
-    public static final byte[][] borderMap = {     //карта границ мира
+    /**
+     * карта на которой отображены блоки за которые нельзя заходить игроку
+     */
+    public static final byte[][] borderMap = {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
             {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -51,8 +60,10 @@ public  class Map0  {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 
     };
-
-    public static byte[][] enemyMap = { //карта врагов
+    /**
+     * карта с информацие какие враги и где будут спавнится
+     */
+    public static byte[][] enemyMap = {
             {0,0,0,0},
             {0,0,0,0},
             {0,0,0,0},

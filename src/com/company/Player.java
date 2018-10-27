@@ -5,26 +5,35 @@ import javafx.scene.image.Image;
 
 //todo отделить данные о игроке от отрисовки
 
-public class Player extends Char {
-    private final int DEFAULT_HP = 20;
-    private final int DEFAULT_LVL = 0;
-    private final int DEFAULT_MONEY = 0;
-    private final int DEFAULT_DAMAGE = 5;
-    private final double DEFAULT_SPEED  = 2.5;
+/**
+ * класс который содержит параметры игрока, его передвижение и тд
+ */
+public class Player extends Сharacter {
+    private final int DEFAULT_HP = 20;              // начальное колличество здровья
+    private final int DEFAULT_LVL = 0;              // начальный уровень
+    private final int DEFAULT_MONEY = 0;            // начальный уровень денег
+    private final int DEFAULT_DAMAGE = 5;           // начальный наносимый урон
+    private final int DEFAULT_EXP = 0;              // начальный уровень опыта
+    private final double DEFAULT_SPEED  = 2.5;      // начальная скорость
 
-    private final int DEFAULT_DAMAGE_RAISE = 2;
-    private final int DEFAULT_HP_RISE = 2;
+                                                    // далее описаны константы изменений игрока при увеличении уровня
+    private final int DEFAULT_DAMAGE_RAISE = 2;     // увеличение урона
+    private final int DEFAULT_HP_RISE = 2;          // увеличение здоровья
 
-    private final double PLAYER_SIZE_X = 16;
-    private final double PLAYER_SIZE_Y = 16;
+    private final double PLAYER_SIZE_X = 16;        // размер игрока по x
+    private final double PLAYER_SIZE_Y = 16;        // размер игрока по y
 
+                                                    //далее идут переменные статистик персонажа
     private String name;
     private int hp;
+    private int exp;
     private int maxHP;
     private int lvl;
     private int money;
     private int damage;
-    private double speed;
+    private double speed;                           //todo сделать инвентарь
+
+                                                    //переменные необходимые для отрисовки персонажа(todo отправить отрисовку в отдельный класс)
     private double screenXPos;
     private double screenYPos;
     private static double limX1;
@@ -33,10 +42,14 @@ public class Player extends Char {
     private static double limY2;
     private double realXPos;
     private double realYPos;
-    //todo need inventory
+
     private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
     private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");
 
+    /**
+     * конструктор класса player
+     * @param name имя персонажа
+     */
     public Player(String name){
         this.name = name;
         this.hp = DEFAULT_HP;
@@ -54,8 +67,9 @@ public class Player extends Char {
     }
 
 
-
-
+    /**
+     * метод который обновляет параметры игрока при смене уровня.
+     */
     public void statUpdate(){
         this.lvl++;
         this.damage = DEFAULT_DAMAGE + this.lvl * DEFAULT_DAMAGE_RAISE;
@@ -63,6 +77,10 @@ public class Player extends Char {
 
     }
 
+    /**
+     * метод для отрисовки игрока, и его движения
+     * @param currentNanoTime
+     */
     public void drawPlayer(long currentNanoTime) {
 
         limFinder();
@@ -181,6 +199,9 @@ public class Player extends Char {
 
     }
 
+    /**
+     * метод который находит граници экрана где начинает двигатся карта а не персонаж по экрану
+     */
     private static void limFinder(){
         int xSlice = (int) graphic.theScene.getWidth()/4;
         limX1 = xSlice;
