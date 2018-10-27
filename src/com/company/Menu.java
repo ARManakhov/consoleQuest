@@ -1,5 +1,6 @@
 package com.company;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
@@ -116,6 +117,7 @@ public class Menu  {// todo еще больше поменять !
                 if (chosenButt == 2) graphic.mode = 3;
             }
         }
+
         //KeyManager.loadButt();
 
         //для отладки

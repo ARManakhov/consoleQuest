@@ -15,8 +15,8 @@ public class Player extends Char {
     private final int DEFAULT_DAMAGE_RAISE = 2;
     private final int DEFAULT_HP_RISE = 2;
 
-    private final double PLAYER_SIZE_X = 32;
-    private final double PLAYER_SIZE_Y = 32;
+    private final double PLAYER_SIZE_X = 16;
+    private final double PLAYER_SIZE_Y = 16;
 
     private String name;
     private int hp;
@@ -69,47 +69,111 @@ public class Player extends Char {
 
         //todo наискасок скорость через корень
 
-        if(KeyManager.pressedLEFT()  ){
+        if(KeyManager.pressedLEFT()){
 
-            if (screenXPos > limX1) {
-                screenXPos-=speed;
-            } else {
-                MapManager.moveMapRight(speed);
+            if ((Map0.borderMap[(int) (realYPos)/32][(int) (realXPos - speed)/32] != 1)
+                    && (Map0.borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos - speed)/32] != 1)){
+
+                if (screenXPos > limX1) {
+                    screenXPos-=speed;
+                } else {
+                    MapManager.moveMapRight(speed);
+
+                }
+
+                realXPos-=speed;
+
+            } else if((Map0.borderMap[(int) (realYPos)/32][(int) (realXPos)/32] != 1)
+                    && (Map0.borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos )/32] != 1)){
+
+                double move = realXPos % 32;
+
+                if (screenXPos > limX1) {
+                    screenXPos-=move;
+                } else {
+                    MapManager.moveMapRight(move);
+                }
+
+                realXPos-=move;
+
             }
-
-            realXPos-=speed;
         }
 
 
-        if (KeyManager.pressedRIGHT() ){
-            if (screenXPos < limX2 ) {
-                screenXPos+=speed;
-            } else {
-                MapManager.moveMapLeft(speed);
-            }
-            realXPos+=speed;
+        if (KeyManager.pressedRIGHT()){
+            if((Map0.borderMap[(int) (realYPos)/32][(int) (realXPos + speed + PLAYER_SIZE_X)/32] != 1 )
+                    && (Map0.borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos + speed + PLAYER_SIZE_X)/32] != 1 )  ){
+                if (screenXPos < limX2 ) {
+                    screenXPos+=speed;
+                } else {
+                    MapManager.moveMapLeft(speed);
+                }
+                realXPos+=speed;
 
+            } else if((Map0.borderMap[(int) (realYPos)/32][(int) (realXPos + PLAYER_SIZE_X)/32] != 1 )
+                    && (Map0.borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos  + PLAYER_SIZE_X)/32] != 1 )  ){
+
+                double move = PLAYER_SIZE_X - realXPos % 32 - 1;
+
+                if (screenXPos < limX2 ) {
+                    screenXPos+=move;
+                } else {
+                    MapManager.moveMapLeft(move);
+                }
+                realXPos+=move;
+
+            }
         }
 
 
-        if(KeyManager.pressedUP()) {
-            if (screenYPos > limY1 ) {
-                screenYPos-=speed;
-            } else {
-                MapManager.moveMapDown(speed);
-            }
-            realYPos-=speed;
+        if(KeyManager.pressedUP()){
+            if((Map0.borderMap[(int) (realYPos - speed)/32][(int) realXPos/32] != 1 )
+                    && (Map0.borderMap[(int) (realYPos - speed)/32][(int) (realXPos+PLAYER_SIZE_X)/32] != 1 )) {
+                if (screenYPos > limY1 ) {
+                    screenYPos-=speed;
+                } else {
+                    MapManager.moveMapDown(speed);
+                }
+                realYPos-=speed;
 
+            } else if((Map0.borderMap[(int) (realYPos)/32][(int) realXPos/32] != 1 )
+                    && (Map0.borderMap[(int) (realYPos)/32][(int) (realXPos+PLAYER_SIZE_X)/32] != 1 )) {
+
+                double move = realYPos % 32;
+
+                if (screenYPos > limY1 ) {
+                    screenYPos-=move;
+                } else {
+                    MapManager.moveMapDown(move);
+                }
+                realYPos-=move;
+
+            }
         }
 
-        if(KeyManager.pressedDOWN() ){
-            if (screenYPos < limY2) {
-                screenYPos+=speed;
-            } else {
-                MapManager.moveMapUp(speed);
-            }
-            realYPos+=speed;
+        if(KeyManager.pressedDOWN()){
+            if((Map0.borderMap[(int) (realYPos + speed + PLAYER_SIZE_Y)/32][(int) realXPos/32] != 1 )
+                    && (Map0.borderMap[(int) (realYPos + speed + PLAYER_SIZE_Y)/32][(int) (realXPos+PLAYER_SIZE_X)/32] != 1 )){
+                if (screenYPos < limY2) {
+                    screenYPos+=speed;
+                } else {
+                    MapManager.moveMapUp(speed);
+                }
+                realYPos+=speed;
 
+            }else if((Map0.borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) realXPos/32] != 1 )
+                    && (Map0.borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos+PLAYER_SIZE_X)/32] != 1 )){
+
+                double move = PLAYER_SIZE_Y - realYPos % 32 - 1;
+
+                if (screenYPos < limY2) {
+                    screenYPos+=move;
+                } else {
+                    MapManager.moveMapUp(move);
+                }
+                realYPos+=move;
+
+            }
         }
 
 
