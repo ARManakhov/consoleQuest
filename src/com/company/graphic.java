@@ -36,7 +36,6 @@ public class graphic extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception{
-        Player sirossh = new Player("sirossh");
 
         stage.setTitle( "Enima" );
         stage.setScene( theScene );
@@ -45,14 +44,13 @@ public class graphic extends Application {
         KeyManager.prepareActionHandlers(); //проверяем ввод с устройств
 
 
-        final long startNanoTime = System.nanoTime();
+
 
         /**
          * таймер анимации
          */
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
-                //double time = (currentNanoTime - startNanoTime) / 1000000000.0;
 
                 canvasSizeUpdate();
 
@@ -63,7 +61,7 @@ public class graphic extends Application {
                 if (mode == 1){
                     currentMapNumber = 0;
                     MapManager.drawMap(currentNanoTime);
-                    sirossh.drawPlayer(currentNanoTime,currentMapNumber);
+                    PlayerManager.drawPlayer(currentNanoTime,currentMapNumber);
                 }
 
             }
