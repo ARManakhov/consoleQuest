@@ -2,6 +2,7 @@ package com.company;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +16,9 @@ import java.util.Scanner;
  */
 public class KeyManager {
 
-    private static HashSet<String> activeKeyHash;                    //hashset со всеми нажатыми в данный момент кнопками
+    private static HashSet<String> activeKeyHash;                   //hashset со всеми нажатыми в данный момент кнопками
+    private static HashSet<String> activeMouseHash;                   //hashset со всеми нажатыми в данный момент кнопками
+
 
     private static boolean gettedSavedButtonSettings = false;       //флаг который определяет , загружено ли последнее сохранения с параметрами кнопками
 
@@ -36,6 +39,9 @@ public class KeyManager {
     private static String buttRIGHT = DEFAULT_RIGHT_BUTTON;
     private static String buttCHOSE = DEFAULT_CHOSE_BUTTON;
 
+    private static double mouseXPos;
+    private static double mouseYPos;
+
 
     /**
      * метод который загружает в activeKeyHash текущее состояние клавиатуры(какие кнопуи нааты)
@@ -45,6 +51,8 @@ public class KeyManager {
 
 
         activeKeyHash = new HashSet<String>();
+        activeMouseHash = new HashSet<String>();
+
         graphic.theScene.setOnKeyPressed(new EventHandler<KeyEvent>()   //добавляем кнопки если нажаты и не были в хэше до этого
         {
             @Override
@@ -71,6 +79,35 @@ public class KeyManager {
                 activeKeyHash.remove(event.getCode().toString());
             }
         });
+
+        graphic.theScene.setOnMouseMoved(
+                new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {
+                        mouseXPos = event.getX();
+                        mouseYPos = event.getY();
+                    }
+                });
+
+
+
+        graphic.theScene.setOnMousePressed(
+            new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent event) {
+                        activeMouseHash.add(event.getButton().toString());
+                    System.out.println("ok");
+                }
+            });
+
+        graphic.theScene.setOnMouseReleased(
+                new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {
+                        activeMouseHash.remove(event.getButton().toString());
+                    }
+                });
+
+
+
+
 
     }
 
@@ -191,6 +228,33 @@ public class KeyManager {
             System.out.println("создаю новый файл параметров кнопок");
             saveButt("all");
         }
+
+    }
+
+    /**
+     *
+     * @return текущая позиция мыши по X
+     */
+    public static double getMouseXPos(){
+        return mouseXPos;
+    }
+
+
+    /**
+     *
+     * @return текущая позиция мыши по Y
+     */
+    public static double getMouseYPos(){
+        return mouseYPos;
+    }
+
+    /**
+     *
+     * @param buttCode код кнопки мыши ( PRIMARY, MIDDLE, SECONDARY)
+     * @return если нажата то true иначе false
+     */
+    public static boolean getMousePresetButt(String buttCode){
+        return activeMouseHash.contains(buttCode);
 
     }
 

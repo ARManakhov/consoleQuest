@@ -59,7 +59,8 @@ public class graphic extends Application {
                     MainMenu.drawMenu(currentNanoTime);
                 }
                 if (mode == 1){
-                    currentMapNumber = 0;
+                    //currentMapNumber = 0;
+
                     MapManager.drawMap(currentNanoTime);
                     PlayerManager.drawPlayer(currentNanoTime,currentMapNumber);
                 }

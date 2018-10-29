@@ -37,11 +37,20 @@ public class PlayerManager {
 
             screenXPos =  graphic.theScene.getWidth()/2;
             screenYPos =  graphic.theScene.getHeight()/2;
+
             firstCall = false;
         }
 
-
         //todo наискасок скорость через корень
+
+
+        if(Maps.worldMap[mapNumber].teleportMap[(int) (realYPos)/32][(int) (realXPos)/32] != 0){
+            graphic.currentMapNumber = Maps.worldMap[mapNumber].teleportMap[(int) (realYPos)/32][(int) (realXPos)/32];
+
+            firstCall = true;
+            MapManager.setAsFirstCall();
+
+        }
 
         if(KeyManager.pressedButt("LEFT")){
 

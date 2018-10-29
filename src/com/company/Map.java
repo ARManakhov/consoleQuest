@@ -11,12 +11,16 @@ public class Map {
 
     public byte[][] enemyMap = {{}};
 
-    Map(int spawnPosX, int spawnPosY,byte[][] groundMap, byte[][] borderMap, byte[][] enemyMap){
+    public byte[][] teleportMap = {{}};
+
+
+    Map(int spawnPosX, int spawnPosY,byte[][] groundMap, byte[][] borderMap, byte[][] enemyMap,byte[][] teleportMap){
         this.spawnPosX = spawnPosX;
         this.spawnPosY = spawnPosY;
         this.groundMap = groundMap;
         this.borderMap = borderMap;
         this.enemyMap = enemyMap;
+        this.teleportMap = teleportMap;
 
     }
 

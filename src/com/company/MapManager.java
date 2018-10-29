@@ -48,4 +48,8 @@ public class MapManager {
         }
     }
 
+    public static void setAsFirstCall(){
+        firstCall = true;
+    }
+
 }
