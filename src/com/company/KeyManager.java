@@ -156,22 +156,29 @@ public class KeyManager {
     private static void saveButt(String buttName) throws FileNotFoundException {
 
         PrintWriter pw = new PrintWriter(BUTT_SETTING_FILE);
+        String currentButt = getPressedKey();
         if(buttName != "all"){
-            if (buttName == "UP"){
-                buttUP = getPressedKey();
+            for (;;){
+                if (buttName == "UP"){
+                    buttUP = currentButt;
+                }
+                if (buttName == "DOWN"){
+                    buttDOWN = currentButt;
+                }
+                if (buttName == "LEFT"){
+                    buttLEFT = currentButt;
+                }
+                if (buttName == "RIGHT"){
+                    buttRIGHT = currentButt;
+                }
+                if (buttName == "CHOSE"){
+                    buttCHOSE = currentButt;
+                }
+                if(currentButt != "wait"){
+                    break;
+                }
             }
-            if (buttName == "DOWN"){
-                buttDOWN = getPressedKey();
-            }
-            if (buttName == "LEFT"){
-                buttLEFT = getPressedKey();
-            }
-            if (buttName == "RIGHT"){
-                buttRIGHT = getPressedKey();
-            }
-            if (buttName == "CHOSE"){
-                buttCHOSE = getPressedKey();
-            }
+
         }
 
 
