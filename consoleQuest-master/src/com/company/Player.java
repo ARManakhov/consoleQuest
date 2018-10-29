@@ -15,7 +15,8 @@ public class Player {
     private static final int DEFAULT_DAMAGE = 5;           // начальный наносимый урон
     private static final int DEFAULT_EXP = 0;              // начальный уровень опыта
     private static final double DEFAULT_SPEED  = 2.5;      // начальная скорость
-    private static final int DEFAULT_ATTACKBARR = 100;      // начальный атак бар
+    private static final int DEFAULT_ATTACKBARR = 100;     // начальный атак бар
+    private static final double DEFAULT_ATTACKSPEED = 1;      // начальная скорость атаки
 
                                                     // далее описаны константы изменений игрока при увеличении уровня
     private static final int DEFAULT_DAMAGE_RAISE = 2;     // увеличение урона
@@ -24,14 +25,15 @@ public class Player {
 
                                                     //далее идут переменные статистик персонажа
     private static String name;
-    private static int hp = DEFAULT_HP;
+    public static int hp = DEFAULT_HP;
     private static int maxHP = DEFAULT_HP;
     private static int exp = DEFAULT_EXP;
-    private static int lvl = DEFAULT_LVL;
+    public static int lvl = DEFAULT_LVL;
     private static int money = DEFAULT_MONEY;
-    private static int damage = DEFAULT_DAMAGE;
+    public static int damage = DEFAULT_DAMAGE;
     private static double speed = DEFAULT_SPEED;
     private static int attackbarr = DEFAULT_ATTACKBARR;
+    public static double attackspeed = DEFAULT_ATTACKSPEED;
     //todo сделать инвентарь
 
     /**
