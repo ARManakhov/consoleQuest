@@ -18,7 +18,7 @@ public class PlayerManager {
     private static double realXPos;
     private static double realYPos;
 
-    private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
+    private static GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
     private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");
 
     private static boolean firstCall = true;
@@ -162,6 +162,7 @@ public class PlayerManager {
             }
         }
 
+        gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
 
         gc.drawImage(playerTexture, screenXPos, screenYPos);
 

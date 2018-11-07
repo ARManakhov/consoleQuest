@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
@@ -13,7 +14,10 @@ public class graphic extends Application {
     private static final int X_SIZE = 1024;     //стандартная ширина окна
     private static final int Y_SIZE = 720;      //стандартная высота окна
 
-    public static Canvas canvas = new Canvas(); //основной холст //todo проработать отрисовку в javafx получше
+    public static Canvas mapLayer = new Canvas();           //слой карты //todo проработать отрисовку в javafx получше
+    public static Canvas playerLayer = new Canvas();        //слой с игроком и возможно с мобами
+    public static Canvas interfaceLayer = new Canvas();     //холст интерфейса
+    private static Pane mainPane = new Pane();
     public static Group root = new Group();     //группа root
 
     public static Scene theScene = new Scene( root, X_SIZE, Y_SIZE );   //новая сцена стандартного размера
@@ -39,7 +43,12 @@ public class graphic extends Application {
 
         stage.setTitle( "Enima" );
         stage.setScene( theScene );
-        root.getChildren().add( canvas );
+        mainPane.getChildren().add(interfaceLayer);     //добавление слоев в Pane
+        mainPane.getChildren().add(playerLayer);
+        mainPane.getChildren().add(mapLayer);
+        root.getChildren().add(mainPane);               //добавление Pane в Root
+        playerLayer.toFront();
+        interfaceLayer.toFront();
 
         KeyManager.prepareActionHandlers(); //проверяем ввод с устройств
 
@@ -54,11 +63,7 @@ public class graphic extends Application {
 
                 canvasSizeUpdate();
 
-                if (mode == 0) {
-
-                    MainMenu.drawMenu(currentNanoTime);
-                }
-                if (mode == 1){
+                if (mode == 0){
                     //currentMapNumber = 0;
 
                     MapManager.drawMap(currentNanoTime);
@@ -75,7 +80,13 @@ public class graphic extends Application {
      * обновление размера холста в соответсвие с размером окна
      */
     private static void canvasSizeUpdate (){
-        canvas.setHeight(theScene.getHeight());
-        canvas.setWidth(theScene.getWidth());
+        mapLayer.setHeight(theScene.getHeight()+1000);
+        mapLayer.setWidth(theScene.getWidth()+1000);
+        playerLayer.setHeight(theScene.getHeight());
+        playerLayer.setWidth(theScene.getWidth());
+        interfaceLayer.setHeight(theScene.getHeight());
+        interfaceLayer.setWidth(theScene.getWidth());
+
+
     }
 }

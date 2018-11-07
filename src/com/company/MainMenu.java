@@ -47,7 +47,7 @@ public class MainMenu {// todo еще больше поменять !
 
     private static long prevTime;                                               //прошлое время нажатие на кнопку (нужен корректного переключения кнопок с клавиатуры)
 
-    private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
+    private static GraphicsContext gc = graphic.mapLayer.getGraphicsContext2D();
 
 
     /**
