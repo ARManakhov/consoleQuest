@@ -23,6 +23,8 @@ public class MapManager {
 
     private static boolean firstCall = true;
 
+    private static boolean NeedRedraw = false;
+
 
     /**
      *
@@ -33,30 +35,46 @@ public class MapManager {
         if(firstCall){
 
             Translate tr = new Translate();
-                tr.setY(-currentYMove);
-                tr.setX(-currentXMove);
+            tr.setY(-currentYMove);
+            tr.setX(-currentXMove);
             graphic.mapLayer.getTransforms().addAll(tr);
-
             currentYMove = 0;
             currentXMove = 0;
 
             currentXPos = graphic.theScene.getWidth() / 2 - BLOCK_SIZE* Maps.worldMap[graphic.currentMapNumber].spawnPosX;
             currentYPos = graphic.theScene.getHeight() / 2 - BLOCK_SIZE* Maps.worldMap[graphic.currentMapNumber].spawnPosY;
-            gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
-
-            for (int i = 0; i < Maps.worldMap[graphic.currentMapNumber].groundMap.length ; i++) {
-                for (int j = 0; j < Maps.worldMap[graphic.currentMapNumber].groundMap[i].length ; j++) {
-                    gc.drawImage(Block.blockTexture[Maps.worldMap[graphic.currentMapNumber].groundMap[i][j]],j*BLOCK_SIZE+currentXPos,i*BLOCK_SIZE+currentYPos);
-                }
-            }
 
             firstCall = false;
 
+            redrawBlocks();
         }
-        System.out.println("x = "+ currentXMove + " y= " + currentYMove);
+
+        if (Math.abs(currentXMove) > graphic.theScene.getWidth() || Math.abs(currentYMove) > graphic.theScene.getHeight() || NeedRedraw){
+            redrawBlocks();
+            NeedRedraw = false;
+        }
+        //System.out.println(" 1 " + currentYMove + " 2 " +  graphic.theScene.getHeight());
+
 
     }
 
+    /**
+     * метод заново отрисовывает текстуры //todo не рисовать то что за экраном
+     */
+    private static void redrawBlocks(){
+        gc.clearRect(-graphic.theScene.getWidth(), -graphic.theScene.getHeight(), 3*graphic.theScene.getWidth(), 3*graphic.theScene.getHeight()); // для начанала очищаем
+
+
+        int drawLeftLim = 0;
+        int drawRightLim = Maps.worldMap[graphic.currentMapNumber].groundMap[0].length;
+        int drawUpLimit = 0;
+        int drawDownLimit = Maps.worldMap[graphic.currentMapNumber].groundMap.length;
+        for (int i = drawUpLimit; i < drawDownLimit ; i++) {
+            for (int j = drawLeftLim; j < drawRightLim ; j++) {
+                gc.drawImage(Block.blockTexture[Maps.worldMap[graphic.currentMapNumber].groundMap[i][j]],j*BLOCK_SIZE+currentXPos+graphic.theScene.getWidth(),i*BLOCK_SIZE+currentYPos+graphic.theScene.getHeight());
+            }
+        }
+    }
     /**
      * метод который передвигает карту вверх
      * @param speed
@@ -79,5 +97,6 @@ public class MapManager {
     public static void setAsFirstCall(){
         firstCall = true;
     }
+    public static void setNeedRedraw(){ NeedRedraw = true;}
 
 }
