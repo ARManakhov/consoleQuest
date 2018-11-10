@@ -22,7 +22,7 @@ public class Player {
     private static final int DEFAULT_DAMAGE_RAISE = 2;     // увеличение урона
     private static final int DEFAULT_HP_RISE = 2;          // увеличение здоровья
 
-    public static double PlayerAttackRange = 25;
+    public static double PlayerAttackRange = 200;
 
                                                     //далее идут переменные статистик персонажа
     private static String name;
@@ -56,7 +56,10 @@ public class Player {
             return speed;
         }
     public static void PlayerAttack() {
-        if ((KeyManager.getMousePresetButt("PRIMARY") == true) && (Player.hp > 0) && (Enemy.hp > 0) && (Enemy.attackrange < PlayerAttackRange)) {
+        double x = (EnemyManager.RealXPos - PlayerManager.realXPos)*(EnemyManager.RealXPos - PlayerManager.realXPos);
+        double y = (EnemyManager.RealYPos - PlayerManager.realYPos)*(EnemyManager.RealYPos - PlayerManager.realYPos);
+        double attackrange = Math.sqrt(x + y);
+        if ((KeyManager.getMousePresetButt("PRIMARY") == true) && (Player.hp > 0) && (Enemy.hp > 0) && (attackrange < PlayerAttackRange)) {
             Enemy.hp = Enemy.hp - Player.damage;
         }
     }

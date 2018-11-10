@@ -24,11 +24,8 @@ public class Enemy {
     private static int attackbarr = ENEMYDEFAULT_ATTACKBARR;
     public static double attackspeed = ENEMYDEFAULT_ATTACKSPEED;
 
-    public static double EnemyAttackRange = 9;
+    public static double EnemyAttackRange = 100;
 
-    public static double x = (EnemyManager.RealXPos - PlayerManager.realXPos)*(EnemyManager.RealXPos - PlayerManager.realXPos);
-    public static double y = (EnemyManager.RealYPos - PlayerManager.realYPos)*(EnemyManager.RealYPos - PlayerManager.realYPos);
-    public static double attackrange = x + y;
 
     public void statGenerate(){
         lvl = Player.lvl;
@@ -37,6 +34,9 @@ public class Enemy {
     }
 
     public static void EnemyAttack(){
+        double x = (EnemyManager.RealXPos - PlayerManager.realXPos)*(EnemyManager.RealXPos - PlayerManager.realXPos);
+        double y = (EnemyManager.RealYPos - PlayerManager.realYPos)*(EnemyManager.RealYPos - PlayerManager.realYPos);
+        double attackrange = Math.sqrt(x + y);
         if (( KeyManager.getMousePresetButt("PRIMARY") == true) && (Enemy.ENEMYDEFAULT_HP != Enemy.hp) && (Enemy.hp > 0) && (Player.hp > 0) && (attackrange < EnemyAttackRange )){
             Player.hp = Player.hp - Enemy.damage;
         }
