@@ -9,6 +9,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 
 public class graphic extends Application {
 
@@ -70,8 +73,8 @@ public class graphic extends Application {
         /**
          * таймер анимации
          */
-        new AnimationTimer() {
-            public void handle(long currentNanoTime) {
+        new AnimationTimer()  {
+            public void handle(long currentNanoTime)  {
 
                 canvasSizeUpdate();
                 if (mode == 0){
@@ -83,9 +86,18 @@ public class graphic extends Application {
                     MapManager.drawMap(currentNanoTime);
                     PlayerManager.drawPlayer(currentNanoTime,currentMapNumber);
                 }
+                if (mode == 2){
+
+                    if (KeyManager.saveButt("UP")){
+                        mode = 0;
+                    }
+
+                }
 
             }
         }.start();
+
+
 
         stage.show();
     }

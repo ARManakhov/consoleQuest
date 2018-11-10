@@ -1,6 +1,7 @@
 package com.company;
 
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * класс в котором обрабатываются вводы пользователя (мышь, клава)
@@ -47,7 +49,7 @@ public class KeyManager {
      * метод который загружает в activeKeyHash текущее состояние клавиатуры(какие кнопуи нааты)
      * @throws IOException если не нашелся файл параметров
      */
-    public static void prepareActionHandlers() throws IOException {
+    public static void prepareActionHandlers() {
 
 
         activeKeyHash = new HashSet<String>();
@@ -60,11 +62,7 @@ public class KeyManager {
             {
 
                 if (!gettedSavedButtonSettings){
-                    try {
-                        loadButt();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    loadButt();
                     gettedSavedButtonSettings = true;
                 }
                 activeKeyHash.add(event.getCode().toString());
@@ -115,14 +113,79 @@ public class KeyManager {
      * метод для получение данных об одной нажатой кнопке (первая в хэше)
      * @return возвращает нажатую кнопку
      */
-    private static String getPressedKey(){
-        String[] activeKeyArr = activeKeyHash.toArray(new String[activeKeyHash.size()]);
-        if (activeKeyArr.length >0){
-            return activeKeyArr[0];
-        } else {
-            return "wait";          //todo прикрутить в сохроняльщик кнопок ниже
+    public static String getPressedKey(){
+        if(alredyPrstBut) {
+            if (activeKeyHash.size() == 0) {
+                alredyPrstBut = false;
+            } else {
+                return "wait";
+            }
+        }else{
+            if (activeKeyHash.size() == 0 ){
+                return "wait";
+            } else {
+                System.out.println("ok");
+                alredyPrstBut = true;
+                String[] prstButt = activeKeyHash.toArray(new String[activeKeyHash.size()]);
+                return prstButt[0];
+            }
         }
+        return "wait";
+
     }
+
+    static boolean alredyPrstBut = true;
+
+
+    /**
+     * сохраняет текущие рабочие и измененные кнопки
+     * @param buttName кнопка которую надо обновить ("all" если надо обновить все, не ждет нажатия кнопки)
+     * @throws FileNotFoundException если не нашелся файл параметров
+     */
+    public static boolean saveButt(String buttName) {
+        boolean savedCpaturedBut = false;
+        if (!buttName.equals("all")) {
+            String currentButt = getPressedKey();
+            if (!currentButt.equals("wait")){
+                savedCpaturedBut = true;
+                if (buttName.equals("UP")) {
+                    buttUP = currentButt;
+                }
+                if (buttName.equals("DOWN")) {
+                    buttDOWN = currentButt;
+                }
+                if (buttName.equals("LEFT")) {
+                    buttLEFT = currentButt;
+                }
+                if (buttName.equals("RIGHT")) {
+                    buttRIGHT = currentButt;
+                }
+                if (buttName.equals("CHOSE")) {
+                    buttCHOSE = currentButt;
+                }
+            } else{
+                savedCpaturedBut = false;
+            }
+
+        }
+
+
+        try {
+            PrintWriter pw = new PrintWriter(BUTT_SETTING_FILE);
+
+            pw.println(buttUP);
+            pw.println(buttDOWN);
+            pw.println(buttLEFT);
+            pw.println(buttRIGHT);
+            pw.println(buttCHOSE);
+
+            pw.close();
+        } catch (FileNotFoundException e) {
+
+        }
+        return savedCpaturedBut;
+    }
+
 
     /**
      *
@@ -148,57 +211,12 @@ public class KeyManager {
 
     }
 
-    /**
-     * сохраняет текущие рабочие и измененные кнопки
-     * @param buttName кнопка которую надо обновить ("all" если надо обновить все, не ждет нажатия кнопки)
-     * @throws FileNotFoundException если не нашелся файл параметров
-     */
-    private static void saveButt(String buttName) throws FileNotFoundException {
-
-        PrintWriter pw = new PrintWriter(BUTT_SETTING_FILE);
-        String currentButt = getPressedKey();
-        if(buttName != "all"){
-            for (;;){
-                if (buttName == "UP"){
-                    buttUP = currentButt;
-                }
-                if (buttName == "DOWN"){
-                    buttDOWN = currentButt;
-                }
-                if (buttName == "LEFT"){
-                    buttLEFT = currentButt;
-                }
-                if (buttName == "RIGHT"){
-                    buttRIGHT = currentButt;
-                }
-                if (buttName == "CHOSE"){
-                    buttCHOSE = currentButt;
-                }
-                if(currentButt != "wait"){
-                    break;
-                }
-            }
-
-        }
-
-
-        pw.println(buttUP);
-        pw.println(buttDOWN);
-        pw.println(buttLEFT);
-        pw.println(buttRIGHT);
-        pw.println(buttCHOSE);
-
-        pw.close();
-
-        gettedSavedButtonSettings = false;
-
-    }
 
     /**
      * метод который загружает с файла кнопки
      * @throws IOException  если файла нету выводить что не удалось загрузить параметры и создать стандартый файл с стандартными кнопками
      */
-    private static void loadButt() throws IOException{
+    private static void loadButt(){
         try {
 
             Scanner sc = new Scanner(BUTT_SETTING_FILE);

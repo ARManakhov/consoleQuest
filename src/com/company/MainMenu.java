@@ -43,7 +43,7 @@ public class MainMenu {// todo еще больше поменять !
 
     private static int buttMove = (int) BUTTON_IMG_0.getHeight();               //расстояние между кнопками
 
-    private static byte chosenButt = 0;                                         //выбранная кнопка в меню
+    public static byte chosenButt = 0;                                         //выбранная кнопка в меню
 
     private static long prevTime;                                               //прошлое время нажатие на кнопку (нужен корректного переключения кнопок с клавиатуры)
 
@@ -55,7 +55,6 @@ public class MainMenu {// todo еще больше поменять !
      * @param currentNanoTime
      */
     public static void drawMenu(long currentNanoTime){
-
         if (currentNanoTime - prevTime >= 100000000) {      //задержка с помощью счетчика чтобы кнопки переключались корректно (не с сумашедшой скоростью)
             gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
 
