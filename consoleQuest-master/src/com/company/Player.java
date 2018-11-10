@@ -56,8 +56,8 @@ public class Player {
             return speed;
         }
     public static void PlayerAttack() {
-        double x = (EnemyManager.RealXPos - PlayerManager.realXPos)*(EnemyManager.RealXPos - PlayerManager.realXPos);
-        double y = (EnemyManager.RealYPos - PlayerManager.realYPos)*(EnemyManager.RealYPos - PlayerManager.realYPos);
+        double x = (EnemyManager.realXPos - PlayerManager.realXPos)*(EnemyManager.realXPos - PlayerManager.realXPos);
+        double y = (EnemyManager.realYPos - PlayerManager.realYPos)*(EnemyManager.realYPos - PlayerManager.realYPos);
         double attackrange = Math.sqrt(x + y);
         if ((KeyManager.getMousePresetButt("PRIMARY") == true) && (Player.hp > 0) && (Enemy.hp > 0) && (attackrange < PlayerAttackRange)) {
             Enemy.hp = Enemy.hp - Player.damage;

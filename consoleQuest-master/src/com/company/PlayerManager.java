@@ -5,8 +5,8 @@ import javafx.scene.image.Image;
 
 public class PlayerManager {
     // размер спрайта
-    private static final double PLAYER_SIZE_X = 16;        // размер игрока по x
-    private static final double PLAYER_SIZE_Y = 16;        // размер игрока по y
+    private static final double PLAYER_SIZE_X = 32;        // размер игрока по x
+    private static final double PLAYER_SIZE_Y = 32;        // размер игрока по y
 
     //переменные необходимые для отрисовки персонажа
     private static double screenXPos;
@@ -19,7 +19,7 @@ public class PlayerManager {
     public static double realYPos;
 
     private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
-    private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");
+    private static Image playerTexture = new Image("resources/characters/player/miku.png");
 
     private static boolean firstCall = true;
 

@@ -1,6 +1,8 @@
 package com.company;
 
 
+import javafx.scene.image.Image;
+
 import javax.xml.bind.annotation.XmlType;
 
 /**класс "персонаж"
@@ -34,8 +36,8 @@ public class Enemy {
     }
 
     public static void EnemyAttack(){
-        double x = (EnemyManager.RealXPos - PlayerManager.realXPos)*(EnemyManager.RealXPos - PlayerManager.realXPos);
-        double y = (EnemyManager.RealYPos - PlayerManager.realYPos)*(EnemyManager.RealYPos - PlayerManager.realYPos);
+        double x = (EnemyManager.realXPos - PlayerManager.realXPos)*(EnemyManager.realXPos - PlayerManager.realXPos);
+        double y = (EnemyManager.realYPos - PlayerManager.realYPos)*(EnemyManager.realYPos - PlayerManager.realYPos);
         double attackrange = Math.sqrt(x + y);
         if (( KeyManager.getMousePresetButt("PRIMARY") == true) && (Enemy.ENEMYDEFAULT_HP != Enemy.hp) && (Enemy.hp > 0) && (Player.hp > 0) && (attackrange < EnemyAttackRange )){
             Player.hp = Player.hp - Enemy.damage;

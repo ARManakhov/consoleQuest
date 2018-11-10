@@ -3,20 +3,17 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class EnemyManager {
-    private static final double PLAYER_SIZE_X = 16; // размер игрока по x
-    private static final double PLAYER_SIZE_Y = 16; // размер игрока по y
+    private static final double PLAYER_SIZE_X = 16;
+    private static final double PLAYER_SIZE_Y = 16;
 
-    //переменные необходимые для отрисовки персонажа
     private static double screenXPos;
     private static double screenYPos;
     private static double limX1;
     private static double limY1;
     private static double limX2;
     private static double limY2;
-    private static double realXPos = 0;
-    private static double realYPos = 0;
-    public static double RealXPos = 128;
-    public static double RealYPos = 128;
+    public static double realXPos = 128;
+    public static double realYPos = 128;
 
     private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
     private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");
@@ -28,7 +25,7 @@ public class EnemyManager {
     }
 
     public static void ScreenPosE(){
-        screenXPos = MapManager.currentXPos + EnemyManager.RealXPos;
-        screenYPos  = MapManager.currentYPos + EnemyManager.RealYPos;
+        screenXPos = MapManager.currentXPos + EnemyManager.realXPos;
+        screenYPos  = MapManager.currentYPos + EnemyManager.realYPos;
     }
 }
