@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
  * класс который содержит параметры игрока, его передвижение и тд
  */
 public class Player {
-    private static final int DEFAULT_HP = 20;              // начальное колличество здровья
+    private static final int DEFAULT_HP = 100;              // начальное колличество здровья
     private static final int DEFAULT_LVL = 0;              // начальный уровень
     private static final int DEFAULT_MONEY = 0;            // начальный уровень денег
     private static final int DEFAULT_DAMAGE = 5;           // начальный наносимый урон
@@ -22,6 +22,7 @@ public class Player {
     private static final int DEFAULT_DAMAGE_RAISE = 2;     // увеличение урона
     private static final int DEFAULT_HP_RISE = 2;          // увеличение здоровья
 
+    public static double PlayerAttackRange = 25;
 
                                                     //далее идут переменные статистик персонажа
     private static String name;
@@ -46,11 +47,17 @@ public class Player {
 
     }
 
-    /**
-     *
-     * @return скорость персонажа
-     */
-    public static double getSpeed() {
-        return speed;
+
+        /**
+         *
+         * @return скорость персонажа
+         */
+        public static double getSpeed() {
+            return speed;
+        }
+    public static void PlayerAttack() {
+        if ((KeyManager.getMousePresetButt("PRIMARY") == true) && (Player.hp > 0) && (Enemy.hp > 0) && (Enemy.attackrange < PlayerAttackRange)) {
+            Enemy.hp = Enemy.hp - Player.damage;
+        }
     }
 }

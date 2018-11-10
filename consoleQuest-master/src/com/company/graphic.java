@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 
+import java.util.Currency;
+
 
 public class graphic extends Application {
 
@@ -55,13 +57,18 @@ public class graphic extends Application {
                 canvasSizeUpdate();
 
                 if (mode == 0) {
-
                     MainMenu.drawMenu(currentNanoTime);
                 }
                 if (mode == 1){
+                    Player.PlayerAttack();
+                    Enemy.EnemyAttack();
+                    EnemyManager.ScreenPosE();
+                    System.out.println("Player_hp = " + Player.hp);
+                    System.out.println("Enemy_hp = " + Enemy.hp);
                     currentMapNumber = 0;
                     MapManager.drawMap(currentNanoTime);
                     PlayerManager.drawPlayer(currentNanoTime,currentMapNumber);
+                    EnemyManager.drawEnemy(currentNanoTime,currentMapNumber);
                 }
 
             }

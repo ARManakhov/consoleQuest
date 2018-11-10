@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 public class Enemy {
-    private static final int ENEMYDEFAULT_HP = 10;
+    private static final int ENEMYDEFAULT_HP = 100;
     private static final int ENEMYDEFAULT_DAMAGE = 5;
     private static final double ENEMYDEFAULT_SPEED  = 2.5;
     private static final int ENEMYDEFAULT_ATTACKBARR = 25;
@@ -24,10 +24,21 @@ public class Enemy {
     private static int attackbarr = ENEMYDEFAULT_ATTACKBARR;
     public static double attackspeed = ENEMYDEFAULT_ATTACKSPEED;
 
+    public static double EnemyAttackRange = 9;
 
-    public static void statGenerate(){
+    public static double x = (EnemyManager.RealXPos - PlayerManager.realXPos)*(EnemyManager.RealXPos - PlayerManager.realXPos);
+    public static double y = (EnemyManager.RealYPos - PlayerManager.realYPos)*(EnemyManager.RealYPos - PlayerManager.realYPos);
+    public static double attackrange = x + y;
+
+    public void statGenerate(){
         lvl = Player.lvl;
         damage = ENEMYDEFAULT_DAMAGE + lvl * ENEMYDEFAULT_DAMAGE_RAISE;
         maxHP = ENEMYDEFAULT_HP + lvl * ENEMYDEFAULT_HP_RISE;
+    }
+
+    public static void EnemyAttack(){
+        if (( KeyManager.getMousePresetButt("PRIMARY") == true) && (Enemy.ENEMYDEFAULT_HP != Enemy.hp) && (Enemy.hp > 0) && (Player.hp > 0) && (attackrange < EnemyAttackRange )){
+            Player.hp = Player.hp - Enemy.damage;
+        }
     }
 }

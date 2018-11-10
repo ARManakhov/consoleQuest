@@ -2,6 +2,7 @@ package com.company;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,26 +16,31 @@ import java.util.Scanner;
  */
 public class KeyManager {
 
-    private static HashSet<String> activeKeyHash;                    //hashset со всеми нажатыми в данный момент кнопками
+    private static HashSet<String> activeKeyHash;                   //hashset со всеми нажатыми в данный момент кнопками
+    private static HashSet<String> activeMouseHash;                   //hashset со всеми нажатыми в данный момент кнопками
+
 
     private static boolean gettedSavedButtonSettings = false;       //флаг который определяет , загружено ли последнее сохранения с параметрами кнопками
 
 
     private static final File BUTT_SETTING_FILE = new File("saves","keys"); // файл с сохранениями конопок
 
-                                                                    // далее описаны кнопки которые будут применены если не удалось загрузить с файла
+    // далее описаны кнопки которые будут применены если не удалось загрузить с файла
     private static final String DEFAULT_UP_BUTTON = "UP";
     private static final String DEFAULT_DOWN_BUTTON = "DOWN";
     private static final String DEFAULT_LEFT_BUTTON = "LEFT";
     private static final String DEFAULT_RIGHT_BUTTON = "RIGHT";
     private static final String DEFAULT_CHOSE_BUTTON = "ENTER";
 
-                                                                    // переменные с информацией о выбраных кнопках ( на которые программа реагирует)
+    // переменные с информацией о выбраных кнопках ( на которые программа реагирует)
     private static String buttUP = DEFAULT_UP_BUTTON;
     private static String buttDOWN = DEFAULT_DOWN_BUTTON;
     private static String buttLEFT = DEFAULT_LEFT_BUTTON;
     private static String buttRIGHT = DEFAULT_RIGHT_BUTTON;
     private static String buttCHOSE = DEFAULT_CHOSE_BUTTON;
+
+    private static double mouseXPos;
+    private static double mouseYPos;
 
 
     /**
@@ -45,6 +51,8 @@ public class KeyManager {
 
 
         activeKeyHash = new HashSet<String>();
+        activeMouseHash = new HashSet<String>();
+
         graphic.theScene.setOnKeyPressed(new EventHandler<KeyEvent>()   //добавляем кнопки если нажаты и не были в хэше до этого
         {
             @Override
@@ -71,6 +79,34 @@ public class KeyManager {
                 activeKeyHash.remove(event.getCode().toString());
             }
         });
+
+        graphic.theScene.setOnMouseMoved(
+                new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {
+                        mouseXPos = event.getX();
+                        mouseYPos = event.getY();
+                    }
+                });
+
+
+
+        graphic.theScene.setOnMousePressed(
+                new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {
+                        activeMouseHash.add(event.getButton().toString());
+                    }
+                });
+
+        graphic.theScene.setOnMouseReleased(
+                new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {
+                        activeMouseHash.remove(event.getButton().toString());
+                    }
+                });
+
+
+
+
 
     }
 
@@ -194,6 +230,31 @@ public class KeyManager {
 
     }
 
+    /**
+     *
+     * @return текущая позиция мыши по X
+     */
+    public static double getMouseXPos(){
+        return mouseXPos;
+    }
+
+
+    /**
+     *
+     * @return текущая позиция мыши по Y
+     */
+    public static double getMouseYPos(){
+        return mouseYPos;
+    }
+
+    /**
+     *
+     * @param buttCode код кнопки мыши ( PRIMARY, MIDDLE, SECONDARY)
+     * @return если нажата то true иначе false
+     */
+    public static boolean getMousePresetButt(String buttCode){
+        return activeMouseHash.contains(buttCode);
+
+    }
+
 }
-
-
