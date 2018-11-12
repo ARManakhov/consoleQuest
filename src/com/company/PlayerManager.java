@@ -15,8 +15,8 @@ public class PlayerManager {
     private static double limY1;
     private static double limX2;
     private static double limY2;
-    private static double realXPos;
-    private static double realYPos;
+    public static double realXPos;
+    public static double realYPos;
 
     private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
     private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");

@@ -63,6 +63,7 @@ public class graphic extends Application {
 
                     MapManager.drawMap(currentNanoTime);
                     PlayerManager.drawPlayer(currentNanoTime,currentMapNumber);
+                    ZombieManager.zombieMob(currentNanoTime, currentMapNumber);
                 }
 
             }

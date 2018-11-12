@@ -12,8 +12,8 @@ public class MapManager {
     private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
 
                                                                                     //координаты расположения блока[0][0] на экране
-    private static double currentXPos = 0;
-    private static double currentYPos = 0;
+    public static double currentXPos = 0;
+    public static double currentYPos = 0;
 
     private static boolean firstCall = true;
 
