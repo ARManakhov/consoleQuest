@@ -62,8 +62,9 @@ public class graphic extends Application {
         mainPane.getChildren().add(playerLayer);
         mainPane.getChildren().add(mapLayer);
         root.getChildren().add(mainPane);               //добавление Pane в Root
+        mapLayer.toFront();
         playerLayer.toFront();
-        interfaceLayer.toFront();
+        interfaceLayer.toBack();
 
         KeyManager.prepareActionHandlers(); //проверяем ввод с устройств
 
@@ -81,19 +82,11 @@ public class graphic extends Application {
                  MainMenu.drawMenu(currentNanoTime);
                 }
                 if (mode == 1){
-                    graphic.interfaceLayer.getGraphicsContext2D().clearRect(0,0,theScene.getWidth(),theScene.getHeight());
 
-                    MapManager.drawMap(currentNanoTime);
+                    MapManager.drawMap(currentNanoTime, currentMapNumber);
                     PlayerManager.drawPlayer(currentNanoTime,currentMapNumber);
-                }
-                if (mode == 2){
-
-                    if (KeyManager.saveButt("UP")){
-                        mode = 0;
-                    }
 
                 }
-
             }
         }.start();
 
@@ -105,17 +98,16 @@ public class graphic extends Application {
     /**
      * обновление размера холста в соответсвие с размером окна
      */
-    private static void canvasSizeUpdate (){
+    public static void canvasSizeUpdate (){
         if ( prevStageHeight != theScene.getHeight() || prevStageWidth != theScene.getWidth() || first){
-            mapLayer.setHeight(3*theScene.getHeight());
-            mapLayer.setWidth(3*theScene.getWidth());
+            mapLayer.setHeight(5*theScene.getHeight());
+            mapLayer.setWidth(5*theScene.getWidth());
             playerLayer.setHeight(theScene.getHeight());
             playerLayer.setWidth(theScene.getWidth());
             interfaceLayer.setHeight(theScene.getHeight());
             interfaceLayer.setWidth(theScene.getWidth());
             mapLayer.setTranslateX(-theScene.getWidth());
             mapLayer.setTranslateY(-theScene.getHeight());
-
             MapManager.setNeedRedraw();
 
             prevStageWidth = theScene.getWidth();

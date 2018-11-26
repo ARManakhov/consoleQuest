@@ -112,14 +112,15 @@ public class MainMenu {// todo еще больше поменять !
 
 
 
+
             gc.fillText(VERSION, graphic.theScene.getWidth() - 0.5 * VERSION_FONT_SIZE * VERSION.length(), graphic.theScene.getHeight() - 0.5 * VERSION_FONT_SIZE);
 
             if(KeyManager.pressedButt("CHOSE")){
                 if (chosenButt == 0) graphic.mode = 1;
                 if (chosenButt == 1) graphic.mode = 2;
                 if (chosenButt == 2) graphic.mode = 3;
+                graphic.interfaceLayer.getGraphicsContext2D().clearRect(0,0,graphic.theScene.getWidth(),graphic.theScene.getHeight());
             }
         }
-
     }
 }
