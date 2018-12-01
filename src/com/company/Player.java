@@ -1,6 +1,6 @@
 package com.company;
 
-//todo отделить данные о игроке от отрисовки
+
 
 /**
  * класс который содержит параметры игрока, его передвижение и тд
@@ -26,10 +26,12 @@ public class Player extends Character {
     private  int lvl = DEFAULT_LVL;
     private  int money = DEFAULT_MONEY;
     private  int damage = DEFAULT_DAMAGE;
-    private  double speed = DEFAULT_SPEED;                           //todo сделать инвентарь
+    private  double speed = DEFAULT_SPEED;
     private  static Character obj = null ;
     private  double realXPos;
     private  double realYPos;
+
+
 
     /**
      *
@@ -49,6 +51,11 @@ public class Player extends Character {
 
     public void setRealYPos(double realYPos) {
         this.realYPos = realYPos;
+    }
+
+    @Override
+    public int getHp() {
+        return hp;
     }
 
     public static Character getPlayer(){

@@ -16,6 +16,9 @@ public class PlayerManager {
     private static double limX2;
     private static double limY2;
 
+    private static double realXPos;
+    private static double realYPos;
+
 
     private static GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
     private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");
@@ -32,11 +35,29 @@ public class PlayerManager {
     public static void drawPlayer(long currentNanoTime, int mapNumber) {
 
         limFinder();
+        moveKeyManage(mapNumber);
+        playerDrawManage();
 
+    }
+
+    /**
+     * метод который отвечает за сторону в которую смотрит персонаж а так же за его отрисовку
+     */
+    private static void playerDrawManage(){
+        gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
+        gc.drawImage(playerTexture, screenXPos, screenYPos);
+    }
+
+    /**
+     * метод занимающийся обработкой ввода с клавы, а так же передвижением персонажа
+     * @param mapNumber номер текущей карты
+     */
+    private static void moveKeyManage(int mapNumber){
         Character player = Player.getPlayer();
-        double realXPos = player.getRealXPos();
-        double realYPos = player.getRealYPos();
+        realXPos = player.getRealXPos();
+        realYPos = player.getRealYPos();
         double speed = player.getSpeed();
+
         if(firstCall){
             realXPos =  32 * Maps.worldMap[mapNumber].spawnPosX;
             realYPos =  32 * Maps.worldMap[mapNumber].spawnPosY;
@@ -45,17 +66,6 @@ public class PlayerManager {
             screenYPos =  graphic.theScene.getHeight()/2;
 
             firstCall = false;
-        }
-
-        //todo наискасок скорость через корень
-
-
-        if(Maps.worldMap[mapNumber].teleportMap[(int) (realYPos)/32][(int) (realXPos)/32] != 0){
-            graphic.currentMapNumber = Maps.worldMap[mapNumber].teleportMap[(int) (realYPos)/32][(int) (realXPos)/32];
-
-            firstCall = true;
-            MapManager.setAsFirstCall();
-
         }
 
         if(KeyManager.pressedButt("LEFT")){
@@ -168,13 +178,15 @@ public class PlayerManager {
             }
         }
 
+        if(Maps.worldMap[mapNumber].teleportMap[(int) (realYPos)/32][(int) (realXPos)/32] != 0){
 
-        gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
+            graphic.currentMapNumber = Maps.worldMap[mapNumber].teleportMap[(int) (realYPos)/32][(int) (realXPos)/32];
+            firstCall = true;
+            MapManager.setAsFirstCall();
+        }
 
-        gc.drawImage(playerTexture, screenXPos, screenYPos);
         player.setRealXPos(realXPos);
         player.setRealYPos(realYPos);
-        //System.out.println("x = " + realXPos + ", y = " + realYPos );
     }
 
     /**

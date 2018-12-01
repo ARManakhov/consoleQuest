@@ -19,7 +19,7 @@ public class graphic extends Application {
     private static final int Y_SIZE = 720;      //стандартная высота окна
 
     public static Group root = new Group();     //группа root
-    public static Canvas mapLayer = new Canvas();           //слой карты //todo проработать отрисовку в javafx получше
+    public static Canvas mapLayer = new Canvas();           //слой карты
     public static Canvas playerLayer = new Canvas();        //слой с игроком и возможно с мобами
     public static Canvas interfaceLayer = new Canvas();     //холст интерфейса
     private static Pane mainPane = new Pane();
@@ -100,8 +100,8 @@ public class graphic extends Application {
      */
     public static void canvasSizeUpdate (){
         if ( prevStageHeight != theScene.getHeight() || prevStageWidth != theScene.getWidth() || first){
-            mapLayer.setHeight(5*theScene.getHeight());
-            mapLayer.setWidth(5*theScene.getWidth());
+            mapLayer.setHeight(3*theScene.getHeight());
+            mapLayer.setWidth(3*theScene.getWidth());
             playerLayer.setHeight(theScene.getHeight());
             playerLayer.setWidth(theScene.getWidth());
             interfaceLayer.setHeight(theScene.getHeight());
