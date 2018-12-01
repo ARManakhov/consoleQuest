@@ -1,6 +1,7 @@
 package com.company;
 
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * класс в котором обрабатываются вводы пользователя (мышь, клава)
@@ -25,14 +27,14 @@ public class KeyManager {
 
     private static final File BUTT_SETTING_FILE = new File("saves","keys"); // файл с сохранениями конопок
 
-    // далее описаны кнопки которые будут применены если не удалось загрузить с файла
+                                                                    // далее описаны кнопки которые будут применены если не удалось загрузить с файла
     private static final String DEFAULT_UP_BUTTON = "UP";
     private static final String DEFAULT_DOWN_BUTTON = "DOWN";
     private static final String DEFAULT_LEFT_BUTTON = "LEFT";
     private static final String DEFAULT_RIGHT_BUTTON = "RIGHT";
     private static final String DEFAULT_CHOSE_BUTTON = "ENTER";
 
-    // переменные с информацией о выбраных кнопках ( на которые программа реагирует)
+                                                                    // переменные с информацией о выбраных кнопках ( на которые программа реагирует)
     private static String buttUP = DEFAULT_UP_BUTTON;
     private static String buttDOWN = DEFAULT_DOWN_BUTTON;
     private static String buttLEFT = DEFAULT_LEFT_BUTTON;
@@ -47,7 +49,7 @@ public class KeyManager {
      * метод который загружает в activeKeyHash текущее состояние клавиатуры(какие кнопуи нааты)
      * @throws IOException если не нашелся файл параметров
      */
-    public static void prepareActionHandlers() throws IOException {
+    public static void prepareActionHandlers() {
 
 
         activeKeyHash = new HashSet<String>();
@@ -60,11 +62,7 @@ public class KeyManager {
             {
 
                 if (!gettedSavedButtonSettings){
-                    try {
-                        loadButt();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    loadButt();
                     gettedSavedButtonSettings = true;
                 }
                 activeKeyHash.add(event.getCode().toString());
@@ -91,11 +89,12 @@ public class KeyManager {
 
 
         graphic.theScene.setOnMousePressed(
-                new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event) {
+            new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent event) {
                         activeMouseHash.add(event.getButton().toString());
-                    }
-                });
+                    System.out.println("ok");
+                }
+            });
 
         graphic.theScene.setOnMouseReleased(
                 new EventHandler<MouseEvent>() {
@@ -114,14 +113,79 @@ public class KeyManager {
      * метод для получение данных об одной нажатой кнопке (первая в хэше)
      * @return возвращает нажатую кнопку
      */
-    private static String getPressedKey(){
-        String[] activeKeyArr = activeKeyHash.toArray(new String[activeKeyHash.size()]);
-        if (activeKeyArr.length >0){
-            return activeKeyArr[0];
-        } else {
-            return "wait";          //todo прикрутить в сохроняльщик кнопок ниже
+    public static String getPressedKey(){
+        if(alredyPrstBut) {
+            if (activeKeyHash.size() == 0) {
+                alredyPrstBut = false;
+            } else {
+                return "wait";
+            }
+        }else{
+            if (activeKeyHash.size() == 0 ){
+                return "wait";
+            } else {
+                System.out.println("ok");
+                alredyPrstBut = true;
+                String[] prstButt = activeKeyHash.toArray(new String[activeKeyHash.size()]);
+                return prstButt[0];
+            }
         }
+        return "wait";
+
     }
+
+    static boolean alredyPrstBut = true;
+
+
+    /**
+     * сохраняет текущие рабочие и измененные кнопки
+     * @param buttName кнопка которую надо обновить ("all" если надо обновить все, не ждет нажатия кнопки)
+     * @throws FileNotFoundException если не нашелся файл параметров
+     */
+    public static boolean saveButt(String buttName) {
+        boolean savedCpaturedBut = false;
+        if (!buttName.equals("all")) {
+            String currentButt = getPressedKey();
+            if (!currentButt.equals("wait")){
+                savedCpaturedBut = true;
+                if (buttName.equals("UP")) {
+                    buttUP = currentButt;
+                }
+                if (buttName.equals("DOWN")) {
+                    buttDOWN = currentButt;
+                }
+                if (buttName.equals("LEFT")) {
+                    buttLEFT = currentButt;
+                }
+                if (buttName.equals("RIGHT")) {
+                    buttRIGHT = currentButt;
+                }
+                if (buttName.equals("CHOSE")) {
+                    buttCHOSE = currentButt;
+                }
+            } else{
+                savedCpaturedBut = false;
+            }
+
+        }
+
+
+        try {
+            PrintWriter pw = new PrintWriter(BUTT_SETTING_FILE);
+
+            pw.println(buttUP);
+            pw.println(buttDOWN);
+            pw.println(buttLEFT);
+            pw.println(buttRIGHT);
+            pw.println(buttCHOSE);
+
+            pw.close();
+        } catch (FileNotFoundException e) {
+
+        }
+        return savedCpaturedBut;
+    }
+
 
     /**
      *
@@ -147,50 +211,12 @@ public class KeyManager {
 
     }
 
-    /**
-     * сохраняет текущие рабочие и измененные кнопки
-     * @param buttName кнопка которую надо обновить ("all" если надо обновить все, не ждет нажатия кнопки)
-     * @throws FileNotFoundException если не нашелся файл параметров
-     */
-    private static void saveButt(String buttName) throws FileNotFoundException {
-
-        PrintWriter pw = new PrintWriter(BUTT_SETTING_FILE);
-        if(buttName != "all"){
-            if (buttName == "UP"){
-                buttUP = getPressedKey();
-            }
-            if (buttName == "DOWN"){
-                buttDOWN = getPressedKey();
-            }
-            if (buttName == "LEFT"){
-                buttLEFT = getPressedKey();
-            }
-            if (buttName == "RIGHT"){
-                buttRIGHT = getPressedKey();
-            }
-            if (buttName == "CHOSE"){
-                buttCHOSE = getPressedKey();
-            }
-        }
-
-
-        pw.println(buttUP);
-        pw.println(buttDOWN);
-        pw.println(buttLEFT);
-        pw.println(buttRIGHT);
-        pw.println(buttCHOSE);
-
-        pw.close();
-
-        gettedSavedButtonSettings = false;
-
-    }
 
     /**
      * метод который загружает с файла кнопки
      * @throws IOException  если файла нету выводить что не удалось загрузить параметры и создать стандартый файл с стандартными кнопками
      */
-    private static void loadButt() throws IOException{
+    private static void loadButt(){
         try {
 
             Scanner sc = new Scanner(BUTT_SETTING_FILE);
@@ -258,3 +284,5 @@ public class KeyManager {
     }
 
 }
+
+

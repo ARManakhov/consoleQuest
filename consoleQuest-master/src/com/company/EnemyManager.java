@@ -6,26 +6,26 @@ public class EnemyManager {
     private static final double PLAYER_SIZE_X = 16;
     private static final double PLAYER_SIZE_Y = 16;
 
-    private static double screenXPos;
-    private static double screenYPos;
-    private static double limX1;
-    private static double limY1;
-    private static double limX2;
-    private static double limY2;
-    public static double realXPos = 128;
-    public static double realYPos = 128;
+    private  double screenXPos;
+    private  double screenYPos;
+    private   double realXPos = 128;
+    private   double realYPos = 128;
 
-    private static GraphicsContext gc = graphic.canvas.getGraphicsContext2D();
+    private static GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
     private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");
 
     private static boolean firstCall = true;
 
-    public static void drawEnemy(long currentNanoTime, int mapNumber) {
+    public void drawEnemy(long currentNanoTime, int mapNumber) {
+        screenXPos = MapManager.currentXPos + realXPos;
+        screenYPos  = MapManager.currentYPos + realYPos;
         gc.drawImage(playerTexture, screenXPos, screenYPos);
     }
 
-    public static void ScreenPosE(){
-        screenXPos = MapManager.currentXPos + EnemyManager.realXPos;
-        screenYPos  = MapManager.currentYPos + EnemyManager.realYPos;
+
+
+    public EnemyManager(Character enemy){
+        realXPos = enemy.getRealXPos();
+        realYPos = enemy.getRealYPos();
     }
 }
