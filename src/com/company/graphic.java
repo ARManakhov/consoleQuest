@@ -6,11 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 
 public class graphic extends Application {
@@ -79,12 +75,12 @@ public class graphic extends Application {
 
                 canvasSizeUpdate();
                 if (mode == 0){
-                 MainMenu.drawMenu(currentNanoTime);
+                 MainMenu.draw(currentNanoTime);
                 }
                 if (mode == 1){
 
-                    MapManager.drawMap(currentNanoTime, currentMapNumber);
-                    PlayerManager.drawPlayer(currentNanoTime,currentMapNumber);
+                    MapManager.draw(currentNanoTime, currentMapNumber);
+                    PlayerManager.getManager().draw(currentNanoTime,currentMapNumber);
 
                 }
             }

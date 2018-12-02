@@ -3,36 +3,53 @@ package com.company;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import static java.lang.Math.sqrt;
+
 public class PlayerManager {
     // размер спрайта
-    private static final double PLAYER_SIZE_X = 16;        // размер игрока по x
-    private static final double PLAYER_SIZE_Y = 16;        // размер игрока по y
+    private final double PLAYER_SIZE_X = 16;        // размер игрока по x
+    private final double PLAYER_SIZE_Y = 16;        // размер игрока по y
 
     //переменные необходимые для отрисовки персонажа
-    private static double screenXPos;
-    private static double screenYPos;
-    private static double limX1;
-    private static double limY1;
-    private static double limX2;
-    private static double limY2;
+    private double screenXPos;
+    private double screenYPos;
+    private double limX1;
+    private double limY1;
+    private double limX2;
+    private double limY2;
 
-    private static double realXPos;
-    private static double realYPos;
+    private double realXPos;
+    private double realYPos;
 
+    private GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
+    private Image[] playerTexture = {
+            new Image("resources/characters/player/0.png"),
+            new Image("resources/characters/player/1.png"),
+            new Image("resources/characters/player/2.png"),
+            new Image("resources/characters/player/3.png"),
+            new Image("resources/characters/player/4.png"),
+            new Image("resources/characters/player/5.png"),
+            new Image("resources/characters/player/6.png"),
+            new Image("resources/characters/player/7.png")};
 
-    private static GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
-    private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");
+    private boolean firstCall = true;
 
-    private static boolean firstCall = true;
+    private static PlayerManager obj = null;
+    public static PlayerManager getManager(){
+        if(obj == null){
+            obj = new PlayerManager();
+        }
+        return obj;
+    }
 
-
+    private PlayerManager(){}
 
     /**
      * метод для отрисовки игрока, и его движения
      * @param currentNanoTime текущее время (для анимации)
      * @param mapNumber номер карты для отрисовки
      */
-    public static void drawPlayer(long currentNanoTime, int mapNumber) {
+    public void draw(long currentNanoTime, int mapNumber) {
 
         limFinder();
         moveKeyManage(mapNumber);
@@ -43,16 +60,58 @@ public class PlayerManager {
     /**
      * метод который отвечает за сторону в которую смотрит персонаж а так же за его отрисовку
      */
-    private static void playerDrawManage(){
+    private void playerDrawManage(){
+        double mouseX = KeyManager.getMouseXPos();
+        double mouseY = KeyManager.getMouseYPos();
+
+        double angleCos = (mouseX - screenXPos + PLAYER_SIZE_X/2)/
+                sqrt((mouseX-screenXPos+PLAYER_SIZE_X/2)*(mouseX-screenXPos+PLAYER_SIZE_X/2) +
+                        (mouseY-screenYPos + PLAYER_SIZE_Y/2)*(mouseY-screenYPos + PLAYER_SIZE_Y/2));
+        int dir=0;
+
+        if(mouseY - screenYPos + PLAYER_SIZE_Y/2 > 0){
+            if (angleCos > 0.92 && angleCos <= 1){
+                dir = 0;
+            }
+            if (angleCos > 0.38 && angleCos <= 0.92){
+                dir = 1;
+            }
+            if (angleCos > -0.38 && angleCos <= 0.38){
+                dir = 2;
+            }
+            if (angleCos > -0.92 && angleCos <= -0.38){
+                dir = 3;
+            }
+            if (angleCos > -1 && angleCos <= -0.92){
+                dir = 4;
+            }
+        } else {
+            if (angleCos > 0.92 && angleCos <= 1){
+                dir = 0;
+            }
+            if (angleCos > 0.38 && angleCos <= 0.92){
+                dir = 7;
+            }
+            if (angleCos > -0.38 && angleCos <= 0.38){
+                dir = 6;
+            }
+            if (angleCos > -0.92 && angleCos <= -0.38){
+                dir = 5;
+            }
+            if (angleCos > -1 && angleCos <= -0.92){
+                dir = 4;
+            }
+        }
+
         gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
-        gc.drawImage(playerTexture, screenXPos, screenYPos);
+        gc.drawImage(playerTexture[dir], screenXPos, screenYPos);
     }
 
     /**
      * метод занимающийся обработкой ввода с клавы, а так же передвижением персонажа
      * @param mapNumber номер текущей карты
      */
-    private static void moveKeyManage(int mapNumber){
+    private void moveKeyManage(int mapNumber){
         Character player = Player.getPlayer();
         realXPos = player.getRealXPos();
         realYPos = player.getRealYPos();
@@ -192,7 +251,7 @@ public class PlayerManager {
     /**
      * метод который находит граници экрана где начинает двигатся карта а не персонаж по экрану
      */
-    private static void limFinder(){
+    private void limFinder(){
         int xSlice = (int) graphic.theScene.getWidth()/4;
         limX1 = xSlice;
         limX2 = xSlice * 3;

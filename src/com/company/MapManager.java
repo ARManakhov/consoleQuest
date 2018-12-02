@@ -37,7 +37,7 @@ public class MapManager {
      *
      * @param currentNanoTime текущее время в наносекундах
      */
-    public static void drawMap(long currentNanoTime, int currentMapNumber){
+    public static void draw(long currentNanoTime, int currentMapNumber){
 
         if(firstCall){
             currentYMoveBeforeRedraw = 0;
