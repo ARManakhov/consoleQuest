@@ -61,15 +61,15 @@ public class PlayerManager {
      * метод который отвечает за сторону в которую смотрит персонаж а так же за его отрисовку
      */
     private void playerDrawManage(){
-        double mouseX = KeyManager.getMouseXPos();
-        double mouseY = KeyManager.getMouseYPos();
+        double mouseX = KeyManager.getMouseXPos() - PLAYER_SIZE_X / 2;
+        double mouseY = KeyManager.getMouseYPos() - PLAYER_SIZE_Y / 2;
 
-        double angleCos = (mouseX - screenXPos + PLAYER_SIZE_X/2)/
-                sqrt((mouseX-screenXPos+PLAYER_SIZE_X/2)*(mouseX-screenXPos+PLAYER_SIZE_X/2) +
-                        (mouseY-screenYPos + PLAYER_SIZE_Y/2)*(mouseY-screenYPos + PLAYER_SIZE_Y/2));
+        double angleCos = (mouseX - screenXPos)/
+                sqrt((mouseX-screenXPos)*(mouseX-screenXPos) +
+                        (mouseY-screenYPos)*(mouseY-screenYPos));
         int dir=0;
 
-        if(mouseY - screenYPos + PLAYER_SIZE_Y/2 > 0){
+        if(mouseY - screenYPos > 0){
             if (angleCos > 0.92 && angleCos <= 1){
                 dir = 0;
             }
