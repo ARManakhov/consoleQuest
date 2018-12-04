@@ -8,6 +8,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 
 public class graphic extends Application {
 
@@ -19,6 +21,8 @@ public class graphic extends Application {
     public static Canvas playerLayer = new Canvas();        //слой с игроком и возможно с мобами
     public static Canvas interfaceLayer = new Canvas();     //холст интерфейса
     private static Pane mainPane = new Pane();
+
+    private static Logger logger = Logger.getLoger();
 
     private static double prevStageHeight = 0;
     private static double prevStageWidth = 0;
@@ -46,11 +50,13 @@ public class graphic extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         if (first){
-
+            logger.setLogFile(new File("log.txt"));
             prevStageHeight = theScene.getHeight();
             prevStageWidth = theScene.getWidth();
             canvasSizeUpdate();
             first = false;
+            Block bl = Block.getInstance();
+            bl.readFolder();
         }
         stage.setTitle( "Enima" );
         stage.setScene( theScene );
@@ -74,13 +80,14 @@ public class graphic extends Application {
             public void handle(long currentNanoTime)  {
 
                 canvasSizeUpdate();
+                //System.out.println(currentNanoTime);
                 if (mode == 0){
                  MainMenu.draw(currentNanoTime);
                 }
                 if (mode == 1){
 
                     MapManager.draw(currentNanoTime, currentMapNumber);
-                    PlayerManager.getManager().draw(currentNanoTime,currentMapNumber);
+                    PlayerManager.getInstance().draw(currentNanoTime,currentMapNumber);
 
                 }
             }
@@ -89,6 +96,11 @@ public class graphic extends Application {
 
 
         stage.show();
+    }
+
+    @Override
+    public void stop(){
+        logger.saveLogFile();
     }
 
     /**
@@ -108,7 +120,7 @@ public class graphic extends Application {
 
             prevStageWidth = theScene.getWidth();
             prevStageHeight = theScene.getHeight();
-
+            logger.addLogg("выполнено назначение или обновление размера окна");
         }
 
 

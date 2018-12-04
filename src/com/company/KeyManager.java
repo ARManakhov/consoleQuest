@@ -92,7 +92,6 @@ public class KeyManager {
             new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent event) {
                         activeMouseHash.add(event.getButton().toString());
-                    System.out.println("ok");
                 }
             });
 
@@ -180,8 +179,9 @@ public class KeyManager {
             pw.println(buttCHOSE);
 
             pw.close();
+            Logger.getLoger().addLogg("Параметры кнопок сохранены");
         } catch (FileNotFoundException e) {
-
+            Logger.getLoger().addLogg("Параметры кнопок не сохранены");
         }
         return savedCpaturedBut;
     }
@@ -217,6 +217,7 @@ public class KeyManager {
      * @throws IOException  если файла нету выводить что не удалось загрузить параметры и создать стандартый файл с стандартными кнопками
      */
     private static void loadButt(){
+
         try {
 
             Scanner sc = new Scanner(BUTT_SETTING_FILE);
@@ -248,9 +249,10 @@ public class KeyManager {
             gettedSavedButtonSettings = true;
 
             sc.close();
+            Logger.getLoger().addLogg("параметры кнопок загружены");
         }
         catch (FileNotFoundException e) {
-            System.out.println("создаю новый файл параметров кнопок");
+            Logger.getLoger().addLogg("параметры кнопок не были загружены, применяем стандартные настройки");
             saveButt("all");
         }
 
