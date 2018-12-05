@@ -24,6 +24,7 @@ public class EnemyManager {
 
 
 
+
     public EnemyManager(Character enemy){
         realXPos = enemy.getRealXPos();
         realYPos = enemy.getRealYPos();

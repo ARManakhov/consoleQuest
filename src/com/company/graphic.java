@@ -6,14 +6,16 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.Objects;
 
 
 public class graphic extends Application {
+
+
+    Enemy enemyb= new Enemy();
+    EnemyManager f = new EnemyManager(enemyb);
 
     private static final int X_SIZE = 1024;     //стандартная ширина окна
     private static final int Y_SIZE = 720;      //стандартная высота окна
@@ -85,8 +87,6 @@ public class graphic extends Application {
                     MapManager.drawMap(currentNanoTime, currentMapNumber);
                     PlayerManager.drawPlayer(currentNanoTime,currentMapNumber);
                     int Character;
-                    Character enemyb= new Enemy();
-                    EnemyManager f = new EnemyManager(enemyb);
                     f.drawEnemy(currentNanoTime,currentMapNumber);
 
                     Player player = Player.getPlayer();
@@ -94,6 +94,7 @@ public class graphic extends Application {
                     ((Enemy) enemyb).EnemyAttack();
                     System.out.println("Player_hp = " + player.getHp());
                     System.out.println("Enemy_hp = " + enemyb.getHp());
+                    Objects.requireNonNull(enemyGenerator.getInstance());
                 }
             }
         }.start();

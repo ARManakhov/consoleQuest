@@ -37,6 +37,11 @@ public class Enemy extends Character {
 
     }
 
+    public Enemy(int x,int y){
+        this.realXPos = x;
+        this.realYPos = y;
+    }
+
     public double getRealXPos() {
         return realXPos;
     }

@@ -48,6 +48,8 @@ public class MapManager {
 
             firstCall = false;
             NeedRedraw = true;
+
+            enemyGenerator.getInstance().Random_Generate_on_map(currentMapNumber);
         }
 
         if (Math.abs(currentXMoveBeforeRedraw) > graphic.theScene.getWidth() || Math.abs(currentYMoveBeforeRedraw) > graphic.theScene.getHeight() || NeedRedraw){
