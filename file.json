@@ -1,0 +1,10 @@
+{
+  userId: 32,
+  firstName: "Алексей",
+  lastName: "Голобурдин",
+  address: {
+    country: "Россия",
+    city: "Москва"
+  },
+  phone: "8 (905) 777 77 77"
+}
