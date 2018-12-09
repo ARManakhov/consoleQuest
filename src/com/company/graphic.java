@@ -14,8 +14,10 @@ import java.util.Objects;
 public class graphic extends Application {
 
 
-    Enemy enemyb= new Enemy();
-    EnemyManager f = new EnemyManager(enemyb);
+    //Enemy enemyb= new Enemy();
+    //EnemyManager f = new EnemyManager(enemyb);
+
+    EnemyGenerator eg = EnemyGenerator.getInstance();
 
     private static final int X_SIZE = 1024;     //стандартная ширина окна
     private static final int Y_SIZE = 720;      //стандартная высота окна
@@ -86,15 +88,11 @@ public class graphic extends Application {
                 if (mode == 1){
                     MapManager.drawMap(currentNanoTime, currentMapNumber);
                     PlayerManager.drawPlayer(currentNanoTime,currentMapNumber);
-                    int Character;
-                    f.drawEnemy(currentNanoTime,currentMapNumber);
+                    eg.attackMobs(currentNanoTime, currentMapNumber);
+                    eg.renderMobs(currentNanoTime, currentMapNumber);
+                    System.out.println(Player.getPlayer().getHp());
 
-                    Player player = Player.getPlayer();
-                    player.PlayerAttack(enemyb);
-                    ((Enemy) enemyb).EnemyAttack();
-                    System.out.println("Player_hp = " + player.getHp());
-                    System.out.println("Enemy_hp = " + enemyb.getHp());
-                    Objects.requireNonNull(enemyGenerator.getInstance());
+                    //Objects.requireNonNull(EnemyGenerator.getInstance());
                 }
             }
         }.start();

@@ -1,13 +1,8 @@
 package com.company;
 
-import javafx.animation.PathTransition;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.*;
 import javafx.scene.transform.Translate;
-import javafx.util.Duration;
 
-import static com.company.graphic.canvasSizeUpdate;
 import static com.company.graphic.currentMapNumber;
 
 /**
@@ -49,7 +44,7 @@ public class MapManager {
             firstCall = false;
             NeedRedraw = true;
 
-            enemyGenerator.getInstance().Random_Generate_on_map(currentMapNumber);
+            EnemyGenerator.getInstance().generateMobs(currentMapNumber);
         }
 
         if (Math.abs(currentXMoveBeforeRedraw) > graphic.theScene.getWidth() || Math.abs(currentYMoveBeforeRedraw) > graphic.theScene.getHeight() || NeedRedraw){

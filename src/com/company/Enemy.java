@@ -38,6 +38,11 @@ public class Enemy extends Character {
     }
 
     public Enemy(int x,int y){
+        this.hp = ENEMYDEFAULT_HP;
+        this.maxHP = ENEMYDEFAULT_HP;
+        this.damage = ENEMYDEFAULT_DAMAGE;
+        this.speed = ENEMYDEFAULT_SPEED;
+
         this.realXPos = x;
         this.realYPos = y;
     }
@@ -76,12 +81,12 @@ public class Enemy extends Character {
         this.hp = hp;
     }
 
-    public void EnemyAttack(){
-        double x = (realXPos - Player.getPlayer().getRealXPos())*(realXPos - Player.getPlayer().getRealXPos());
-        double y = (realYPos - Player.getPlayer().getRealYPos())*(realYPos -Player.getPlayer().getRealYPos());
+    public void EnemyAttack(Character ch){
+        double x = (realXPos - ch.getRealXPos())*(realXPos - ch.getRealXPos());
+        double y = (realYPos - ch.getRealYPos())*(realYPos - ch.getRealYPos());
         double attackrange = Math.sqrt(x + y);
-        if (( KeyManager.getMousePresetButt("PRIMARY") == true) && (Enemy.ENEMYDEFAULT_HP != this.hp) && (this.hp > 0) && (Player.getPlayer().getHp() > 0) && (attackrange < EnemyAttackRange )){
-            Player.getPlayer().setHp(Player.getPlayer().getHp() - damage);
+        if (/*(Enemy.ENEMYDEFAULT_HP != this.hp) && */ (this.hp > 0) && (ch.getHp() > 0) && (attackrange < EnemyAttackRange )){ //todo сделать по красоте
+            ch.setHp(ch.getHp() - damage);
         }
     }
 }
