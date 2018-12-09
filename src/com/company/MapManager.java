@@ -22,11 +22,14 @@ public class MapManager {
     private static double currentXMoveBeforeRedraw = 0;
     private static double currentYMoveBeforeRedraw = 0;
 
+    private static boolean drawFromAngle = false;
+
 
     private static boolean firstCall = true;
 
     private static boolean NeedRedraw = false;
 
+    private static Block block = Block.getInstance();
 
     /**
      *
@@ -37,9 +40,10 @@ public class MapManager {
         if(firstCall){
             currentYMoveBeforeRedraw = 0;
             currentXMoveBeforeRedraw = 0;
-
-            currentXPos = graphic.theScene.getWidth() / 2 - BLOCK_SIZE* Maps.worldMap[currentMapNumber].spawnPosX;
-            currentYPos = graphic.theScene.getHeight() / 2 - BLOCK_SIZE* Maps.worldMap[currentMapNumber].spawnPosY;
+            if(!drawFromAngle){
+                currentXPos = graphic.theScene.getWidth() / 2 - BLOCK_SIZE* Maps.worldMap[currentMapNumber].spawnPosX;
+                currentYPos = graphic.theScene.getHeight() / 2 - BLOCK_SIZE* Maps.worldMap[currentMapNumber].spawnPosY;
+            }
 
             firstCall = false;
             NeedRedraw = true;
@@ -53,8 +57,10 @@ public class MapManager {
             NeedRedraw = false;
         }
         //System.out.println(" 1 " + currentYMove + " 2 " +  graphic.theScene.getHeight());
+    }
 
-
+    public static void serDrawFromAngle(boolean b){
+        drawFromAngle = b;
     }
 
     /**
@@ -81,7 +87,7 @@ public class MapManager {
         for (int i = drawUpLimit; i < drawDownLimit ; i++) {
             for (int j = drawLeftLim; j < Maps.worldMap[currentMapNumber].groundMap[i].length ; j++) {
                 gc.drawImage(
-                        Block.blockTexture[Maps.worldMap[currentMapNumber].groundMap[i][j]],
+                        block.getBlock(Maps.worldMap[currentMapNumber].groundMap[i][j]),
                         graphic.theScene.getWidth()  + j * BLOCK_SIZE + currentXPos,
                         graphic.theScene.getHeight() + i * BLOCK_SIZE + currentYPos
 

@@ -3,6 +3,8 @@ package com.company;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.io.File;
+
 import static java.lang.Math.sqrt;
 
 public class PlayerManager {
@@ -25,23 +27,24 @@ public class PlayerManager {
     private final long NANO_TIME_DELTA = 17000000;
 
     private GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
-    private Image[] playerTexture = {
-            new Image("resources/characters/player/0.png"),
-            new Image("resources/characters/player/1.png"),
-            new Image("resources/characters/player/2.png"),
-            new Image("resources/characters/player/3.png"),
-            new Image("resources/characters/player/4.png"),
-            new Image("resources/characters/player/5.png"),
-            new Image("resources/characters/player/6.png"),
-            new Image("resources/characters/player/7.png")};
+    private Image[] playerTexture/* = {
+            new Image("./resources/characters/player/0.png"),
+            new Image("./resources/characters/player/1.png"),
+            new Image("./resources/characters/player/2.png"),
+            new Image("./resources/characters/player/3.png"),
+            new Image("./resources/characters/player/4.png"),
+            new Image("./resources/characters/player/5.png"),
+            new Image("./resources/characters/player/6.png"),
+            new Image("./resources/characters/player/7.png")}*/;
 
     private boolean firstCall = true;
 
     private static PlayerManager instance = null;
     public static PlayerManager getInstance(){
         if(instance == null){
-
             instance = new PlayerManager();
+            TextureGet tg = new TextureGet(new File ("./resources/characters/player/"));
+            instance.playerTexture = tg.getTexture();
         }
         return instance;
     }

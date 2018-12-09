@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 
 public class graphic extends Application {
@@ -55,8 +56,6 @@ public class graphic extends Application {
             prevStageWidth = theScene.getWidth();
             canvasSizeUpdate();
             first = false;
-            Block bl = Block.getInstance();
-            bl.readFolder();
         }
         stage.setTitle( "Enima" );
         stage.setScene( theScene );
@@ -66,7 +65,7 @@ public class graphic extends Application {
         root.getChildren().add(mainPane);               //добавление Pane в Root
         mapLayer.toFront();
         playerLayer.toFront();
-        interfaceLayer.toBack();
+        interfaceLayer.toFront();
 
         KeyManager.prepareActionHandlers(); //проверяем ввод с устройств
 
@@ -85,10 +84,15 @@ public class graphic extends Application {
                  MainMenu.draw(currentNanoTime);
                 }
                 if (mode == 1){
-
+                    MapManager.serDrawFromAngle(false);
                     MapManager.draw(currentNanoTime, currentMapNumber);
                     PlayerManager.getInstance().draw(currentNanoTime,currentMapNumber);
 
+                }
+                if(mode == 2){
+                    MapManager.serDrawFromAngle(true);
+                    MapManager.draw(currentNanoTime, currentMapNumber);
+                    mapEditor.draw(currentNanoTime,currentMapNumber);
                 }
             }
         }.start();
