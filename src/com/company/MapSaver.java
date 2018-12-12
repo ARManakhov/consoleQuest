@@ -26,6 +26,7 @@ public class MapSaver {
             writeByteArray(map.borderMap,file);
             writeByteArray(map.enemyMap,file);
             writeByteArray(map.teleportMap,file);
+            writeByteArray(map.furnitureMap,file);
             pw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

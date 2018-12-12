@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 public class TextureGet {
     private File resourceFolder ;
@@ -27,6 +28,43 @@ public class TextureGet {
             try {
                 Logger.getLoger().addLogg("текстуры поменяны на текстуры из директории " + resourceFolder.getCanonicalPath());
                 listOfAllFiles = resourceFolder.listFiles();
+                String[] names = new String[listOfAllFiles.length];
+
+                for (int i = 0; i < listOfAllFiles.length; i++) {
+                    names[i] = listOfAllFiles[i].getName();
+                }
+
+
+                for (int i = 0; i < listOfAllFiles.length; i++) {
+                    for (int j = i; j < listOfAllFiles.length; j++) {
+                        int a=0;
+                        int b=0;
+
+                        int l=0;
+
+                        while (names[i].charAt(l) != '.'){
+                            a = a*10 + names[i].charAt(l);
+                            l++;
+                        }
+
+                        l=0;
+                        while (names[j].charAt(l) != '.'){
+                            b = b*10 + names[j].charAt(l);
+                            l++;
+                        }
+
+
+                        if(a > b){
+                            String sh = names[i];
+                            names[i] = names[j];
+                            names[j] = sh;
+
+                            File fh = listOfAllFiles[i];
+                            listOfAllFiles[i] = listOfAllFiles[j];
+                            listOfAllFiles[j] = fh;
+                        }
+                    }
+                }
 
             } catch (IOException e) {
                 Logger.getLoger().addLogg("произошло невозможное, файл текстуры не найден, хотя список файлов прочитан выше");

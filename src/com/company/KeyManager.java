@@ -28,11 +28,12 @@ public class KeyManager {
     private static final File BUTT_SETTING_FILE = new File("saves","keys"); // файл с сохранениями конопок
 
                                                                     // далее описаны кнопки которые будут применены если не удалось загрузить с файла
-    private static final String DEFAULT_UP_BUTTON = "UP";
-    private static final String DEFAULT_DOWN_BUTTON = "DOWN";
-    private static final String DEFAULT_LEFT_BUTTON = "LEFT";
-    private static final String DEFAULT_RIGHT_BUTTON = "RIGHT";
+    private static final String DEFAULT_UP_BUTTON = "W";
+    private static final String DEFAULT_DOWN_BUTTON = "S";
+    private static final String DEFAULT_LEFT_BUTTON = "A";
+    private static final String DEFAULT_RIGHT_BUTTON = "D";
     private static final String DEFAULT_CHOSE_BUTTON = "ENTER";
+    private static final String DEFAULT_ACTION_BUTTON = "E";
 
                                                                     // переменные с информацией о выбраных кнопках ( на которые программа реагирует)
     private static String buttUP = DEFAULT_UP_BUTTON;
@@ -44,6 +45,13 @@ public class KeyManager {
     private static double mouseXPos;
     private static double mouseYPos;
 
+    /**
+     *
+     * @return озвращает хэш кнопок
+     */
+    public static HashSet<String> getActiveKeyHash() {
+        return activeKeyHash;
+    }
 
     /**
      * метод который загружает в activeKeyHash текущее состояние клавиатуры(какие кнопуи нааты)
@@ -55,52 +63,33 @@ public class KeyManager {
         activeKeyHash = new HashSet<String>();
         activeMouseHash = new HashSet<String>();
 
-        graphic.theScene.setOnKeyPressed(new EventHandler<KeyEvent>()   //добавляем кнопки если нажаты и не были в хэше до этого
-        {
-            @Override
-            public void handle(KeyEvent event)
-            {
+        //добавляем кнопки если нажаты и не были в хэше до этого
+        graphic.theScene.setOnKeyPressed(event -> {
 
-                if (!gettedSavedButtonSettings){
-                    loadButt();
-                    gettedSavedButtonSettings = true;
-                }
-                activeKeyHash.add(event.getCode().toString());
+            if (!gettedSavedButtonSettings){
+                loadButt();
+                gettedSavedButtonSettings = true;
             }
+
+            activeKeyHash.add(event.getCode().toString());
         });
 
-        graphic.theScene.setOnKeyReleased(new EventHandler<KeyEvent>()  //убираем кнопку если она отжата
-        {
-            @Override
-            public void handle(KeyEvent event)
-            {
-                activeKeyHash.remove(event.getCode().toString());
-            }
-        });
+        //убираем кнопку если она отжата
+        graphic.theScene.setOnKeyReleased(event -> activeKeyHash.remove(event.getCode().toString()));
 
         graphic.theScene.setOnMouseMoved(
-                new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event) {
-                        mouseXPos = event.getX();
-                        mouseYPos = event.getY();
-                    }
+                event -> {
+                    mouseXPos = event.getX();
+                    mouseYPos = event.getY();
                 });
 
 
 
         graphic.theScene.setOnMousePressed(
-            new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent event) {
-                        activeMouseHash.add(event.getButton().toString());
-                }
-            });
+                event -> activeMouseHash.add(event.getButton().toString()));
 
         graphic.theScene.setOnMouseReleased(
-                new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event) {
-                        activeMouseHash.remove(event.getButton().toString());
-                    }
-                });
+                event -> activeMouseHash.remove(event.getButton().toString()));
 
 
 
@@ -139,7 +128,6 @@ public class KeyManager {
     /**
      * сохраняет текущие рабочие и измененные кнопки
      * @param buttName кнопка которую надо обновить ("all" если надо обновить все, не ждет нажатия кнопки)
-     * @throws FileNotFoundException если не нашелся файл параметров
      */
     public static boolean saveButt(String buttName) {
         boolean savedCpaturedBut = false;
@@ -214,7 +202,6 @@ public class KeyManager {
 
     /**
      * метод который загружает с файла кнопки
-     * @throws IOException  если файла нету выводить что не удалось загрузить параметры и создать стандартый файл с стандартными кнопками
      */
     private static void loadButt(){
 
@@ -282,7 +269,6 @@ public class KeyManager {
      */
     public static boolean getMousePresetButt(String buttCode){
         return activeMouseHash.contains(buttCode);
-
     }
 
 }

@@ -2,7 +2,6 @@ package com.company;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class MapReader {
@@ -30,11 +29,11 @@ public class MapReader {
     private MapReader(){}
 
     public void readMapsFromFolder(){
-        Maps.worldMap = new Map[mapFiles.length];
+        Map.maps = new Map[mapFiles.length];
         for (int i = 0; i < mapFiles.length; i++) {
             try {
                 sc = new Scanner(mapFiles[i]);
-                Maps.worldMap[i] = new Map(readInt(), readInt(),readByteArray(), readByteArray(), readByteArray(),readByteArray());
+                Map.maps[i] = new Map(readInt(), readInt(),readByteArray(), readByteArray(), readByteArray(),readByteArray(),readByteArray());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

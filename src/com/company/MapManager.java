@@ -14,7 +14,12 @@ public class MapManager {
 
     private static GraphicsContext gc = graphic.mapLayer.getGraphicsContext2D();
 
-                                                                                    //координаты расположения блока[0][0] на экране
+
+    public static int getBlockSize() {
+        return BLOCK_SIZE;
+    }
+
+    //координаты расположения блока[0][0] на экране
     public static double currentXPos = 0;
     public static double currentYPos = 0;
     private static double currentXMove = 0;
@@ -23,7 +28,6 @@ public class MapManager {
     private static double currentYMoveBeforeRedraw = 0;
 
     private static boolean drawFromAngle = false;
-
 
     private static boolean firstCall = true;
 
@@ -41,8 +45,8 @@ public class MapManager {
             currentYMoveBeforeRedraw = 0;
             currentXMoveBeforeRedraw = 0;
             if(!drawFromAngle){
-                currentXPos = graphic.theScene.getWidth() / 2 - BLOCK_SIZE* Maps.worldMap[currentMapNumber].spawnPosX;
-                currentYPos = graphic.theScene.getHeight() / 2 - BLOCK_SIZE* Maps.worldMap[currentMapNumber].spawnPosY;
+                currentXPos = graphic.theScene.getWidth() / 2 - BLOCK_SIZE* Map.maps[currentMapNumber].spawnPosX;
+                currentYPos = graphic.theScene.getHeight() / 2 - BLOCK_SIZE* Map.maps[currentMapNumber].spawnPosY;
             }
 
             firstCall = false;
@@ -69,11 +73,12 @@ public class MapManager {
     private static void redrawBlocks(){
 
         int drawLeftLim = 0;
-        int drawRightLim = Maps.worldMap[currentMapNumber].maxWidth;
+        int drawRightLim = Map.maps[currentMapNumber].maxWidth;
         int drawUpLimit = 0;
-        int drawDownLimit = Maps.worldMap[currentMapNumber].maxHeight;
+        int drawDownLimit = Map.maps[currentMapNumber].groundMap.length;
 
         gc.clearRect(-graphic.theScene.getWidth(), -graphic.theScene.getHeight(), 4 * graphic.theScene.getWidth(), 4 * graphic.theScene.getHeight()); // для начанала очищаем
+        gc.fillRect(-graphic.theScene.getWidth(), -graphic.theScene.getHeight(), 4 * graphic.theScene.getWidth(), 4 * graphic.theScene.getHeight()); // для начанала очищаем
 
         Translate tr = new Translate();
         tr.setY(-currentYMove);
@@ -85,13 +90,24 @@ public class MapManager {
         currentXMove = 0;
 
         for (int i = drawUpLimit; i < drawDownLimit ; i++) {
-            for (int j = drawLeftLim; j < Maps.worldMap[currentMapNumber].groundMap[i].length ; j++) {
+            for (int j = drawLeftLim; j < Map.maps[currentMapNumber].groundMap[i].length ; j++) {
                 gc.drawImage(
-                        block.getBlock(Maps.worldMap[currentMapNumber].groundMap[i][j]),
+                        block.getBlock(Map.maps[currentMapNumber].groundMap[i][j]),
                         graphic.theScene.getWidth()  + j * BLOCK_SIZE + currentXPos,
                         graphic.theScene.getHeight() + i * BLOCK_SIZE + currentYPos
-
                 );
+                try{
+                    if(block.getBlock(Map.maps[currentMapNumber].furnitureMap[i][j]) != null){
+                        gc.drawImage(
+                            block.getFurniture(Map.maps[currentMapNumber].furnitureMap[i][j]),
+                            graphic.theScene.getWidth()  + j * BLOCK_SIZE + currentXPos,
+                            graphic.theScene.getHeight() + i * BLOCK_SIZE + currentYPos
+                        );
+                    }
+                }catch (ArrayIndexOutOfBoundsException e){
+
+
+                }
             }
         }
     }

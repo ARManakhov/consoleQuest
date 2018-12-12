@@ -9,8 +9,8 @@ import static java.lang.Math.sqrt;
 
 public class PlayerManager {
     // размер спрайта
-    private final double PLAYER_SIZE_X = 16;        // размер игрока по x
-    private final double PLAYER_SIZE_Y = 16;        // размер игрока по y
+    private final double PLAYER_SIZE_X = 32;        // размер игрока по x
+    private final double PLAYER_SIZE_Y = 32;        // размер игрока по y
 
     //переменные необходимые для отрисовки персонажа
     private double screenXPos;
@@ -19,23 +19,23 @@ public class PlayerManager {
     private double limY1;
     private double limX2;
     private double limY2;
+    private final byte ANUMATION_FRAMES_COUNT = 3;
+    private byte curentFrameNum = 0; //текущий кадр для анимации
+
+    private static int blockSize = MapManager.getBlockSize();
 
     private double realXPos;
     private double realYPos;
 
     private long prevNanoTime;
-    private final long NANO_TIME_DELTA = 17000000;
+    private long prevAnimNanoTime;
+
+    private final long NANO_TIME_DELTA     = 17000000;
+    private final long ANIMTION_TIME_DELTA = 100000000;
+
 
     private GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
-    private Image[] playerTexture/* = {
-            new Image("./resources/characters/player/0.png"),
-            new Image("./resources/characters/player/1.png"),
-            new Image("./resources/characters/player/2.png"),
-            new Image("./resources/characters/player/3.png"),
-            new Image("./resources/characters/player/4.png"),
-            new Image("./resources/characters/player/5.png"),
-            new Image("./resources/characters/player/6.png"),
-            new Image("./resources/characters/player/7.png")}*/;
+    private Image[] playerTexture;
 
     private boolean firstCall = true;
 
@@ -44,6 +44,7 @@ public class PlayerManager {
         if(instance == null){
             instance = new PlayerManager();
             TextureGet tg = new TextureGet(new File ("./resources/characters/player/"));
+
             instance.playerTexture = tg.getTexture();
         }
         return instance;
@@ -76,41 +77,30 @@ public class PlayerManager {
         int dir=0;
 
         if(mouseY - screenYPos > 0){
-            if (angleCos > 0.92 && angleCos <= 1){
+            if (angleCos > 0.707 && angleCos <= 1){
                 dir = 0;
             }
-            if (angleCos > 0.38 && angleCos <= 0.92){
+            if (angleCos > -0.707 && angleCos <= 0.707){
                 dir = 1;
             }
-            if (angleCos > -0.38 && angleCos <= 0.38){
+            if (angleCos > -1 && angleCos <= -0.707){
                 dir = 2;
             }
-            if (angleCos > -0.92 && angleCos <= -0.38){
-                dir = 3;
-            }
-            if (angleCos > -1 && angleCos <= -0.92){
-                dir = 4;
-            }
         } else {
-            if (angleCos > 0.92 && angleCos <= 1){
+            if (angleCos > 0.707 && angleCos <= 1){
                 dir = 0;
             }
-            if (angleCos > 0.38 && angleCos <= 0.92){
-                dir = 7;
+            if (angleCos > -0.707 && angleCos <= 0.707){
+                dir = 3;
             }
-            if (angleCos > -0.38 && angleCos <= 0.38){
-                dir = 6;
-            }
-            if (angleCos > -0.92 && angleCos <= -0.38){
-                dir = 5;
-            }
-            if (angleCos > -1 && angleCos <= -0.92){
-                dir = 4;
+            if (angleCos > -1 && angleCos <= -0.707){
+                dir = 2;
             }
         }
+        //System.out.println(dir);
 
         gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
-        gc.drawImage(playerTexture[dir], screenXPos, screenYPos);
+        gc.drawImage(playerTexture[dir * ANUMATION_FRAMES_COUNT + curentFrameNum], screenXPos, screenYPos);
     }
 
     /**
@@ -125,9 +115,9 @@ public class PlayerManager {
 
         if(firstCall){
             prevNanoTime = currentNanoTime - NANO_TIME_DELTA;
-
-            realXPos =  32 * Maps.worldMap[mapNumber].spawnPosX;
-            realYPos =  32 * Maps.worldMap[mapNumber].spawnPosY;
+            prevAnimNanoTime = currentNanoTime - ANIMTION_TIME_DELTA;
+            realXPos =  blockSize * Map.maps[mapNumber].spawnPosX;
+            realYPos =  blockSize * Map.maps[mapNumber].spawnPosY;
 
             screenXPos =  graphic.theScene.getWidth()/2;
             screenYPos =  graphic.theScene.getHeight()/2;
@@ -138,40 +128,47 @@ public class PlayerManager {
         speed = speed * (currentNanoTime - prevNanoTime) / NANO_TIME_DELTA;
         prevNanoTime = currentNanoTime;
 
-        boolean canMoveLeftPrim = (Maps.worldMap[mapNumber].borderMap[(int) (realYPos)/32][(int) (realXPos - speed)/32] != 1)
-                && (Maps.worldMap[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos - speed)/32] != 1);
-        boolean canMoveRightPrim = (Maps.worldMap[mapNumber].borderMap[(int) (realYPos)/32][(int) (realXPos + speed + PLAYER_SIZE_X)/32] != 1 )
-                && (Maps.worldMap[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos + speed + PLAYER_SIZE_X)/32] != 1 );
-        boolean canMoveUpPrim = (Maps.worldMap[mapNumber].borderMap[(int) (realYPos - speed)/32][(int) realXPos/32] != 1 )
-                && (Maps.worldMap[mapNumber].borderMap[(int) (realYPos - speed)/32][(int) (realXPos+PLAYER_SIZE_X)/32] != 1 );
-        boolean canMoveDownPrim = (Maps.worldMap[mapNumber].borderMap[(int) (realYPos + speed + PLAYER_SIZE_Y)/32][(int) realXPos/32] != 1 )
-                && (Maps.worldMap[mapNumber].borderMap[(int) (realYPos + speed + PLAYER_SIZE_Y)/32][(int) (realXPos+PLAYER_SIZE_X)/32] != 1 );
+
+        boolean canMoveLeftPrim = (Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) (realXPos - speed)/ blockSize] != 1)
+                && (Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) (realXPos - speed)/ blockSize] != 1);
+        boolean canMoveRightPrim = (Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) (realXPos + speed + PLAYER_SIZE_X)/ blockSize] != 1 )
+                && (Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) (realXPos + speed + PLAYER_SIZE_X)/ blockSize] != 1 );
+        boolean canMoveUpPrim = (Map.maps[mapNumber].borderMap[(int) (realYPos - speed)/ blockSize][(int) realXPos/ blockSize] != 1 )
+                && (Map.maps[mapNumber].borderMap[(int) (realYPos - speed)/ blockSize][(int) (realXPos+PLAYER_SIZE_X)/ blockSize] != 1 );
+        boolean canMoveDownPrim = (Map.maps[mapNumber].borderMap[(int) (realYPos + speed + PLAYER_SIZE_Y)/ blockSize][(int) realXPos/ blockSize] != 1 )
+                && (Map.maps[mapNumber].borderMap[(int) (realYPos + speed + PLAYER_SIZE_Y)/ blockSize][(int) (realXPos+PLAYER_SIZE_X)/ blockSize] != 1 );
 
 
-        boolean canMoveLeftSec = ((Maps.worldMap[mapNumber].borderMap[(int) (realYPos)/32][(int) (realXPos)/32] != 1)
-                && (Maps.worldMap[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos )/32] != 1));
-        boolean canMoveRightSec = ((Maps.worldMap[mapNumber].borderMap[(int) (realYPos)/32][(int) (realXPos + PLAYER_SIZE_X)/32] != 1 )
-                && (Maps.worldMap[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos  + PLAYER_SIZE_X)/32] != 1 ));
-        boolean canMoveUpSec = ((Maps.worldMap[mapNumber].borderMap[(int) (realYPos)/32][(int) realXPos/32] != 1 )
-                && (Maps.worldMap[mapNumber].borderMap[(int) (realYPos)/32][(int) (realXPos+PLAYER_SIZE_X)/32] != 1 ));
-        boolean canMoveDownSec = ((Maps.worldMap[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) realXPos/32] != 1 )
-                && (Maps.worldMap[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/32][(int) (realXPos+PLAYER_SIZE_X)/32] != 1 ));
+
+        boolean canMoveLeftSec = ((Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) (realXPos)/ blockSize] != 1)
+                && (Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) (realXPos )/ blockSize] != 1));
+        boolean canMoveRightSec = ((Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) (realXPos + PLAYER_SIZE_X)/ blockSize] != 1 )
+                && (Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) (realXPos  + PLAYER_SIZE_X)/ blockSize] != 1 ));
+        boolean canMoveUpSec = ((Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) realXPos/ blockSize] != 1 )
+                && (Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) (realXPos+PLAYER_SIZE_X)/ blockSize] != 1 ));
+        boolean canMoveDownSec = ((Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) realXPos/ blockSize] != 1 )
+                && (Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) (realXPos+PLAYER_SIZE_X)/ blockSize] != 1 ));
 
         if(((KeyManager.pressedButt("LEFT") && canMoveLeftPrim) && ((KeyManager.pressedButt("UP") && canMoveUpPrim) || (KeyManager.pressedButt("DOWN") && canMoveDownPrim))) ||
                 ((KeyManager.pressedButt("RIGHT") && canMoveRightPrim) && ((KeyManager.pressedButt("UP") && canMoveUpPrim) || (KeyManager.pressedButt("DOWN") && canMoveDownPrim)))
         ){
             speed = speed * 0.707;              //при двух нажатих кнопках скорость по осям умножаем на cos 45 градусов
-        }//todo учитывать барьеры
+        }
 
 
+        boolean movedL = false;
+        boolean movedR = false;
+        boolean movedU = false;
+        boolean movedD = false;
 
         if(KeyManager.pressedButt("LEFT")){
-            double move = 0;
+            movedL = true;
 
+            double move = 0;
             if (canMoveLeftPrim){
                 move = speed;
             } else if(canMoveLeftSec){
-                move = realXPos % 32;
+                move = realXPos % blockSize;
             }
 
             if (screenXPos > limX1) {
@@ -184,12 +181,15 @@ public class PlayerManager {
 
 
         if (KeyManager.pressedButt("RIGHT")){
+            movedR = true;
+
+
             double move = 0;
 
             if(canMoveRightPrim){
                 move = speed;
             } else if(canMoveRightSec){
-                move = PLAYER_SIZE_X - realXPos % 32 - 1;
+                move = PLAYER_SIZE_X - realXPos % blockSize - 1;
             }
 
             if (screenXPos < limX2 ) {
@@ -202,13 +202,16 @@ public class PlayerManager {
 
 
         if(KeyManager.pressedButt("UP")){
+            movedU = true;
+
+
             double move = 0;
 
             if(canMoveUpPrim) {
                 move = speed;
             }else if(canMoveUpSec) {
 
-                move = realYPos % 32;
+                move = realYPos % blockSize;
             }
 
             if (screenYPos > limY1 ) {
@@ -220,13 +223,16 @@ public class PlayerManager {
         }
 
         if(KeyManager.pressedButt("DOWN")){
+
+            movedD = true;
+
             double move = 0;
 
             if(canMoveDownPrim){
                 move = speed;
             }else if(canMoveDownSec){
 
-                move = PLAYER_SIZE_Y - realYPos % 32 - 1;
+                move = PLAYER_SIZE_Y - realYPos % blockSize - 1;
             }
 
             if (screenYPos < limY2) {
@@ -237,9 +243,22 @@ public class PlayerManager {
             realYPos+=move;
         }
 
-        if(Maps.worldMap[mapNumber].teleportMap[(int) (realYPos)/32][(int) (realXPos)/32] != 0){
+        if ( movedD || movedL || movedR || movedU ){
+            if( currentNanoTime - prevAnimNanoTime > ANIMTION_TIME_DELTA ){
+                prevAnimNanoTime = currentNanoTime;
+                if(curentFrameNum != ANUMATION_FRAMES_COUNT - 1){
+                    curentFrameNum++;
+                } else{
+                    curentFrameNum=0;
+                }
+            }
+        } else {
+            curentFrameNum = 1;
+        }
 
-            graphic.currentMapNumber = Maps.worldMap[mapNumber].teleportMap[(int) (realYPos)/32][(int) (realXPos)/32];
+        if(Map.maps[mapNumber].teleportMap[(int) (realYPos)/ blockSize][(int) (realXPos)/ blockSize] != 0){
+
+            graphic.currentMapNumber = Map.maps[mapNumber].teleportMap[(int) (realYPos)/ blockSize][(int) (realXPos)/ blockSize];
             firstCall = true;
             MapManager.setAsFirstCall();
         }

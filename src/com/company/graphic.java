@@ -9,7 +9,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 
 public class graphic extends Application {
@@ -93,7 +92,7 @@ public class graphic extends Application {
                 if(mode == 2){
                     MapManager.serDrawFromAngle(true);
                     MapManager.draw(currentNanoTime, currentMapNumber);
-                    mapEditor.draw(currentNanoTime,currentMapNumber);
+                    MapEditor.draw(currentNanoTime,currentMapNumber);
                 }
             }
         }.start();
