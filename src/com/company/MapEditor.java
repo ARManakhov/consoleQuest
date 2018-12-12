@@ -9,8 +9,11 @@ import java.io.FileNotFoundException;
 
 public class MapEditor {
     private static boolean firstCall = true;
-    private static int pointerPosX = 1;
+    private static int pointerPosX = 0;
     private static int pointerPosY = 0;
+
+    private static int mapPosX = 0;
+    private static int mapPosY = 0;
 
     private static long prevNanoTime0;
     private static long prevNanoTime1;
@@ -78,13 +81,13 @@ public class MapEditor {
         gc.clearRect(0,0,graphic.playerLayer.getWidth(),graphic.playerLayer.getHeight());
 
         try {
-            if(Map.maps[currentMap].borderMap[pointerPosY][pointerPosX] == 1) {
+            if(Map.maps[currentMap].borderMap[pointerPosY + mapPosY][pointerPosX + mapPosX] == 1) {
                 pointerNum = 1;
             }
-            if(Map.maps[currentMap].enemyMap[pointerPosY][pointerPosX] == 1) {
+            if(Map.maps[currentMap].enemyMap[pointerPosY + mapPosY][pointerPosX + mapPosX] == 1) {
                 pointerNum = 2;
             }
-            if(Map.maps[currentMap].borderMap[pointerPosY][pointerPosX] == 1 && Map.maps[currentMap].enemyMap[pointerPosY][pointerPosX] == 1) {
+            if(Map.maps[currentMap].borderMap[pointerPosY + mapPosY][pointerPosX + mapPosX] == 1 && Map.maps[currentMap].enemyMap[pointerPosY][pointerPosX + mapPosX] == 1) {
                 pointerNum = 3;
             }
         } catch (ArrayIndexOutOfBoundsException e){
@@ -113,23 +116,53 @@ public class MapEditor {
     }
 
     private static  void pointerMove(long currentNanoTime,int currentMap){
+
         boolean resetTime0 = false;
-        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) && KeyManager.getActiveKeyHash().contains(UP_BUT)){
+        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) && KeyManager.getActiveKeyHash().contains(UP_BUT) && ((pointerPosY +1)*32>0)){
             pointerPosY--;
             resetTime0 = true;
         }
-        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(DOWN_BUT) && !KeyManager.getActiveKeyHash().contains(HOT_BUT)){
+        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) && KeyManager.getActiveKeyHash().contains(UP_BUT) && !((pointerPosY +1)*32>0)){
+            MapManager.moveMap(-32,"V");
+            mapPosY--;
+            resetTime0 = true;
+        }
+
+
+        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(DOWN_BUT) && !KeyManager.getActiveKeyHash().contains(HOT_BUT) && ((pointerPosY + 1)*32 < graphic.theScene.getHeight())){
             pointerPosY++;
             resetTime0 = true;
         }
-        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(LEFT_BUT)){
+
+        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(DOWN_BUT) && !KeyManager.getActiveKeyHash().contains(HOT_BUT) && !((pointerPosY + 1)*32 < graphic.theScene.getHeight())){
+            MapManager.moveMap(+32,"V");
+            mapPosY++;
+            resetTime0 = true;
+        }
+
+
+        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(LEFT_BUT) && ((pointerPosX+1)*32 > 0)){     //передвижение курсора влево: сам курсор
             pointerPosX--;
             resetTime0 = true;
         }
-        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(RIGHT_BUT)){
+
+        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(LEFT_BUT) && ((pointerPosX)*32 <= 0 )){     //передвижение курсра влево: мапа
+            MapManager.moveMap(32,"H");
+            mapPosX--;
+            resetTime0 = true;
+        }
+
+        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(RIGHT_BUT) && ((pointerPosX + 1)*32 < graphic.theScene.getWidth())){      //передвижение курсра вправо: сам куроср
             pointerPosX++;
             resetTime0 = true;
         }
+
+        if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(RIGHT_BUT) && !((pointerPosX + 1)*32 < graphic.theScene.getWidth())){     //передвижение курсра вправо: мапа
+            MapManager.moveMap(-32,"H");
+            mapPosX++;
+            resetTime0 = true;
+        }
+
         if(resetTime0){
             prevNanoTime0 = currentNanoTime;
         }
@@ -139,20 +172,20 @@ public class MapEditor {
                    KeyManager.getActiveKeyHash().contains(CLEAN_FURNITURE_TEXTURE_BUT) || KeyManager.getActiveKeyHash().contains(CLEAN_GROUND_TEXTURE_BUT) ||
                    KeyManager.getActiveKeyHash().contains(BORDER_STATE_CHANGE_BUT) || KeyManager.getActiveKeyHash().contains(SPAWN_STATE_CHANGE_BUT)) {
 
-               Map.maps[currentMap].groundMap = byteArrExtender(pointerPosX,pointerPosY,Map.maps[currentMap].groundMap);
-               Map.maps[currentMap].furnitureMap = byteArrExtender(pointerPosX,pointerPosY,Map.maps[currentMap].furnitureMap);
-               Map.maps[currentMap].enemyMap = byteArrExtender(pointerPosX,pointerPosY,Map.maps[currentMap].enemyMap);
-               Map.maps[currentMap].borderMap = byteArrExtender(pointerPosX,pointerPosY,Map.maps[currentMap].borderMap);
-               Map.maps[currentMap].teleportMap = byteArrExtender(pointerPosX,pointerPosY,Map.maps[currentMap].teleportMap);
+               Map.maps[currentMap].groundMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY  + mapPosY,Map.maps[currentMap].groundMap);
+               Map.maps[currentMap].furnitureMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY  + mapPosY,Map.maps[currentMap].furnitureMap);
+               Map.maps[currentMap].enemyMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY + mapPosY,Map.maps[currentMap].enemyMap);
+               Map.maps[currentMap].borderMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY + mapPosY,Map.maps[currentMap].borderMap);
+               Map.maps[currentMap].teleportMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY + mapPosY,Map.maps[currentMap].teleportMap);
            }            //todo расширение массива
 
 
         boolean resetTime5 = false;
         if ((currentNanoTime > POINTER_WAIT_TIME_5 + prevNanoTime5) && KeyManager.getActiveKeyHash().contains(BORDER_STATE_CHANGE_BUT)){
-            if(Map.maps[currentMap].borderMap[pointerPosY][pointerPosX] == 0){
-                Map.maps[currentMap].borderMap[pointerPosY][pointerPosX] = 1;
+            if(Map.maps[currentMap].borderMap[pointerPosY + mapPosY][pointerPosX + mapPosX] == 0){
+                Map.maps[currentMap].borderMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = 1;
             } else{
-                Map.maps[currentMap].borderMap[pointerPosY][pointerPosX] = 0;
+                Map.maps[currentMap].borderMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = 0;
             }
             resetTime5 = true;
         }
@@ -162,10 +195,10 @@ public class MapEditor {
 
         boolean resetTime6 = false;
         if ((currentNanoTime > POINTER_WAIT_TIME_6 + prevNanoTime6) && KeyManager.getActiveKeyHash().contains(SPAWN_STATE_CHANGE_BUT)){
-            if(Map.maps[currentMap].enemyMap[pointerPosY][pointerPosX] == 0){
-                Map.maps[currentMap].enemyMap[pointerPosY][pointerPosX] = 1;
+            if(Map.maps[currentMap].enemyMap[pointerPosY + mapPosY][pointerPosX + mapPosX] == 0){
+                Map.maps[currentMap].enemyMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = 1;
             } else{
-                Map.maps[currentMap].enemyMap[pointerPosY][pointerPosX] = 0;
+                Map.maps[currentMap].enemyMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = 0;
             }
             resetTime6 = true;
         }
@@ -175,19 +208,19 @@ public class MapEditor {
 
         boolean resetTime1 = false;
         if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(PREV_GROUND_TEXTURE_BUT) && !KeyManager.getActiveKeyHash().contains(HOT_BUT)){
-            if(Map.maps[currentMap].groundMap[pointerPosY][pointerPosX] != 0 ){
-                Map.maps[currentMap].groundMap[pointerPosY][pointerPosX]--;
+            if(Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX] != 0 ){
+                Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX]--;
             }else{
-                Map.maps[currentMap].groundMap[pointerPosY][pointerPosX] = (byte) (Block.getInstance().getBlockArrSize() - 1);
+                Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = (byte) (Block.getInstance().getBlockArrSize() - 1);
             }
             resetTime1 = true;
         }
 
         if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(NEXT_GROUND_TEXTURE_BUT) && !KeyManager.getActiveKeyHash().contains(HOT_BUT)){
-            if(Map.maps[currentMap].groundMap[pointerPosY][pointerPosX] != (Block.getInstance().getBlockArrSize()-1) ){
-                Map.maps[currentMap].groundMap[pointerPosY][pointerPosX]++;
+            if(Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX] != (Block.getInstance().getBlockArrSize()-1) ){
+                Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX]++;
             }else{
-                Map.maps[currentMap].groundMap[pointerPosY][pointerPosX] = 0;
+                Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = 0;
             }
             resetTime1 = true;
         }
@@ -210,26 +243,26 @@ public class MapEditor {
 
         boolean resetTime4 = false;
         if ((currentNanoTime > POINTER_WAIT_TIME_4 + prevNanoTime4) &&  KeyManager.getActiveKeyHash().contains(NEXT_FURNITURE_TEXTURE_BUT)){
-            if(Map.maps[currentMap].furnitureMap[pointerPosY][pointerPosX] != 0 ){
-                Map.maps[currentMap].furnitureMap[pointerPosY][pointerPosX]--;
+            if(Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] != 0 ){
+                Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX]--;
             }else{
-                Map.maps[currentMap].furnitureMap[pointerPosY][pointerPosX] = (byte) (Block.getInstance().getBlockArrSize() - 1);
+                Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = (byte) (Block.getInstance().getBlockArrSize() - 1);
             }
             resetTime4 = true;
 
         }
 
         if ((currentNanoTime > POINTER_WAIT_TIME_4 + prevNanoTime4) &&  KeyManager.getActiveKeyHash().contains(PREV_FURNITURE_TEXTURE_BUT)){
-            if(Map.maps[currentMap].furnitureMap[pointerPosY][pointerPosX] != (Block.getInstance().getBlockArrSize()-1) ){
-                Map.maps[currentMap].furnitureMap[pointerPosY][pointerPosX]++;
+            if(Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] != (Block.getInstance().getBlockArrSize()-1) ){
+                Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX]++;
             }else{
-                Map.maps[currentMap].furnitureMap[pointerPosY][pointerPosX] = 0;
+                Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX] = 0;
             }
             resetTime4 = true;
 
         }
         if ((currentNanoTime > POINTER_WAIT_TIME_4 + prevNanoTime4) &&  KeyManager.getActiveKeyHash().contains(CLEAN_FURNITURE_TEXTURE_BUT)){
-            Map.maps[currentMap].furnitureMap[pointerPosY][pointerPosX] = 0;
+            Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = 0;
             resetTime4 = true;
 
         }
