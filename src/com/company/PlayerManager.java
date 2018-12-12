@@ -9,8 +9,8 @@ import static java.lang.Math.sqrt;
 
 public class PlayerManager {
     // размер спрайта
-    private final double PLAYER_SIZE_X = 32;        // размер игрока по x
-    private final double PLAYER_SIZE_Y = 32;        // размер игрока по y
+    private final double PLAYER_SIZE_X = 28;        // размер игрока по x
+    private final double PLAYER_SIZE_Y = 28;        // размер игрока по y
 
     //переменные необходимые для отрисовки персонажа
     private double screenXPos;
@@ -100,7 +100,7 @@ public class PlayerManager {
         //System.out.println(dir);
 
         gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
-        gc.drawImage(playerTexture[dir * ANUMATION_FRAMES_COUNT + curentFrameNum], screenXPos, screenYPos);
+        gc.drawImage(playerTexture[dir * ANUMATION_FRAMES_COUNT + curentFrameNum], screenXPos-2, screenYPos-2);
     }
 
     /**
@@ -167,9 +167,9 @@ public class PlayerManager {
             double move = 0;
             if (canMoveLeftPrim){
                 move = speed;
-            } else if(canMoveLeftSec){
+            } /*else if(canMoveLeftSec){
                 move = realXPos % blockSize;
-            }
+            }*/
 
             if (screenXPos > limX1) {
                 screenXPos-=move;
@@ -188,9 +188,9 @@ public class PlayerManager {
 
             if(canMoveRightPrim){
                 move = speed;
-            } else if(canMoveRightSec){
+            }/* else if(canMoveRightSec){
                 move = PLAYER_SIZE_X - realXPos % blockSize - 1;
-            }
+            }*/
 
             if (screenXPos < limX2 ) {
                 screenXPos+=move;
@@ -209,10 +209,9 @@ public class PlayerManager {
 
             if(canMoveUpPrim) {
                 move = speed;
-            }else if(canMoveUpSec) {
-
+            }/*else if(canMoveUpSec) {
                 move = realYPos % blockSize;
-            }
+            }*/
 
             if (screenYPos > limY1 ) {
                 screenYPos-=move;
@@ -230,10 +229,9 @@ public class PlayerManager {
 
             if(canMoveDownPrim){
                 move = speed;
-            }else if(canMoveDownSec){
-
+            }/*else if(canMoveDownSec){
                 move = PLAYER_SIZE_Y - realYPos % blockSize - 1;
-            }
+            }*/
 
             if (screenYPos < limY2) {
                 screenYPos+=move;
