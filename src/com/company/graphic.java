@@ -98,7 +98,7 @@ public class graphic extends Application {
                     //((Enemy) enemyb).EnemyAttack();
                     //System.out.println("Player_hp = " + player.getHp());
                     //System.out.println("Enemy_hp = " + enemyb.getHp());
-                   System.out.println(enemyb.getRealXPos()+", "+enemyb.getRealYPos());
+                   //System.out.println(enemyb.getRealXPos()+", "+enemyb.getRealYPos());
                 }
             }
         }.start();
