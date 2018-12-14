@@ -19,7 +19,7 @@ public class PlayerManager {
     private static double realYPos;
 
     private static GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
-    private static Image playerTexture = new Image("resources/characters/player/spruce_sapling.png");
+    private static Image playerTexture = new Image("resources/characters/player/miku.png");
 
     private static boolean firstCall = true;
 

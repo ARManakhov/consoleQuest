@@ -60,10 +60,12 @@ public class MainMenu implements IMenu {// todo еще больше поменя
 
     //прошлое время нажатия на кнопку (нужен для корректного переключения кнопок с клавиатуры)
     private static long prevTime;
+    private static long prevTimeChose;
 
     // ...
     private static GraphicsContext gc = graphic.interfaceLayer.getGraphicsContext2D();
 
+    private static boolean firstCall = true;
 
     /**
      * метод отрисовывающий главное меню
@@ -73,6 +75,13 @@ public class MainMenu implements IMenu {// todo еще больше поменя
 
     @Override
     public void drawMenu(long currentNanoTime) {
+
+        if (firstCall){
+            prevTimeChose = currentNanoTime;
+            firstCall = false;
+            System.out.println("Робит");
+        }
+
 
         //задержка с помощью счетчика, чтобы кнопки переключались корректно (не с сумасшедшей скоростью)
         if (currentNanoTime - prevTime >= 100000000) {
@@ -142,17 +151,27 @@ public class MainMenu implements IMenu {// todo еще больше поменя
             gc.setFont(theFont1);
 
             // пишем названия кнопок
-            gc.fillText(A, butt0PosX - (BUTT_WIDTH - A_FONT_SIZE * A.length()) / 4 + 35, butt0PosY + A_FONT_SIZE - 1);
+            gc.fillText(A, butt0PosX - (BUTT_WIDTH - A_FONT_SIZE * A.length()) / 4 + 45, butt0PosY + A_FONT_SIZE - 1);
             gc.fillText(B, butt0PosX + (BUTT_WIDTH - B_FONT_SIZE * B.length()) / 2 + 25, butt0PosY + BUTT_HEIGHT + buttMove + A_FONT_SIZE - 1);
             gc.fillText(C, butt0PosX - (BUTT_WIDTH - C_FONT_SIZE * C.length()) / 4 + 25, butt0PosY + 2 * (BUTT_HEIGHT + buttMove) + A_FONT_SIZE - 1);
 
             // выбор кнопок
-            if (KeyManager.pressedButt("CHOSE")) {
-                if (chosenButt == 0) graphic.mode = 1;
-                if (chosenButt == 1) graphic.mode = 2;
-                if (chosenButt == 2) graphic.mode = 11;
+            if (KeyManager.pressedButt("CHOSE") && prevTimeChose + 100000000 < currentNanoTime) {
+                if (chosenButt == 0) {
+                    firstCall = true;
+                    graphic.mode = 1;
+                }
+                if (chosenButt == 1) {
+                    firstCall = true;
+                    graphic.mode = 2;
+                    SettingMenu.setReturnMode(0);
+                }
+                if (chosenButt == 2){
+                    firstCall = true;
+                    graphic.mode = 11;
+                }
             }
         }
-
     }
-}
+    }
+

@@ -23,7 +23,7 @@ public class MenuEscManager implements IMenu {
     private static final String B = "Настройки";                           //надпись
     private static final int B_FONT_SIZE = 17;                            //размер текста
 
-    private static final String C = "Выйти из игры";                           //надпись
+    private static final String C = "В главное меню";                           //надпись
     private static final int C_FONT_SIZE = 17;                            //размер текста
 
     //размеры кнопок
@@ -128,13 +128,16 @@ public class MenuEscManager implements IMenu {
             // пишем названия кнопок
             gc.fillText(A, butt0PosX - (BUTT_WIDTH - A_FONT_SIZE * A.length()) / 2, butt0PosY + A_FONT_SIZE - 1);
             gc.fillText(B, butt0PosX + 1.1 * (BUTT_WIDTH - B_FONT_SIZE * B.length()) / 2 + 25, butt0PosY + BUTT_HEIGHT + buttMove + A_FONT_SIZE - 1);
-            gc.fillText(C, butt0PosX - (BUTT_WIDTH - C_FONT_SIZE * C.length()) / 2 + 25, butt0PosY + 2 * (BUTT_HEIGHT + buttMove) + A_FONT_SIZE - 1);
+            gc.fillText(C, butt0PosX - (BUTT_WIDTH - C_FONT_SIZE * C.length()) / 2 + 20, butt0PosY + 2 * (BUTT_HEIGHT + buttMove) + A_FONT_SIZE - 1);
 
             // выбор кнопок
             if (KeyManager.pressedButt("CHOSE")) {
                 if (chosButt == 0) graphic.mode = 1;
-                if (chosButt == 1) graphic.mode = 2;
-                if (chosButt == 2) graphic.mode = 11;
+                if (chosButt == 1) {
+                    SettingMenu.setReturnMode(1);
+                    graphic.mode = 2;
+                }
+                if (chosButt == 2) graphic.mode = 0;
             }
         }
     }

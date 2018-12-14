@@ -7,7 +7,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 
@@ -39,6 +38,12 @@ public class graphic extends Application {
     public static byte mode = 0;
 
     private static boolean first = true;
+
+    MenuEscManager mem = new MenuEscManager();
+    SettingMenu sm = new SettingMenu();
+    MainMenu mm = new MainMenu();
+
+
 
     /**
      * игровая петля
@@ -72,9 +77,6 @@ public class graphic extends Application {
          */
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
-                MenuEscManager mem = new MenuEscManager();
-                SettingManager sm = new SettingManager();
-                MainMenu mm = new MainMenu();
 
                 // кнопки обновляются Айнуром
                 canvasSizeUpdate();
@@ -90,42 +92,12 @@ public class graphic extends Application {
                 if (mode == 2) {
                     sm.drawMenu(currentNanoTime);
                 }
-                if (mode == 3) {
-                }
-                if (mode == 4) {
-                }
-                if (mode == 5) {
-                    if (KeyManager.saveButt("UP")) {
-                        mode = 2;
-                    }
-                }
-                if (mode == 6) {
-                    if (KeyManager.saveButt("DOWN")) {
-                        mode = 2;
-                    }
-                }
-                if (mode == 7) {
-                    if (KeyManager.saveButt("RIGHT")) {
-                        mode = 2;
-                    }
-                }
-                if (mode == 8) {
-                    if (KeyManager.saveButt("LEFT")) {
-                        mode = 2;
-                    }
-                }
-                if (mode == 9) {
-                    if (KeyManager.saveButt("CHOSE")) {
-                        mode = 2;
-                    }
-                }
                 if (mode == 10) {
                     mem.drawMenu(currentNanoTime);
                 }
                 if (mode == 11) {
                     Platform.exit();
                 }
-                System.out.println(mode);
             }
         }.start();
 
