@@ -13,7 +13,7 @@ public class Player extends Character {
     private static final int DEFAULT_EXP = 0;              // начальный уровень опыта
     private static final double DEFAULT_SPEED  = 2.5;      // начальная скорость
 
-                                                    // далее описаны константы изменений игрока при увеличении уровня
+    // далее описаны константы изменений игрока при увеличении уровня
     private static final int DEFAULT_DAMAGE_RAISE = 2;     // увеличение урона
     private static final int DEFAULT_HP_RISE = 2;          // увеличение здоровья
 

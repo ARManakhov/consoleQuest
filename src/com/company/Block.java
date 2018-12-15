@@ -13,7 +13,7 @@ public class Block {
     private File folder = new File("./resources/blocks");
 
     private static Image[] blockTexture;
-    private static Image[] furnirureTexture;
+    private static Image[] furnitureTexture;
 
 
     public Image getBlock(int i){
@@ -21,7 +21,7 @@ public class Block {
     }
 
     public Image getFurniture(int i){
-        return furnirureTexture[i];
+        return furnitureTexture[i];
     }
 
     public Image[] getBlock(){
@@ -30,6 +30,9 @@ public class Block {
 
     public byte getBlockArrSize(){
         return (byte) blockTexture.length;
+    }
+    public byte getFurnitureArrSize(){
+        return (byte) furnitureTexture.length;
     }
 
 
@@ -47,7 +50,7 @@ public class Block {
             blockTexture = tg.getTexture();
 
             tg = new TextureGet(new File ("./resources/furniture/"));
-            furnirureTexture = tg.getTexture();
+            furnitureTexture = tg.getTexture();
 
         }
         return instance;

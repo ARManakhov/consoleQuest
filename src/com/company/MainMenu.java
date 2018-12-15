@@ -17,7 +17,7 @@ public class MainMenu {// todo еще больше поменять !
     private static final Image LOGO_IMG = new Image( "/resources/menu/logo.png");               //логотип
     private static final Image BACKGROUND_IMG = new Image( "/resources/menu/background.png");   //задник меню
 
-    private static final String VERSION = "Ver: 0.3";                           //версия игры в main menu
+    private static final String VERSION = "Ver: 0.7";                           //версия игры в main menu
     private static final String VERSION_FONT_NAME = "Arial";                    //задаем константы для шрифта для надписи версия
     private static final int VERSION_FONT_SIZE = 25;                            //размер текста
     private static final FontWeight FONT_WEIGHT = FontWeight.BOLD;              //название шрифта

@@ -16,7 +16,7 @@ public class MapSaver {
         return instance;
     }
 
-    public void saveMap(Map map, File file){
+    public void save(Map map, File file){
         try {
             pw = new PrintWriter(file);
             writeInt(map.spawnPosX, file);

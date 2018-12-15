@@ -22,6 +22,8 @@ public class MapEditor {
     private static long prevNanoTime4;
     private static long prevNanoTime5;
     private static long prevNanoTime6;
+    private static long prevNanoTime7;
+    private static long prevNanoTime8;
 
 
     private static final long POINTER_WAIT_TIME_0 = 100000000;
@@ -31,7 +33,8 @@ public class MapEditor {
     private static final long POINTER_WAIT_TIME_4 = 100000000;
     private static final long POINTER_WAIT_TIME_5 = 100000000;
     private static final long POINTER_WAIT_TIME_6 = 100000000;
-
+    private static final long POINTER_WAIT_TIME_7 = 100000000;
+    private static final long POINTER_WAIT_TIME_8 = 100000000;
 
 
     private static GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
@@ -52,25 +55,36 @@ public class MapEditor {
     private static final String BORDER_STATE_CHANGE_BUT = "B";
     private static final String SPAWN_STATE_CHANGE_BUT = "N";
 
+    private static final String VIEW_BORDER_MASK_BUT = "I";
+    private static final String VIEW_SPAWN_MASK_BUT = "L";
+
 
     private static final String HOT_BUT = "CONTROL";
     private static final String SAVE_BUT = "S";
 
     private static final String NEXT_MAP_BUT = "X";
     private static final String PREV_MAP_BUT = "Z";
+    private static final byte mode = 2; // 1 с клавы , 2 с мыши
 
+    private static byte blockSelected = 0;
+    private static byte furnitureSelected = 0;
+    private static boolean placeBlock = true;
 
-
-
-
-
-
-
+    private static int prevMouseX = 0;
+    private static int prevMouseY = 0;
 
     public static void draw(long currentNanoTime,int currentMap)  {
         if(firstCall){
             prevNanoTime0 = currentNanoTime;
-            prevNanoTime1=currentNanoTime;
+            prevNanoTime1 = currentNanoTime;
+            prevNanoTime2 = currentNanoTime;
+            prevNanoTime3 = currentNanoTime;
+            prevNanoTime4 = currentNanoTime;
+            prevNanoTime5 = currentNanoTime;
+            prevNanoTime6 = currentNanoTime;
+            prevNanoTime7 = currentNanoTime;
+            prevNanoTime8 = currentNanoTime;
+
             firstCall = false;
         }
 
@@ -95,6 +109,12 @@ public class MapEditor {
         }
 
         try {
+            if(placeBlock){
+                gc.drawImage(Block.getInstance().getBlock(blockSelected),pointerPosX*32,pointerPosY*32);
+            } else{
+                gc.drawImage(Block.getInstance().getFurniture(furnitureSelected),pointerPosX*32,pointerPosY*32);
+            }
+
             if(pointerNum == 0){
                 gc.drawImage(new Image(new FileInputStream( new File("./resources/editor/p0.png"))),pointerPosX*32,pointerPosY*32);
             }
@@ -114,8 +134,20 @@ public class MapEditor {
 
 
     }
+    
+    private static void keyboardControl(long currentNanoTime, int currentMap){
+        if (KeyManager.getActiveKeyHash().contains(PREV_GROUND_TEXTURE_BUT ) || KeyManager.getActiveKeyHash().contains(NEXT_GROUND_TEXTURE_BUT) ||
+                KeyManager.getActiveKeyHash().contains(NEXT_FURNITURE_TEXTURE_BUT) || KeyManager.getActiveKeyHash().contains(PREV_FURNITURE_TEXTURE_BUT ) ||
+                KeyManager.getActiveKeyHash().contains(CLEAN_FURNITURE_TEXTURE_BUT) || KeyManager.getActiveKeyHash().contains(CLEAN_GROUND_TEXTURE_BUT) ||
+                KeyManager.getActiveKeyHash().contains(BORDER_STATE_CHANGE_BUT) || KeyManager.getActiveKeyHash().contains(SPAWN_STATE_CHANGE_BUT)) {
 
-    private static  void pointerMove(long currentNanoTime,int currentMap){
+            Map.maps[currentMap].groundMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY  + mapPosY,Map.maps[currentMap].groundMap);
+            Map.maps[currentMap].furnitureMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY  + mapPosY,Map.maps[currentMap].furnitureMap);
+            Map.maps[currentMap].enemyMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY + mapPosY,Map.maps[currentMap].enemyMap);
+            Map.maps[currentMap].borderMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY + mapPosY,Map.maps[currentMap].borderMap);
+            Map.maps[currentMap].teleportMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY + mapPosY,Map.maps[currentMap].teleportMap);
+        }            //проверка размера массива и при необходимости его увелчение
+
 
         boolean resetTime0 = false;
         if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) && KeyManager.getActiveKeyHash().contains(UP_BUT) && ((pointerPosY +1)*32>0)){
@@ -167,19 +199,6 @@ public class MapEditor {
             prevNanoTime0 = currentNanoTime;
         }
 
-           if (KeyManager.getActiveKeyHash().contains(PREV_GROUND_TEXTURE_BUT ) || KeyManager.getActiveKeyHash().contains(NEXT_GROUND_TEXTURE_BUT) ||
-                   KeyManager.getActiveKeyHash().contains(NEXT_FURNITURE_TEXTURE_BUT) || KeyManager.getActiveKeyHash().contains(PREV_FURNITURE_TEXTURE_BUT ) ||
-                   KeyManager.getActiveKeyHash().contains(CLEAN_FURNITURE_TEXTURE_BUT) || KeyManager.getActiveKeyHash().contains(CLEAN_GROUND_TEXTURE_BUT) ||
-                   KeyManager.getActiveKeyHash().contains(BORDER_STATE_CHANGE_BUT) || KeyManager.getActiveKeyHash().contains(SPAWN_STATE_CHANGE_BUT)) {
-
-               Map.maps[currentMap].groundMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY  + mapPosY,Map.maps[currentMap].groundMap);
-               Map.maps[currentMap].furnitureMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY  + mapPosY,Map.maps[currentMap].furnitureMap);
-               Map.maps[currentMap].enemyMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY + mapPosY,Map.maps[currentMap].enemyMap);
-               Map.maps[currentMap].borderMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY + mapPosY,Map.maps[currentMap].borderMap);
-               Map.maps[currentMap].teleportMap = byteArrExtender(pointerPosX + mapPosX,pointerPosY + mapPosY,Map.maps[currentMap].teleportMap);
-           }            //todo расширение массива
-
-
         boolean resetTime5 = false;
         if ((currentNanoTime > POINTER_WAIT_TIME_5 + prevNanoTime5) && KeyManager.getActiveKeyHash().contains(BORDER_STATE_CHANGE_BUT)){
             if(Map.maps[currentMap].borderMap[pointerPosY + mapPosY][pointerPosX + mapPosX] == 0){
@@ -190,6 +209,7 @@ public class MapEditor {
             resetTime5 = true;
         }
         if(resetTime5){
+            MapManager.setNeedRedraw();
             prevNanoTime5 = currentNanoTime;
         }
 
@@ -203,11 +223,12 @@ public class MapEditor {
             resetTime6 = true;
         }
         if(resetTime6){
+            MapManager.setNeedRedraw();
             prevNanoTime6 = currentNanoTime;
         }
 
         boolean resetTime1 = false;
-        if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(PREV_GROUND_TEXTURE_BUT) && !KeyManager.getActiveKeyHash().contains(HOT_BUT)){
+        if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(PREV_GROUND_TEXTURE_BUT)){
             if(Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX] != 0 ){
                 Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX]--;
             }else{
@@ -216,7 +237,7 @@ public class MapEditor {
             resetTime1 = true;
         }
 
-        if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(NEXT_GROUND_TEXTURE_BUT) && !KeyManager.getActiveKeyHash().contains(HOT_BUT)){
+        if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(NEXT_GROUND_TEXTURE_BUT)){
             if(Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX] != (Block.getInstance().getBlockArrSize()-1) ){
                 Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX]++;
             }else{
@@ -225,13 +246,8 @@ public class MapEditor {
             resetTime1 = true;
         }
 
-        if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(PREV_GROUND_TEXTURE_BUT) && KeyManager.getActiveKeyHash().contains(HOT_BUT)){
-
-            resetTime1 = true;
-        }
-
-        if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(NEXT_GROUND_TEXTURE_BUT) && KeyManager.getActiveKeyHash().contains(HOT_BUT)){
-
+        if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(CLEAN_GROUND_TEXTURE_BUT)){
+            Map.maps[currentMap].groundMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = 0;
             resetTime1 = true;
         }
 
@@ -246,14 +262,14 @@ public class MapEditor {
             if(Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] != 0 ){
                 Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX]--;
             }else{
-                Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = (byte) (Block.getInstance().getBlockArrSize() - 1);
+                Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = (byte) (Block.getInstance().getFurnitureArrSize() - 1);
             }
             resetTime4 = true;
 
         }
 
         if ((currentNanoTime > POINTER_WAIT_TIME_4 + prevNanoTime4) &&  KeyManager.getActiveKeyHash().contains(PREV_FURNITURE_TEXTURE_BUT)){
-            if(Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] != (Block.getInstance().getBlockArrSize()-1) ){
+            if(Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] != (Block.getInstance().getFurnitureArrSize()-1) ){
                 Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX]++;
             }else{
                 Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX] = 0;
@@ -261,6 +277,7 @@ public class MapEditor {
             resetTime4 = true;
 
         }
+
         if ((currentNanoTime > POINTER_WAIT_TIME_4 + prevNanoTime4) &&  KeyManager.getActiveKeyHash().contains(CLEAN_FURNITURE_TEXTURE_BUT)){
             Map.maps[currentMap].furnitureMap[pointerPosY + mapPosY][pointerPosX + mapPosX] = 0;
             resetTime4 = true;
@@ -271,22 +288,164 @@ public class MapEditor {
             prevNanoTime4 = currentNanoTime;
             MapManager.setNeedRedraw();
         }
+    }
+
+    private static void mouseControl(long currentNanoTime,int currentMap){
+        pointerPosX = (int) KeyManager.getMouseXPos()/32;
+        pointerPosY = (int) KeyManager.getMouseYPos()/32;
+
+        boolean canPlace = (pointerPosY != prevMouseY) || (pointerPosX != prevMouseX);
+
+        if (KeyManager.getMousePresetButt("PRIMARY") || KeyManager.getMousePresetButt("SECONDARY") || KeyManager.getMousePresetButt("MIDDLE")) {
+            Map.maps[currentMap].groundMap = byteArrExtender(pointerPosX - mapPosX,pointerPosY  - mapPosY,Map.maps[currentMap].groundMap);
+            Map.maps[currentMap].furnitureMap = byteArrExtender(pointerPosX - mapPosX,pointerPosY  - mapPosY,Map.maps[currentMap].furnitureMap);
+            Map.maps[currentMap].enemyMap = byteArrExtender(pointerPosX - mapPosX,pointerPosY - mapPosY,Map.maps[currentMap].enemyMap);
+            Map.maps[currentMap].borderMap = byteArrExtender(pointerPosX - mapPosX,pointerPosY - mapPosY,Map.maps[currentMap].borderMap);
+            Map.maps[currentMap].teleportMap = byteArrExtender(pointerPosX - mapPosX,pointerPosY - mapPosY,Map.maps[currentMap].teleportMap);
+        }            //проверка размера массива и при необходимости его увелчение
+
+        boolean resetTime1 = false;
+        if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(PREV_GROUND_TEXTURE_BUT)){
+            if(blockSelected != 0){
+             blockSelected--;
+            }else {
+                blockSelected = (byte) (Block.getInstance().getBlockArrSize() - 1);
+            }
+
+            resetTime1 = true;
+        }
+
+        if ((currentNanoTime > POINTER_WAIT_TIME_1 + prevNanoTime1) &&  KeyManager.getActiveKeyHash().contains(NEXT_GROUND_TEXTURE_BUT)){
+            if(blockSelected != (byte) (Block.getInstance().getBlockArrSize() - 1)){
+                blockSelected++;
+            }else {
+                blockSelected = 0;
+            }
+            resetTime1 = true;
+        }
+
+        if(resetTime1){
+            placeBlock = true;
+            prevNanoTime1 = currentNanoTime;
+        }
+
+        boolean resetTime2 = false;
+        if ((currentNanoTime > POINTER_WAIT_TIME_2 + prevNanoTime2) &&  KeyManager.getActiveKeyHash().contains(PREV_FURNITURE_TEXTURE_BUT)){
+            if(furnitureSelected != 0){
+                furnitureSelected--;
+            }else {
+                furnitureSelected = (byte) (Block.getInstance().getFurnitureArrSize() - 2);
+            }
+
+            resetTime2 = true;
+        }
+
+        if ((currentNanoTime > POINTER_WAIT_TIME_2 + prevNanoTime2) &&  KeyManager.getActiveKeyHash().contains(NEXT_FURNITURE_TEXTURE_BUT)){
+            if(blockSelected != (byte) (Block.getInstance().getFurnitureArrSize() - 1)){
+                furnitureSelected++;
+            }else {
+                furnitureSelected = 0;
+            }
+            resetTime2 = true;
+        }
+
+        if(resetTime2){
+            placeBlock = false;
+            prevNanoTime2 = currentNanoTime;
+        }
+
+        boolean resetPos = false;
+        if( canPlace && KeyManager.getMousePresetButt("PRIMARY")){
+            if(placeBlock){
+                Map.maps[currentMap].groundMap[pointerPosY - mapPosY][pointerPosX - mapPosX] = blockSelected;
+            } else{
+                Map.maps[currentMap].furnitureMap[pointerPosY - mapPosY][pointerPosX - mapPosX] = furnitureSelected;
+            }
+
+            resetPos = true;
+            MapManager.setNeedRedraw();
+        }
+
+        if( canPlace && KeyManager.getMousePresetButt("SECONDARY")){
+            if(Map.maps[currentMap].borderMap[pointerPosY - mapPosY][pointerPosX - mapPosX] == 0){
+                Map.maps[currentMap].borderMap[pointerPosY - mapPosY][pointerPosX - mapPosX] = 1;
+            }else{
+                Map.maps[currentMap].borderMap[pointerPosY - mapPosY][pointerPosX - mapPosX] = 0;
+            }
+            resetPos = true;
+            MapManager.setNeedRedraw();
+        }
+
+        if( canPlace && KeyManager.getMousePresetButt("MIDDLE")){
+            if(Map.maps[currentMap].enemyMap[pointerPosY - mapPosY][pointerPosX - mapPosX] == 0){
+                Map.maps[currentMap].enemyMap[pointerPosY - mapPosY][pointerPosX - mapPosX] = 1;
+            }else{
+                Map.maps[currentMap].enemyMap[pointerPosY - mapPosY][pointerPosX - mapPosX] = 0;
+            }
+            resetPos = true;
+            MapManager.setNeedRedraw();
+        }
+
+        if(resetPos){
+            prevMouseX = pointerPosX;
+            prevMouseY = pointerPosY;
+        }
+
+        boolean resetTime4 = false;
+        if((currentNanoTime > POINTER_WAIT_TIME_4 + prevNanoTime4) && ((pointerPosX+1) >= (int) (graphic.theScene.getWidth()/32))){
+            MapManager.moveMap(-32,"H");
+            mapPosX--;
+            resetTime4 = true;
+        }
+
+        if((currentNanoTime > POINTER_WAIT_TIME_4 + prevNanoTime4) && ((pointerPosX) <=0 )){
+            MapManager.moveMap(+32,"H");
+            mapPosX++;
+            resetTime4 = true;
+        }
+
+        if(resetTime4){
+            prevNanoTime4 = currentNanoTime;
+        }
+
+        boolean resetTime5 = false;
+        if((currentNanoTime > POINTER_WAIT_TIME_5 + prevNanoTime5) && ((pointerPosY+1) >= (int) (graphic.theScene.getHeight()/32))){
+            MapManager.moveMap(+32,"V");
+            mapPosY--;
+            resetTime5 = true;
+        }
+
+        if((currentNanoTime > POINTER_WAIT_TIME_5 + prevNanoTime5) && ((pointerPosY) <=0 )){
+            MapManager.moveMap(-32,"V");
+            mapPosY++;
+            resetTime5 = true;
+        }
+
+        if(resetTime5){
+            prevNanoTime5 = currentNanoTime;
+        }
+    }
+
+    private static void pointerMove(long currentNanoTime,int currentMap){
+        
+        if(mode == 1){
+            keyboardControl(currentNanoTime,currentMap);
+        }
+
+        if(mode == 2){
+            mouseControl(currentNanoTime,currentMap);
+        }
 
 
-        if((currentNanoTime > POINTER_WAIT_TIME_2 + prevNanoTime2) && KeyManager.getActiveKeyHash().contains(SAVE_BUT) && KeyManager.getActiveKeyHash().contains(HOT_BUT)){
-            MapSaver.getMapSaver().saveMap(Map.maps[currentMap], new File("./maps/map" + currentMap));
+        if((currentNanoTime > POINTER_WAIT_TIME_2 + prevNanoTime2) && KeyManager.getActiveKeyHash().contains(SAVE_BUT) && KeyManager.getActiveKeyHash().contains(HOT_BUT)){ //сохранение
+            MapSaver.getMapSaver().save(Map.maps[currentMap], new File("./maps/map" + currentMap));
+            FurnitureSaver.getInstance().save(Map.maps[currentMap],new File("./furniture/inf" + currentMap));
             System.out.println("Saved");
-/*            byteLengthToConsole("groundMap",Map.maps[currentMap].groundMap);
-            byteLengthToConsole("furnitureMap",Map.maps[currentMap].furnitureMap);
-            byteLengthToConsole("enemyMap",Map.maps[currentMap].enemyMap);
-            byteLengthToConsole("borderMap",Map.maps[currentMap].borderMap);
-            byteLengthToConsole("teleportMap",Map.maps[currentMap].teleportMap);
-*/
             prevNanoTime2 = currentNanoTime;
         }
 
         boolean resetTime3 = false;
-        if ((currentNanoTime > POINTER_WAIT_TIME_3 + prevNanoTime3) &&  KeyManager.getActiveKeyHash().contains(NEXT_MAP_BUT)){//todo смена карты
+        if ((currentNanoTime > POINTER_WAIT_TIME_3 + prevNanoTime3) &&  KeyManager.getActiveKeyHash().contains(NEXT_MAP_BUT)){  //смена карты по кнопке
             if(Map.maps.length!= currentMap){
                 graphic.currentMapNumber++;
             } else{
@@ -295,10 +454,10 @@ public class MapEditor {
             resetTime3 = true;
         }
         if ((currentNanoTime > POINTER_WAIT_TIME_3 + prevNanoTime3) &&  KeyManager.getActiveKeyHash().contains(PREV_MAP_BUT)){
-            if(Map.maps.length!= 0){
+            if(currentMap != 0){
                 graphic.currentMapNumber--;
             } else{
-                graphic.currentMapNumber=Map.maps.length-1;
+                graphic.currentMapNumber = Map.maps.length-1;
             }
             resetTime3 = true;
         }
@@ -306,6 +465,31 @@ public class MapEditor {
             prevNanoTime3 = currentNanoTime;
             MapManager.setNeedRedraw();
         }
+
+        boolean resetTime7 = false;
+        if((currentNanoTime > POINTER_WAIT_TIME_7 + prevNanoTime7) &&  KeyManager.getActiveKeyHash().contains(VIEW_SPAWN_MASK_BUT) ){   //включение отключение масок
+                MapManager.setViewSpawnMask(!MapManager.isViewSpawnMask());
+            resetTime7 = true;
+        }
+
+        if(resetTime7){
+            prevNanoTime7 = currentNanoTime;
+            MapManager.setNeedRedraw();
+
+        }
+
+        boolean resetTime8 = false;
+        if((currentNanoTime > POINTER_WAIT_TIME_8 + prevNanoTime8) &&  KeyManager.getActiveKeyHash().contains(VIEW_BORDER_MASK_BUT) ){
+            MapManager.setViewBlockMask(!MapManager.isViewBlockMask());
+            resetTime8 = true;
+        }
+
+        if(resetTime8){
+            prevNanoTime8 = currentNanoTime;
+            MapManager.setNeedRedraw();
+
+        }
+
 
 
     }
@@ -315,7 +499,6 @@ public class MapEditor {
         if (pointerPosY >= arr.length) {
 
             byte[][] newMap = new byte[pointerPosY + 1][];
-
 
             for (int i = 0; i < arr.length; i++) {
                 newMap[i] = new byte[arr[i].length];
@@ -329,6 +512,7 @@ public class MapEditor {
             arr = newMap;
 
         }
+
         if (pointerPosX >= arr[pointerPosY].length) {
             byte[] newMap = new byte[pointerPosX + 1];
 

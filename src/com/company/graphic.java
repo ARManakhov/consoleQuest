@@ -50,7 +50,9 @@ public class graphic extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         if (first){
+
             MapReader.getInstance().readMapsFromFolder();
+            FurnitureReader.getInstance().readFurnitureFromFolder();
             logger.setLogFile(new File("log.txt"));
             prevStageHeight = theScene.getHeight();
             prevStageWidth = theScene.getWidth();
@@ -84,6 +86,11 @@ public class graphic extends Application {
                  MainMenu.draw(currentNanoTime);
                 }
                 if (mode == 1){
+                    if(MapManager.isViewBlockMask() && MapManager.isViewSpawnMask()){
+                        MapManager.setViewBlockMask(false);
+                        MapManager.setViewBlockMask(false);
+                    }
+                    FurnManager.draw(currentNanoTime,currentMapNumber);
                     MapManager.serDrawFromAngle(false);
                     MapManager.draw(currentNanoTime, currentMapNumber);
                     PlayerManager.getInstance().draw(currentNanoTime,currentMapNumber);

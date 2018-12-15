@@ -9,8 +9,13 @@ import static java.lang.Math.sqrt;
 
 public class PlayerManager {
     // размер спрайта
-    private final double PLAYER_SIZE_X = 28;        // размер игрока по x
+    private final double PLAYER_SIZE_X = 20;        // размер игрока по x
     private final double PLAYER_SIZE_Y = 28;        // размер игрока по y
+
+    private final double TEXTURE_OFFSET_X = 6;      // отклонение текстуры по x
+    private final double TEXTURE_OFFSET_Y = 0;      // отклонение текстуры по y
+
+    int dir;
 
     //переменные необходимые для отрисовки персонажа
     private double screenXPos;
@@ -38,6 +43,14 @@ public class PlayerManager {
     private Image[] playerTexture;
 
     private boolean firstCall = true;
+
+    public double getPLAYER_SIZE_X() {
+        return PLAYER_SIZE_X;
+    }
+
+    public double getPLAYER_SIZE_Y() {
+        return PLAYER_SIZE_Y;
+    }
 
     private static PlayerManager instance = null;
     public static PlayerManager getInstance(){
@@ -74,7 +87,7 @@ public class PlayerManager {
         double angleCos = (mouseX - screenXPos)/
                 sqrt((mouseX-screenXPos)*(mouseX-screenXPos) +
                         (mouseY-screenYPos)*(mouseY-screenYPos));
-        int dir=0;
+        dir = 0;
 
         if(mouseY - screenYPos > 0){
             if (angleCos > 0.707 && angleCos <= 1){
@@ -100,7 +113,7 @@ public class PlayerManager {
         //System.out.println(dir);
 
         gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
-        gc.drawImage(playerTexture[dir * ANUMATION_FRAMES_COUNT + curentFrameNum], screenXPos-2, screenYPos-2);
+        gc.drawImage(playerTexture[dir * ANUMATION_FRAMES_COUNT + curentFrameNum], screenXPos - TEXTURE_OFFSET_X, screenYPos - TEXTURE_OFFSET_Y);
     }
 
     /**
@@ -140,15 +153,6 @@ public class PlayerManager {
 
 
 
-        boolean canMoveLeftSec = ((Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) (realXPos)/ blockSize] != 1)
-                && (Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) (realXPos )/ blockSize] != 1));
-        boolean canMoveRightSec = ((Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) (realXPos + PLAYER_SIZE_X)/ blockSize] != 1 )
-                && (Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) (realXPos  + PLAYER_SIZE_X)/ blockSize] != 1 ));
-        boolean canMoveUpSec = ((Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) realXPos/ blockSize] != 1 )
-                && (Map.maps[mapNumber].borderMap[(int) (realYPos)/ blockSize][(int) (realXPos+PLAYER_SIZE_X)/ blockSize] != 1 ));
-        boolean canMoveDownSec = ((Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) realXPos/ blockSize] != 1 )
-                && (Map.maps[mapNumber].borderMap[(int) (realYPos + PLAYER_SIZE_Y)/ blockSize][(int) (realXPos+PLAYER_SIZE_X)/ blockSize] != 1 ));
-
         if(((KeyManager.pressedButt("LEFT") && canMoveLeftPrim) && ((KeyManager.pressedButt("UP") && canMoveUpPrim) || (KeyManager.pressedButt("DOWN") && canMoveDownPrim))) ||
                 ((KeyManager.pressedButt("RIGHT") && canMoveRightPrim) && ((KeyManager.pressedButt("UP") && canMoveUpPrim) || (KeyManager.pressedButt("DOWN") && canMoveDownPrim)))
         ){
@@ -167,11 +171,7 @@ public class PlayerManager {
             double move = 0;
             if (canMoveLeftPrim){
                 move = speed;
-            } /*else if(canMoveLeftSec){
-                move = realXPos % blockSize;
-            }*/
-
-            if (screenXPos > limX1) {
+            }             if (screenXPos > limX1) {
                 screenXPos-=move;
             } else {
                 MapManager.moveMap(move,"H");
@@ -188,10 +188,7 @@ public class PlayerManager {
 
             if(canMoveRightPrim){
                 move = speed;
-            }/* else if(canMoveRightSec){
-                move = PLAYER_SIZE_X - realXPos % blockSize - 1;
-            }*/
-
+            }
             if (screenXPos < limX2 ) {
                 screenXPos+=move;
             } else {
@@ -209,10 +206,7 @@ public class PlayerManager {
 
             if(canMoveUpPrim) {
                 move = speed;
-            }/*else if(canMoveUpSec) {
-                move = realYPos % blockSize;
-            }*/
-
+            }
             if (screenYPos > limY1 ) {
                 screenYPos-=move;
             } else {
@@ -229,9 +223,7 @@ public class PlayerManager {
 
             if(canMoveDownPrim){
                 move = speed;
-            }/*else if(canMoveDownSec){
-                move = PLAYER_SIZE_Y - realYPos % blockSize - 1;
-            }*/
+            }
 
             if (screenYPos < limY2) {
                 screenYPos+=move;

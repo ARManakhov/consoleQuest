@@ -83,13 +83,17 @@ public class KeyManager {
                     mouseYPos = event.getY();
                 });
 
+        graphic.theScene.setOnMouseDragged(
+                event -> {
+                    mouseXPos = event.getX();
+                    mouseYPos = event.getY();
+                });
 
 
-        graphic.theScene.setOnMousePressed(
-                event -> activeMouseHash.add(event.getButton().toString()));
 
-        graphic.theScene.setOnMouseReleased(
-                event -> activeMouseHash.remove(event.getButton().toString()));
+        graphic.theScene.setOnMousePressed(event -> activeMouseHash.add(event.getButton().toString()));
+
+        graphic.theScene.setOnMouseReleased(event -> activeMouseHash.remove(event.getButton().toString()));
 
 
 

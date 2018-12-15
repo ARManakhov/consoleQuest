@@ -3,6 +3,7 @@ package com.company;
 public class Map {
     static Map[] maps;
 
+    public Furniture[] fur;
 
     public int spawnPosX;
     public int spawnPosY;
@@ -19,6 +20,8 @@ public class Map {
 
     public int maxWidth;
     public int maxHeight;
+
+
 
 
     Map(int spawnPosX, int spawnPosY,byte[][] groundMap, byte[][] borderMap, byte[][] enemyMap,byte[][] teleportMap,byte[][] furnitureMap){

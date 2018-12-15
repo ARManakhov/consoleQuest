@@ -1,7 +1,12 @@
 package com.company;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.transform.Translate;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import static com.company.graphic.currentMapNumber;
 
@@ -33,7 +38,27 @@ public class MapManager {
 
     private static boolean NeedRedraw = false;
 
+    private static boolean ViewBlockMask = false;
+    private static boolean ViewSpawnMask = false;
+
+
     private static Block block = Block.getInstance();
+
+    public static boolean isViewBlockMask() {
+        return ViewBlockMask;
+    }
+
+    public static void setViewBlockMask(boolean viewBlockMask) {
+        ViewBlockMask = viewBlockMask;
+    }
+
+    public static boolean isViewSpawnMask() {
+        return ViewSpawnMask;
+    }
+
+    public static void setViewSpawnMask(boolean viewSpawnMask) {
+        ViewSpawnMask = viewSpawnMask;
+    }
 
     /**
      *
@@ -97,16 +122,30 @@ public class MapManager {
                         graphic.theScene.getHeight() + i * BLOCK_SIZE + currentYPos
                 );
                 try{
-                    if(block.getBlock(Map.maps[currentMapNumber].furnitureMap[i][j]) != null){
                         gc.drawImage(
                             block.getFurniture(Map.maps[currentMapNumber].furnitureMap[i][j]),
                             graphic.theScene.getWidth()  + j * BLOCK_SIZE + currentXPos,
                             graphic.theScene.getHeight() + i * BLOCK_SIZE + currentYPos
                         );
+
+                    if(ViewBlockMask){
+                        if(Map.maps[currentMapNumber].borderMap[i][j] == 1)
+                                gc.drawImage(new Image(new FileInputStream( new File("./resources/editor/maskB.png"))),
+                                graphic.theScene.getWidth()  + j * BLOCK_SIZE + currentXPos,
+                                graphic.theScene.getHeight() + i * BLOCK_SIZE + currentYPos);
+                    }
+
+                    if(ViewSpawnMask){
+                        if(Map.maps[currentMapNumber].enemyMap[i][j] == 1)
+                            gc.drawImage(new Image(new FileInputStream( new File("./resources/editor/maskS.png"))),
+                                graphic.theScene.getWidth()  + j * BLOCK_SIZE + currentXPos,
+                                graphic.theScene.getHeight() + i * BLOCK_SIZE + currentYPos);
                     }
                 }catch (ArrayIndexOutOfBoundsException e){
 
 
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
         }
