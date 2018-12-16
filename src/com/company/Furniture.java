@@ -10,7 +10,7 @@ public class Furniture {
     int dmg ;    //DMG
     int speed ;  //Speed
     int money ;  //Money
-    int id ;  //Money
+    int id ;  //id
     String[] text;
 
     static Furniture getFurnitureOnPos (int x,int y,int curentMapNum){

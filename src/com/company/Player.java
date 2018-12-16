@@ -27,11 +27,54 @@ public class Player extends Character {
     private  int money = DEFAULT_MONEY;
     private  int damage = DEFAULT_DAMAGE;
     private  double speed = DEFAULT_SPEED;
-    private  static Character obj = null ;
+    private  static Player obj = null ;
     private  double realXPos;
     private  double realYPos;
 
+    boolean removed = true;
 
+    private int addMaxHp = 0;  //max HP
+    private int addDmg = 0;    //DMG
+    private int addSpeed = 0;  //Speed
+
+
+    public int getAddDmg() {
+        return addDmg;
+    }
+
+    public void setAddDmg(int addDmg) {
+        this.addDmg = addDmg;
+    }
+
+    public int getAddSpeed() {
+        return addSpeed;
+    }
+
+    public void setAddSpeed(int addSpeed) {
+        this.addSpeed = addSpeed;
+    }
+
+
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public void setMaxHP(int maxHP) {
+        this.maxHP = maxHP;
+    }
+
+    public int getAddMaxHp() {
+        return addMaxHp;
+    }
+
+    public void setAddMaxHp(int addMaxHp) {
+        this.addMaxHp = addMaxHp;
+    }
 
     /**
      *
@@ -58,7 +101,7 @@ public class Player extends Character {
         return hp;
     }
 
-    public static Character getPlayer(){
+    public static Player getPlayer(){
         if (obj == null){
             obj = new Player();
         }
@@ -85,11 +128,38 @@ public class Player extends Character {
 
     }
 
+    public void  removeAddble(){
+        if(!removed){
+            maxHP -= addMaxHp;
+            damage -= addDmg;
+            speed -= addSpeed;
+
+            removed = true;
+        }
+    }
+
+    public void  addAddble(){
+        if(removed){
+            maxHP += addMaxHp;
+            damage += addDmg;
+            speed += addSpeed;
+            removed = false;
+        }
+    }
+
     /**
      *
      * @return скорость персонажа
      */
     public double getSpeed() {
         return speed;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getMaxHP() {
+        return maxHP;
     }
 }

@@ -334,15 +334,15 @@ public class MapEditor {
             if(furnitureSelected != 0){
                 furnitureSelected--;
             }else {
-                furnitureSelected = (byte) (Block.getInstance().getFurnitureArrSize() - 2);
+                furnitureSelected = (byte) (Block.getInstance().getFurnitureArrSize() - 1);
             }
 
             resetTime2 = true;
         }
 
         if ((currentNanoTime > POINTER_WAIT_TIME_2 + prevNanoTime2) &&  KeyManager.getActiveKeyHash().contains(NEXT_FURNITURE_TEXTURE_BUT)){
-            if(blockSelected != (byte) (Block.getInstance().getFurnitureArrSize() - 1)){
-                furnitureSelected++;
+            if(furnitureSelected != (byte) (Block.getInstance().getFurnitureArrSize() - 1)){
+                furnitureSelected ++;
             }else {
                 furnitureSelected = 0;
             }
@@ -439,7 +439,7 @@ public class MapEditor {
 
         if((currentNanoTime > POINTER_WAIT_TIME_2 + prevNanoTime2) && KeyManager.getActiveKeyHash().contains(SAVE_BUT) && KeyManager.getActiveKeyHash().contains(HOT_BUT)){ //сохранение
             MapSaver.getMapSaver().save(Map.maps[currentMap], new File("./maps/map" + currentMap));
-            FurnitureSaver.getInstance().save(Map.maps[currentMap],new File("./furniture/inf" + currentMap));
+            FurnitureSaver.getInstance().save(Map.maps[currentMap],new File("./furniture/inf" + currentMap),currentMap);
             System.out.println("Saved");
             prevNanoTime2 = currentNanoTime;
         }

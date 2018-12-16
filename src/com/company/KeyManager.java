@@ -41,6 +41,11 @@ public class KeyManager {
     private static String buttLEFT = DEFAULT_LEFT_BUTTON;
     private static String buttRIGHT = DEFAULT_RIGHT_BUTTON;
     private static String buttCHOSE = DEFAULT_CHOSE_BUTTON;
+    private static String buttAction = DEFAULT_ACTION_BUTTON;
+
+    public static String getButtAction() {
+        return buttAction;
+    }
 
     private static double mouseXPos;
     private static double mouseYPos;
@@ -199,7 +204,11 @@ public class KeyManager {
         }else
         if (buttCode == "CHOSE"){
             return activeKeyHash.contains(buttCHOSE);
-        } else return false;
+        } else
+        if (buttCode == "ACTION"){
+            return activeKeyHash.contains(buttAction);
+        } else
+            return false;
 
     }
 

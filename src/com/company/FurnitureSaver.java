@@ -16,7 +16,7 @@ public class FurnitureSaver {
             return instance;
         }
 
-        public void save(Map map, File file){
+        public void save(Map map, File file,int currentMapNumber){
             try {
                 pw = new PrintWriter(file);
                 int furnCount = 0;
@@ -36,15 +36,15 @@ public class FurnitureSaver {
                             writeInt(k,file); //координату x
                             writeInt(j,file); //координату y
                             writeInt(map.furnitureMap[j][k],file); // id
-                            if( Furniture.furn != null && Furniture.furn.length != 0 &&  Furniture.furn[graphic.currentMapNumber] != null &&
-                                    Furniture.furn[graphic.currentMapNumber][i].x == k & Furniture.furn[graphic.currentMapNumber][i].y == j ){
-                                writeInt(Furniture.furn[graphic.currentMapNumber][i].hp, file); // HP
-                                writeInt(Furniture.furn[graphic.currentMapNumber][i].exp,file);   //EXP
-                                writeInt(Furniture.furn[graphic.currentMapNumber][i].dmg,file);    //DMG
-                                writeInt(Furniture.furn[graphic.currentMapNumber][i].speed,file);    //Speed
-                                writeInt(Furniture.furn[graphic.currentMapNumber][i].money,file);    //money
-                                writeInt(Furniture.furn[graphic.currentMapNumber][i].maxHp,file);    //maxHP
-                                writeString(Furniture.furn[graphic.currentMapNumber][i].text,file);
+                            if( Furniture.furn != null && Furniture.furn.length != 0 &&  Furniture.furn[currentMapNumber] != null && Furniture.furn[currentMapNumber].length != 0 &&
+                                    Furniture.furn[currentMapNumber][i].x == k & Furniture.furn[currentMapNumber][i].y == j ){
+                                writeInt(Furniture.furn[currentMapNumber][i].hp, file); // HP
+                                writeInt(Furniture.furn[currentMapNumber][i].exp,file);   //EXP
+                                writeInt(Furniture.furn[currentMapNumber][i].dmg,file);    //DMG
+                                writeInt(Furniture.furn[currentMapNumber][i].speed,file);    //Speed
+                                writeInt(Furniture.furn[currentMapNumber][i].money,file);    //money
+                                writeInt(Furniture.furn[currentMapNumber][i].maxHp,file);    //maxHP
+                                writeString(Furniture.furn[currentMapNumber][i].text,file);
                                 i++;
                                 pw.println();
                             }
@@ -55,8 +55,33 @@ public class FurnitureSaver {
                                 writeInt(0,file);    //Speed
                                 writeInt(0,file);    //money
                                 writeInt(0,file);    //maxHP
-                                writeString(new String[]{"s"},file);
-                                pw.println();
+
+                                switch (map.furnitureMap[j][k]){
+                                    case 7:  writeString(new String[]{"Чтоб взять вещи из горшка нажмите " + KeyManager.getButtAction(),"Горшок пуст","Вы нашли деньги","Вы нашли зелье здоровья HP+","Вы нашли новый мечь ATK+","Вы нашли новую броню MAXHP++","Вы нашли новые ботинки SPEED++"},file); break;
+                                    case 8:  writeString(new String[]{"Разбитый горшок"},file); break;
+                                    case 11:  writeString(new String[]{"Глубокий колодец"},file); break;
+                                    case 15:  writeString(new String[]{"Чтоб взять вещи из сундука нажмите " + KeyManager.getButtAction(),"Сундук пуст","Вы нашли деньги","Вы нашли зелье здоровья HP+","Вы нашли новый мечь ATK+","Вы нашли новую броню MAXHP++","Вы нашли новые ботинки SPEED++"},file); break;
+                                    case 16:  writeString(new String[]{"Чтоб взять вещи из сундука нажмите " + KeyManager.getButtAction(),"Сундук пуст","Вы нашли деньги","Вы нашли зелье здоровья HP+","Вы нашли новый мечь ATK+","Вы нашли новую броню MAXHP++","Вы нашли новые ботинки SPEED++"},file); break;
+                                    case 23:  writeString(new String[]{"Качестевнно сделанная игрушка замка"},file); break;
+                                    case 24:  writeString(new String[]{"Качестевнно сделанная игрушка дома"},file); break;
+                                    case 25:  writeString(new String[]{"Чтоб поспать нажмите " + KeyManager.getButtAction(),"Вы поспали, здоровье востановлено"},file); break;
+                                    case 26:  writeString(new String[]{"Удобно выглядещее кресло"},file); break;
+                                    case 27:  writeString(new String[]{"Статуя птицы"},file); break;
+                                    case 28:  writeString(new String[]{"Чтоб открыть нажмите " + KeyManager.getButtAction(),"Это дверь"},file); break;
+                                    case 29:  writeString(new String[]{"Чтоб открыть нажмите " + KeyManager.getButtAction(),"Это дверь"},file); break;
+                                    case 33:  writeString(new String[]{"Чтоб поспать нажмите " + KeyManager.getButtAction(),"Вы поспали, здоровье востановлено"},file); break;
+                                    case 34:  writeString(new String[]{"Пустой стол"},file); break;
+                                    case 35:  writeString(new String[]{"Чтоб взять вещи из ящика нажмите " + KeyManager.getButtAction(),"Ящик пуст","Вы нашли деньги","Вы нашли зелье здоровья HP+","Вы нашли новый мечь ATK+","Вы нашли новую броню MAXHP++","Вы нашли новые ботинки SPEED++"},file); break;
+                                    case 42:  writeString(new String[]{"Куча неизвестного вещества"},file); break;
+                                    case 43:  writeString(new String[]{"Куча неизвестного вещества"},file); break;
+                                    case 44:  writeString(new String[]{"Надпись на табличке :", "PLS ADD TEXT"},file); break;
+                                    case 45:  writeString(new String[]{"Куча золота"},file); break;
+                                    case 46:  writeString(new String[]{"Куча кристалов"},file); break;
+                                    case 53:  writeString(new String[]{"Чтоб закрыть нажмите " + KeyManager.getButtAction(),"Это дверь"},file); break;
+                                    case 54:  writeString(new String[]{"Чтоб закрыть нажмите " + KeyManager.getButtAction(),"Это дверь"},file); break;
+                                    default:  writeString(new String[]{},file);
+                                }
+                               pw.println();
                             }
 
                         }
