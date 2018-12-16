@@ -67,6 +67,7 @@ public class MapManager {
     public static void draw(long currentNanoTime, int currentMapNumber){
 
         if(firstCall){
+            EnemyGenerator.getInstance().generateMobs(currentMapNumber);
             currentYMoveBeforeRedraw = 0;
             currentXMoveBeforeRedraw = 0;
             if(!drawFromAngle){

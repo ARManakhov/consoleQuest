@@ -30,6 +30,7 @@ public class graphic extends Application {
     private IMenu sm = new SettingMenu();
     private IMenu mm = new MainMenu();
 
+    public static EnemyGenerator eg = EnemyGenerator.getInstance();
     private static double prevStageHeight = 0;
     private static double prevStageWidth = 0;
 
@@ -108,6 +109,8 @@ public class graphic extends Application {
                     MapManager.serDrawFromAngle(false);
                     MapManager.draw(currentNanoTime, currentMapNumber);
                     PlayerManager.getInstance().draw(currentNanoTime,currentMapNumber);
+                    eg.attackMobs(currentNanoTime,currentMapNumber);
+                    eg.renderMobs(currentNanoTime,currentMapNumber);
                     if (KeyManager.pressedButt("ESCAPE") && currentNanoTime - prevEscTime >= 500000000) {
                         mode = 10;
                         prevEscTime = currentNanoTime;

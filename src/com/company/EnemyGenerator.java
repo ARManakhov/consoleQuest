@@ -16,7 +16,7 @@ public class EnemyGenerator {
 
         for (int i = 0; i < Map.maps[curent].borderMap.length; i++) {
             for (int j = 0; j < Map.maps[curent].borderMap[i].length; j++) {
-                if((Map.maps[curent].borderMap[i][j] == 0) && ( rand.nextInt(SPAWN_K) == 0)){
+                if((Map.maps[curent].borderMap[i][j] == 0) && (Map.maps[curent].groundMap[i][j] != 0) && ( rand.nextInt(SPAWN_K) == 0)){
                     Enemy e = new Enemy(j*32,i*32);
                     enemy.add(e);
                     enemyManager.add(new EnemyManager(e));
