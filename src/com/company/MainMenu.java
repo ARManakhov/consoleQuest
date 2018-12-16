@@ -90,7 +90,6 @@ public class MainMenu implements IMenu {// todo еще больше поменя
             if (firstCall){
                 prevTimeChose = currentNanoTime;
                 firstCall = false;
-                System.out.println("Робит");
             }
         gc.setFill(Color.web("#000000"));
 

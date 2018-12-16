@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -31,6 +32,8 @@ public class graphic extends Application {
 
     private static double prevStageHeight = 0;
     private static double prevStageWidth = 0;
+
+     static long prevEscTime = 0;
 
     public static Scene theScene = new Scene( root, X_SIZE, Y_SIZE );   //новая сцена стандартного размера
 
@@ -89,8 +92,12 @@ public class graphic extends Application {
                 //System.out.println(currentNanoTime);
                 if (mode == 0){
                     mm.draw(currentNanoTime);
+                    if (KeyManager.getActiveKeyHash().contains("F1")) {
+                        mode = 20;
+                    }
                 }
                 if (mode == 1){
+
                     if(MapManager.isViewBlockMask() && MapManager.isViewSpawnMask()){
                         MapManager.setViewBlockMask(false);
                         MapManager.setViewBlockMask(false);
@@ -101,8 +108,9 @@ public class graphic extends Application {
                     MapManager.serDrawFromAngle(false);
                     MapManager.draw(currentNanoTime, currentMapNumber);
                     PlayerManager.getInstance().draw(currentNanoTime,currentMapNumber);
-                    if (KeyManager.pressedButt("ESCAPE")) {
+                    if (KeyManager.pressedButt("ESCAPE") && currentNanoTime - prevEscTime >= 500000000) {
                         mode = 10;
+                        prevEscTime = currentNanoTime;
                     }
                 }
                 if(mode == 2){
@@ -115,6 +123,15 @@ public class graphic extends Application {
                 }
                 if (mode == 10) {
                     mem.draw(currentNanoTime);
+                }
+                if(mode == 20){
+                    interfaceLayer.getGraphicsContext2D().clearRect(0,0,theScene.getWidth(),theScene.getHeight());
+                    MapManager.serDrawFromAngle(true);
+                    MapManager.draw(currentNanoTime, currentMapNumber);
+                    MapEditor.draw(currentNanoTime,currentMapNumber);
+                    if (KeyManager.pressedButt("ESCAPE")) {
+                        mode = 0;
+                    }
                 }
             }
         }.start();

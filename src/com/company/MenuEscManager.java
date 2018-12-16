@@ -70,7 +70,8 @@ public class MenuEscManager implements IMenu {
 
     //прошлое время нажатия на кнопку (нужен для корректного переключения кнопок с клавиатуры)
     private static long prevTimeButt;
-
+    private static long prevTime;
+    boolean firstcall = true;
     // ...
     private static GraphicsContext gc = graphic.interfaceLayer.getGraphicsContext2D();
 
@@ -84,6 +85,17 @@ public class MenuEscManager implements IMenu {
     public void draw(long currentNanoTime) {
 
         gc.setFill(Color.web("#000000"));
+        if (firstcall){
+            prevTime = currentNanoTime;
+            firstcall = false;
+        }
+
+        if (KeyManager.pressedButt("ESCAPE") && currentNanoTime - prevTime >= 500000000) {
+            graphic.mode = 1;
+            prevTime = currentNanoTime;
+            graphic.prevEscTime = currentNanoTime;
+            firstcall = true;
+        }
 
         //задержка с помощью счетчика, чтобы кнопки переключались корректно (не с сумасшедшей скоростью)
         if (currentNanoTime - prevTimeButt >= 100000000) {
