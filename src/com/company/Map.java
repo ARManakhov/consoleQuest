@@ -16,6 +16,7 @@ public class Map {
 
     public byte[][] teleportMap;
 
+
     public byte[][] furnitureMap;
 
     public int maxWidth;
@@ -32,6 +33,7 @@ public class Map {
         this.enemyMap = enemyMap;
         this.teleportMap = teleportMap;
         this.furnitureMap = furnitureMap;
+
         this.maxHeight = groundMap.length;
         for (int i = 0; i < this.maxHeight ; i++) {
             if (this.maxWidth < this.groundMap[i].length){

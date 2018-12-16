@@ -42,6 +42,7 @@ public class PlayerManager {
     private GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
     private Image[] playerTexture;
 
+
     private boolean firstCall = true;
 
     public double getPLAYER_SIZE_X() {
@@ -64,6 +65,8 @@ public class PlayerManager {
     }
 
     private PlayerManager(){}
+
+
 
     /**
      * метод для отрисовки игрока, и его движения
@@ -184,6 +187,7 @@ public class PlayerManager {
             movedR = true;
 
 
+
             double move = 0;
 
             if(canMoveRightPrim){
@@ -202,6 +206,7 @@ public class PlayerManager {
             movedU = true;
 
 
+
             double move = 0;
 
             if(canMoveUpPrim) {
@@ -216,6 +221,7 @@ public class PlayerManager {
         }
 
         if(KeyManager.pressedButt("DOWN")){
+
 
             movedD = true;
 
@@ -249,6 +255,7 @@ public class PlayerManager {
         if(Map.maps[mapNumber].teleportMap[(int) (realYPos)/ blockSize][(int) (realXPos)/ blockSize] != 0){
 
             graphic.currentMapNumber = Map.maps[mapNumber].teleportMap[(int) (realYPos)/ blockSize][(int) (realXPos)/ blockSize];
+
             firstCall = true;
             MapManager.setAsFirstCall();
         }
