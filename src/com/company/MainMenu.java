@@ -5,19 +5,39 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 /**
  * операции и отрисовки в главном меню
  */
 public class MainMenu {// todo еще больше поменять !
                                                                                                     //спрайты кнопок
-    private static final Image BUTTON_IMG_0 = new Image( "/resources/menu/button_0.png");       //обычная
-    private static final Image BUTTON_IMG_1 = new Image( "/resources/menu/button_1.png");       //выбранная
-    private static final Image BUTTON_IMG_2 = new Image( "/resources/menu/button_2.png");       //нажатая
+    private static  Image BUTTON_IMG_0 ;       //обычная
+    private static  Image BUTTON_IMG_1 ;
+    private static  Image BUTTON_IMG_2 ;
 
-    private static final Image LOGO_IMG = new Image( "/resources/menu/logo.png");               //логотип
-    private static final Image BACKGROUND_IMG = new Image( "/resources/menu/background.png");   //задник меню
+    private static Image LOGO_IMG ;               //логотип
+    private static Image BACKGROUND_IMG ;   //задник меню
 
-    private static final String VERSION = "Ver: 0.7";                           //версия игры в main menu
+    static {
+        try {
+            BUTTON_IMG_0 = new Image( new FileInputStream(new File("./resources/menu/button_0.png")));
+            BUTTON_IMG_1 = new Image( new FileInputStream(new File("./resources/menu/button_1.png")));
+            BUTTON_IMG_2 = new Image( new FileInputStream(new File("./resources/menu/button_2.png")));
+
+            LOGO_IMG = new Image( new FileInputStream(new File("./resources/menu/logo.png")));               //логотип
+            BACKGROUND_IMG = new Image( new FileInputStream(new File("./resources/menu/background.png")));   //задник меню
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private static final String VERSION = "Ver: 0.8";                           //версия игры в main menu
     private static final String VERSION_FONT_NAME = "Arial";                    //задаем константы для шрифта для надписи версия
     private static final int VERSION_FONT_SIZE = 25;                            //размер текста
     private static final FontWeight FONT_WEIGHT = FontWeight.BOLD;              //название шрифта
@@ -31,8 +51,8 @@ public class MainMenu {// todo еще больше поменять !
     private static final int LOGO_WIDTH = (int) LOGO_IMG.getWidth();            //ширина
 
                                                                                 //размеры спрайтов задника
-    private static final int BACKGROUND_HEIGHT = 16;                            //высота
-    private static final int BACKGROUND_WIDTH = 16;                             //ширина
+    private static final int BACKGROUND_HEIGHT = 544;                            //высота
+    private static final int BACKGROUND_WIDTH = 544;                             //ширина
 
                                                                                 //позиция первно кнопки (остальные подстраиваются под нее)
     private static int butt0PosX;

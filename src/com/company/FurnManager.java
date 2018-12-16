@@ -17,7 +17,6 @@ public class FurnManager {
         int PlayerY = (int)( Player.getPlayer().getRealYPos() + MapManager.getBlockSize() / 2) / 32;
         int dir = (int) PlayerManager.getInstance().dir;
         Furniture furn;
-        gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
 
 
         if(dir == 0){ //вправо

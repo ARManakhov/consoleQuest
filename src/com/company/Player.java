@@ -11,6 +11,7 @@ public class Player extends Character {
     private static final int DEFAULT_MONEY = 0;            // начальный уровень денег
     private static final int DEFAULT_DAMAGE = 5;           // начальный наносимый урон
     private static final int DEFAULT_EXP = 0;              // начальный уровень опыта
+    private static final int DEFAULT_MAX_EXP = 10;              // начальный уровень опыта
     private static final double DEFAULT_SPEED  = 2.5;      // начальная скорость
 
     // далее описаны константы изменений игрока при увеличении уровня
@@ -23,6 +24,7 @@ public class Player extends Character {
     private  int hp = DEFAULT_HP;
     private  int maxHP = DEFAULT_HP;
     private  int exp = DEFAULT_EXP;
+    private  int maxExp = DEFAULT_MAX_EXP;
     private  int lvl = DEFAULT_LVL;
     private  int money = DEFAULT_MONEY;
     private  int damage = DEFAULT_DAMAGE;
@@ -74,6 +76,30 @@ public class Player extends Character {
 
     public void setAddMaxHp(int addMaxHp) {
         this.addMaxHp = addMaxHp;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
+    public int getMaxExp() {
+        return maxExp;
+    }
+
+    public void setMaxExp(int maxExp) {
+        this.maxExp = maxExp;
+    }
+
+    public int getLvl() {
+        return lvl;
+    }
+
+    public void setLvl(int lvl) {
+        this.lvl = lvl;
     }
 
     /**

@@ -90,7 +90,9 @@ public class graphic extends Application {
                         MapManager.setViewBlockMask(false);
                         MapManager.setViewBlockMask(false);
                     }
-                    FurnManager.draw(currentNanoTime,currentMapNumber);
+
+                    Interface.draw(currentNanoTime,currentMapNumber);
+                    //FurnManager.draw(currentNanoTime,currentMapNumber);
                     MapManager.serDrawFromAngle(false);
                     MapManager.draw(currentNanoTime, currentMapNumber);
                     PlayerManager.getInstance().draw(currentNanoTime,currentMapNumber);
