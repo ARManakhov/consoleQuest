@@ -68,6 +68,7 @@ public class PlayerManager {
 
 
 
+
     /**
      * метод для отрисовки игрока, и его движения
      * @param currentNanoTime текущее время (для анимации)
@@ -124,6 +125,7 @@ public class PlayerManager {
      * @param mapNumber номер текущей карты
      */
     private void moveKeyManage(long currentNanoTime, int mapNumber){
+
         Character player = Player.getPlayer();
         realXPos = player.getRealXPos();
         realYPos = player.getRealYPos();
@@ -180,6 +182,7 @@ public class PlayerManager {
                 MapManager.moveMap(move,"H");
             }
             realXPos-=move;
+
         }
 
 
@@ -199,6 +202,7 @@ public class PlayerManager {
                 MapManager.moveMap(-move,"H");
             }
             realXPos+=move;
+
         }
 
 
@@ -268,6 +272,7 @@ public class PlayerManager {
      * метод который находит граници экрана где начинает двигатся карта а не персонаж по экрану
      */
     private void limFinder(){
+
         int xSlice = (int) graphic.theScene.getWidth()/4;
         limX1 = xSlice;
         limX2 = xSlice * 3;

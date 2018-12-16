@@ -35,6 +35,7 @@ public class KeyManager {
     private static final String DEFAULT_CHOSE_BUTTON = "ENTER";
     private static final String DEFAULT_ACTION_BUTTON = "E";
 
+
                                                                     // переменные с информацией о выбраных кнопках ( на которые программа реагирует)
     private static String buttUP = DEFAULT_UP_BUTTON;
     private static String buttDOWN = DEFAULT_DOWN_BUTTON;
@@ -47,6 +48,7 @@ public class KeyManager {
         return buttAction;
     }
 
+
     private static double mouseXPos;
     private static double mouseYPos;
 
@@ -57,6 +59,7 @@ public class KeyManager {
     public static HashSet<String> getActiveKeyHash() {
         return activeKeyHash;
     }
+
 
     /**
      * метод который загружает в activeKeyHash текущее состояние клавиатуры(какие кнопуи нааты)
@@ -104,6 +107,7 @@ public class KeyManager {
 
 
 
+
     }
 
     /**
@@ -137,6 +141,7 @@ public class KeyManager {
     /**
      * сохраняет текущие рабочие и измененные кнопки
      * @param buttName кнопка которую надо обновить ("all" если надо обновить все, не ждет нажатия кнопки)
+=======
      */
     public static boolean saveButt(String buttName) {
         boolean savedCpaturedBut = false;
@@ -179,6 +184,7 @@ public class KeyManager {
             Logger.getLoger().addLogg("Параметры кнопок сохранены");
         } catch (FileNotFoundException e) {
             Logger.getLoger().addLogg("Параметры кнопок не сохранены");
+
         }
         return savedCpaturedBut;
     }
@@ -209,6 +215,7 @@ public class KeyManager {
             return activeKeyHash.contains(buttAction);
         } else
             return false;
+
 
     }
 
@@ -253,6 +260,7 @@ public class KeyManager {
         }
         catch (FileNotFoundException e) {
             Logger.getLoger().addLogg("параметры кнопок не были загружены, применяем стандартные настройки");
+
             saveButt("all");
         }
 

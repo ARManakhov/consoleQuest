@@ -19,6 +19,7 @@ public class Map {
 
     public byte[][] furnitureMap;
 
+
     public int maxWidth;
     public int maxHeight;
 
@@ -42,7 +43,4 @@ public class Map {
         }
     }
 }
-
-
-
 

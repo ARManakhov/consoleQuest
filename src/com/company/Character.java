@@ -31,11 +31,12 @@ abstract class Character {
      */
     abstract double getSpeed();
 
-    abstract int getHp();
 
     /**
      * метод который обновляет параметры персонажа при смене уровня.
      */
     abstract void statUpdate();
+    abstract int getHp();
+    abstract void setHp(int hp);
 }
 

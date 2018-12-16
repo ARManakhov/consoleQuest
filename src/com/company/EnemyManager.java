@@ -75,8 +75,8 @@ double speedY = speed * ((pl.getRealYPos()- realYPos) /
          enemy.setRealXPos(realXPos);
          enemy.setRealYPos(realYPos);
         gc.drawImage(zombieTexture, screenXPos, screenYPos);
-    }
 
+    }
 
 
     public EnemyManager(Character enemy){
