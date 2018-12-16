@@ -2,16 +2,37 @@ package com.company;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public class SettingMenu implements IMenu {
-    private static final Image BUTTON_IMG_0 = new Image("/resources/menu/button_0.png");       //обычная
-    private static final Image BUTTON_IMG_2 = new Image("/resources/menu/button_2.png");       //нажатая
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
-    private static final Image FRAME_IMG = new Image("/resources/menu/setting.png");               //рамка
-    private static final Image BACKGROUND_IMG = new Image("/resources/menu/background.png");   //задник настроек
-    private static final Image BUTTON_INPUTE_IMG = new Image("/resources/menu/button_inpute.png");   //кнопка для ввода
+public class SettingMenu implements IMenu {
+    private static  Image BUTTON_IMG_0 ;       //обычная
+    private static  Image BUTTON_IMG_1 ;
+    private static  Image BUTTON_IMG_2 ;
+    private static  Image BUTTON_INPUT_IMG;
+
+    private static Image LOGO_IMG ;               //логотип
+    private static Image BACKGROUND_IMG ;   //задник меню
+
+    static {
+        try {
+            BUTTON_IMG_0 = new Image( new FileInputStream(new File("./resources/menu/button_0.png")));
+            BUTTON_IMG_1 = new Image( new FileInputStream(new File("./resources/menu/button_1.png")));
+            BUTTON_IMG_2 = new Image( new FileInputStream(new File("./resources/menu/button_2.png")));
+            BUTTON_INPUT_IMG = new Image( new FileInputStream(new File("./resources/menu/button_input.png ")));
+
+            LOGO_IMG = new Image( new FileInputStream(new File("./resources/menu/logo.png")));               //логотип
+            BACKGROUND_IMG = new Image( new FileInputStream(new File("./resources/menu/background.png")));   //задник меню
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     // заголовок и некоторые константы для всех надписей
     private static final String SETTING = "Setting";                           //надпись
@@ -40,12 +61,10 @@ public class SettingMenu implements IMenu {
     private static final int BUTT_HEIGHT = (int) BUTTON_IMG_0.getHeight();      //выстоа
     private static final int BUTT_WIDTH = (int) BUTTON_IMG_0.getWidth();        //ширина
 
-    private static final int FRAME_HEIGHT = (int) FRAME_IMG.getHeight();          //высота
-    private static final int FRAME_WIDTH = (int) FRAME_IMG.getWidth();           //ширина
 
     //размеры спрайтов задника
-    private static final int BACKGROUND_HEIGHT = 16;                            //высота
-    private static final int BACKGROUND_WIDTH = 16;                             //ширина
+    private static final int BACKGROUND_HEIGHT = 544;                            //высота
+    private static final int BACKGROUND_WIDTH = 544;                             //ширина
 
     //позиция первой кнопки (остальные подстраиваются под нее)
     private static int butt0PosX;
@@ -92,6 +111,9 @@ public class SettingMenu implements IMenu {
             mode = 2;
         }
 
+        gc.setFill(Color.web("#000000"));
+
+
         if (mode == 2) {
 
             //задержка с помощью счетчика, чтобы кнопки переключались корректно (не с сумасашедшей скоростью)
@@ -120,11 +142,8 @@ public class SettingMenu implements IMenu {
                     prevTimeButt = currentNanoTime;
                 }
 
-                // рисуем рамку
-                framePosX = ((int) graphic.theScene.getWidth() - FRAME_WIDTH) / 2;
-                framePosY = ((int) graphic.theScene.getHeight() - FRAME_HEIGHT) / 2;
 
-                gc.drawImage(FRAME_IMG, framePosX, framePosY);
+
 
                 // располагаем изначальную позицию кнопки
                 butt0PosX = ((int) graphic.theScene.getWidth() - BUTT_WIDTH) / 2;
@@ -181,22 +200,22 @@ public class SettingMenu implements IMenu {
             if (KeyManager.pressedButt("CHOSE") && prevTimeChose + 100000000 < currentNanoTime) {
                 if (choseButt == 0) {
                     gc.clearRect(butt0PosX, butt0PosY, BUTT_WIDTH, BUTT_HEIGHT);
-                    gc.drawImage(BUTTON_INPUTE_IMG, butt0PosX, butt0PosY);
+                    gc.drawImage(BUTTON_INPUT_IMG, butt0PosX, butt0PosY);
                     mode = 5;
                 }
                 if (choseButt == 1) {
                     gc.clearRect(butt0PosX, butt0PosY + BUTT_HEIGHT + buttMove, BUTT_WIDTH, BUTT_HEIGHT);
-                    gc.drawImage(BUTTON_INPUTE_IMG, butt0PosX, butt0PosY + BUTT_HEIGHT + buttMove);
+                    gc.drawImage(BUTTON_INPUT_IMG, butt0PosX, butt0PosY + BUTT_HEIGHT + buttMove);
                     mode = 6;
                 }
                 if (choseButt == 2) {
                     gc.clearRect(butt0PosX, butt0PosY + 2 * (BUTT_HEIGHT + buttMove), BUTT_WIDTH, BUTT_HEIGHT);
-                    gc.drawImage(BUTTON_INPUTE_IMG, butt0PosX, butt0PosY + 2 * (BUTT_HEIGHT + buttMove));
+                    gc.drawImage(BUTTON_INPUT_IMG, butt0PosX, butt0PosY + 2 * (BUTT_HEIGHT + buttMove));
                     mode = 7;
                 }
                 if (choseButt == 3) {
                     gc.clearRect(butt0PosX, butt0PosY + 3 * (BUTT_HEIGHT + buttMove), BUTT_WIDTH, BUTT_HEIGHT);
-                    gc.drawImage(BUTTON_INPUTE_IMG, butt0PosX, butt0PosY + 3 * (BUTT_HEIGHT + buttMove));
+                    gc.drawImage(BUTTON_INPUT_IMG, butt0PosX, butt0PosY + 3 * (BUTT_HEIGHT + buttMove));
                     mode = 8;
                 }
             }
@@ -222,7 +241,6 @@ public class SettingMenu implements IMenu {
                 mode = 2;
             }
         }
-        System.out.println(mode);
     }
 }
 

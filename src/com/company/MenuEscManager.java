@@ -2,16 +2,35 @@ package com.company;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class MenuEscManager implements IMenu {
-    private static final Image BUTTON_IMG_0 = new Image("/resources/menu/button_0.png");       //обычная
-    private static final Image BUTTON_IMG_2 = new Image("/resources/menu/button_2.png");       //нажатая
+    private static  Image BUTTON_IMG_0 ;       //обычная
+    private static  Image BUTTON_IMG_1 ;
+    private static  Image BUTTON_IMG_2 ;
+    private static  Image BUTTON_INPUT_IMG;
 
-    private static final Image FRAME_IMG = new Image("/resources/menu/mikuTyan.jpg");               //рамка
-    private static final Image BACKGROUND_IMG = new Image("/resources/menu/background.png");   //задник настроек
+    private static Image LOGO_IMG ;               //логотип
+    private static Image BACKGROUND_IMG ;   //задник меню
 
+    static {
+        try {
+            BUTTON_IMG_0 = new Image( new FileInputStream(new File("./resources/menu/button_0.png")));
+            BUTTON_IMG_1 = new Image( new FileInputStream(new File("./resources/menu/button_1.png")));
+            BUTTON_IMG_2 = new Image( new FileInputStream(new File("./resources/menu/button_2.png")));
+
+            BACKGROUND_IMG = new Image( new FileInputStream(new File("./resources/menu/background.png")));   //задник меню
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
     // константы для всех надписей
     private static final String FONT_NAME = "Arial";
     private static final FontWeight FONT_WEIGHT = FontWeight.BOLD;
@@ -30,13 +49,10 @@ public class MenuEscManager implements IMenu {
     private static final int BUTT_HEIGHT = (int) BUTTON_IMG_0.getHeight();      //высота
     private static final int BUTT_WIDTH = (int) BUTTON_IMG_0.getWidth();        //ширина
 
-    // размеры рамки
-    private static final int FRAME_HEIGHT = (int) FRAME_IMG.getHeight();          //высота
-    private static final int FRAME_WIDTH = (int) FRAME_IMG.getWidth();           //ширина
 
     //размеры спрайтов задника
-    private static final int BACKGROUND_HEIGHT = 16;                            //высота
-    private static final int BACKGROUND_WIDTH = 16;                             //ширина
+    private static final int BACKGROUND_HEIGHT = 544;                            //высота
+    private static final int BACKGROUND_WIDTH = 544;                             //ширина
 
     //позиция первой кнопки (остальные подстраиваются под нее)
     private static int butt0PosX;
@@ -67,6 +83,8 @@ public class MenuEscManager implements IMenu {
     @Override
     public void draw(long currentNanoTime) {
 
+        gc.setFill(Color.web("#000000"));
+
         //задержка с помощью счетчика, чтобы кнопки переключались корректно (не с сумасшедшей скоростью)
         if (currentNanoTime - prevTimeButt >= 100000000) {
             gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
@@ -92,11 +110,7 @@ public class MenuEscManager implements IMenu {
                 prevTimeButt = currentNanoTime;
             }
 
-            // рисуем рамку
-            framePosX = ((int) graphic.theScene.getWidth() - FRAME_WIDTH) / 2;
-            framePosY = ((int) graphic.theScene.getHeight() - FRAME_HEIGHT) / 2 - FRAME_HEIGHT + 60;
 
-            gc.drawImage(FRAME_IMG, framePosX, framePosY);
 
             // располагаем изначальную позицию кнопки
             butt0PosX = ((int) graphic.theScene.getWidth() - BUTT_WIDTH) / 2;

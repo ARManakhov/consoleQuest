@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 
 
@@ -24,6 +25,8 @@ public class graphic extends Application {
 
     private static Logger logger = Logger.getLoger();
 
+    private IMenu mem = new MenuEscManager();
+    private IMenu sm = new SettingMenu();
     private IMenu mm = new MainMenu();
 
     private static double prevStageHeight = 0;
@@ -85,7 +88,7 @@ public class graphic extends Application {
                 canvasSizeUpdate();
                 //System.out.println(currentNanoTime);
                 if (mode == 0){
-                 mm.draw(currentNanoTime);
+                    mm.draw(currentNanoTime);
                 }
                 if (mode == 1){
                     if(MapManager.isViewBlockMask() && MapManager.isViewSpawnMask()){
@@ -98,12 +101,20 @@ public class graphic extends Application {
                     MapManager.serDrawFromAngle(false);
                     MapManager.draw(currentNanoTime, currentMapNumber);
                     PlayerManager.getInstance().draw(currentNanoTime,currentMapNumber);
-
+                    if (KeyManager.pressedButt("ESCAPE")) {
+                        mode = 10;
+                    }
                 }
                 if(mode == 2){
+                    sm.draw(currentNanoTime);
+                    /*
                     MapManager.serDrawFromAngle(true);
                     MapManager.draw(currentNanoTime, currentMapNumber);
                     MapEditor.draw(currentNanoTime,currentMapNumber);
+                */
+                }
+                if (mode == 10) {
+                    mem.draw(currentNanoTime);
                 }
             }
         }.start();

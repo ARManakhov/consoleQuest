@@ -2,6 +2,7 @@ package com.company;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -91,9 +92,12 @@ public class MainMenu implements IMenu {// todo еще больше поменя
                 firstCall = false;
                 System.out.println("Робит");
             }
+        gc.setFill(Color.web("#000000"));
 
 
-            //задержка с помощью счетчика, чтобы кнопки переключались корректно (не с сумасшедшей скоростью)
+
+
+        //задержка с помощью счетчика, чтобы кнопки переключались корректно (не с сумасшедшей скоростью)
             if (currentNanoTime - prevTime >= 100000000) {
                 gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
 
