@@ -24,6 +24,8 @@ public class graphic extends Application {
 
     private static Logger logger = Logger.getLoger();
 
+    private IMenu mm = new MainMenu();
+
     private static double prevStageHeight = 0;
     private static double prevStageWidth = 0;
 
@@ -83,7 +85,7 @@ public class graphic extends Application {
                 canvasSizeUpdate();
                 //System.out.println(currentNanoTime);
                 if (mode == 0){
-                 MainMenu.draw(currentNanoTime);
+                 mm.draw(currentNanoTime);
                 }
                 if (mode == 1){
                     if(MapManager.isViewBlockMask() && MapManager.isViewSpawnMask()){

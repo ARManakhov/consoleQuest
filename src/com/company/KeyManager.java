@@ -1,10 +1,10 @@
 package com.company;
 
 import javafx.event.EventHandler;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class KeyManager {
     private static final String DEFAULT_RIGHT_BUTTON = "D";
     private static final String DEFAULT_CHOSE_BUTTON = "ENTER";
     private static final String DEFAULT_ACTION_BUTTON = "E";
-
+    private static final String DEFAULT_ESC_BUTTON = "ESCAPE";
 
                                                                     // переменные с информацией о выбраных кнопках ( на которые программа реагирует)
     private static String buttUP = DEFAULT_UP_BUTTON;
@@ -43,6 +43,7 @@ public class KeyManager {
     private static String buttRIGHT = DEFAULT_RIGHT_BUTTON;
     private static String buttCHOSE = DEFAULT_CHOSE_BUTTON;
     private static String buttAction = DEFAULT_ACTION_BUTTON;
+    private static String buttESC = DEFAULT_ESC_BUTTON;
 
     public static String getButtAction() {
         return buttAction;
@@ -107,7 +108,6 @@ public class KeyManager {
 
 
 
-
     }
 
     /**
@@ -125,23 +125,19 @@ public class KeyManager {
             if (activeKeyHash.size() == 0 ){
                 return "wait";
             } else {
-                System.out.println("ok");
                 alredyPrstBut = true;
                 String[] prstButt = activeKeyHash.toArray(new String[activeKeyHash.size()]);
                 return prstButt[0];
             }
         }
         return "wait";
-
     }
 
     static boolean alredyPrstBut = true;
 
-
     /**
      * сохраняет текущие рабочие и измененные кнопки
      * @param buttName кнопка которую надо обновить ("all" если надо обновить все, не ждет нажатия кнопки)
-=======
      */
     public static boolean saveButt(String buttName) {
         boolean savedCpaturedBut = false;
@@ -185,10 +181,10 @@ public class KeyManager {
         } catch (FileNotFoundException e) {
             Logger.getLoger().addLogg("Параметры кнопок не сохранены");
 
+
         }
         return savedCpaturedBut;
     }
-
 
     /**
      *
@@ -214,8 +210,9 @@ public class KeyManager {
         if (buttCode == "ACTION"){
             return activeKeyHash.contains(buttAction);
         } else
-            return false;
-
+        if (buttCode == "ESCAPE") {
+            return activeKeyHash.contains(buttESC); // добавлен Айнуром для лидера
+        } else return false;
 
     }
 
@@ -251,6 +248,10 @@ public class KeyManager {
 
             if (sc.hasNextLine()){
                 buttCHOSE = sc.nextLine();
+            }
+
+            if (sc.hasNextLine()){
+                buttESC = sc.nextLine(); // добавлен Айнуром для лидера
             }
 
             gettedSavedButtonSettings = true;

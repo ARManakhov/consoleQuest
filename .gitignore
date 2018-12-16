@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -29,6 +30,8 @@ effective-settings.xml
 *.lck
 *.jar
 =======
+=======
+>>>>>>> origin/settingsAndMenuOnEsc
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -58,5 +61,8 @@ effective-settings.xml
 *.log
 *.lck
 *.jar
+<<<<<<< HEAD
 >>>>>>> origin/FightSystem
+=======
+>>>>>>> origin/settingsAndMenuOnEsc
 */dependency-reduced-pom.xml
