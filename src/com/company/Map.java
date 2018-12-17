@@ -1,7 +1,7 @@
 package com.company;
 
 public class Map {
-    static Map[] maps;
+    public static Map[] maps;
 
     public Furniture[] fur;
 
@@ -26,7 +26,7 @@ public class Map {
 
 
 
-    Map(int spawnPosX, int spawnPosY,byte[][] groundMap, byte[][] borderMap, byte[][] enemyMap,byte[][] teleportMap,byte[][] furnitureMap){
+    public Map(int spawnPosX, int spawnPosY,byte[][] groundMap, byte[][] borderMap, byte[][] enemyMap,byte[][] teleportMap,byte[][] furnitureMap){
         this.spawnPosX = spawnPosX;
         this.spawnPosY = spawnPosY;
         this.groundMap = groundMap;

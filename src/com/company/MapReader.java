@@ -11,17 +11,20 @@ public class MapReader {
 
     private  Scanner sc;
 
-    private void readFolderFiles(){
+    public void readFolderFiles(){
         if(mapDirectory.exists() && mapDirectory.isDirectory() ){
             mapFiles = mapDirectory.listFiles();
         }
+    }
+
+    public void changeFile(File f){
+        mapDirectory = f;
     }
 
     public static MapReader getInstance(){
         if(instance == null){
             instance = new MapReader();
             instance.readFolderFiles();
-
         }
         return instance;
     }

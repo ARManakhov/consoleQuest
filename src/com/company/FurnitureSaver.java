@@ -3,6 +3,7 @@ package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 public class FurnitureSaver {
         private static FurnitureSaver instance = null;
@@ -15,6 +16,7 @@ public class FurnitureSaver {
             }
             return instance;
         }
+        byte[] importantID = {7,8,11,15,16,23,24,25,26,27,28,29,33,34,35,42,43,44,45,46,53,54};
 
         public void save(Map map, File file,int currentMapNumber){
             try {
@@ -22,7 +24,7 @@ public class FurnitureSaver {
                 int furnCount = 0;
                 for (int j = 0; j < map.furnitureMap.length; j++) {
                     for (int k = 0; k < map.furnitureMap[j].length ; k++) {
-                        if(map.furnitureMap[j][k] != 0) furnCount ++;
+                        if(Arrays.asList(importantID).contains(map.furnitureMap[j][k])) furnCount ++;
                     }
                 }
                 writeInt(furnCount,file);
@@ -32,7 +34,7 @@ public class FurnitureSaver {
                 for (int j = 0; j < map.furnitureMap.length; j++) {
                     for (int k = 0; k < map.furnitureMap[j].length ; k++) {
 
-                        if(map.furnitureMap[j][k] != 0){
+                        if(Arrays.asList(importantID).contains(map.furnitureMap[j][k])){
                             writeInt(k,file); //координату x
                             writeInt(j,file); //координату y
                             writeInt(map.furnitureMap[j][k],file); // id

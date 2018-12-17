@@ -27,7 +27,7 @@ public class Player extends Character {
     private static int ATK_TIME_DELTA = 100000000;
     private long ATK_TIME = 0;
 
-    private int PlayerAttackRange = 128;
+    private int PlayerAttackRange = 40;
 
     //далее идут переменные статистик персонажа
     private  String name;
@@ -256,7 +256,7 @@ public class Player extends Character {
 
     }
 
-    public boolean canAtack(long currentNanoTime){
+    public boolean canAttack(long currentNanoTime){
         return currentNanoTime - ATK_TIME >= ATK_TIME_DELTA;
     }
 

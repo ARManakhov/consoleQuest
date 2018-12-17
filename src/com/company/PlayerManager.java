@@ -94,7 +94,7 @@ public class PlayerManager {
     }
 
     public void playerAtk(long currentNanoTime, int mapNumber){
-        if(KeyManager.getMousePresetButt("PRIMARY") && Player.getPlayer().canAtack(currentNanoTime)){
+        if(KeyManager.getMousePresetButt("PRIMARY") && Player.getPlayer().canAttack(currentNanoTime)){
             Player.getPlayer().attackArray(EnemyGenerator.getInstance().getEnemy(),currentNanoTime);
         }
     }
