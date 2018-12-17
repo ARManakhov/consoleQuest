@@ -34,9 +34,11 @@ public class PlayerManager {
 
     private long prevNanoTime;
     private long prevAnimNanoTime;
+    private long afterDeadTime;
 
     private final long NANO_TIME_DELTA     = 17000000;
     private final long ANIMTION_TIME_DELTA = 100000000;
+    private final long AFTER_DEAT_TIME_DELTA = 2000000000;
 
 
     private GraphicsContext gc = graphic.playerLayer.getGraphicsContext2D();
@@ -76,48 +78,68 @@ public class PlayerManager {
      */
     public void draw(long currentNanoTime, int mapNumber) {
         limFinder();
-        moveKeyManage(currentNanoTime, mapNumber);
+        if(Player.getPlayer().isAlive()) {
+            moveKeyManage(currentNanoTime, mapNumber);
+            playerAtk(currentNanoTime,mapNumber);
+            afterDeadTime = currentNanoTime;
+        }else{
+            if(!(currentNanoTime - afterDeadTime >= AFTER_DEAT_TIME_DELTA)){
+                TextOnScreen.drawText("Вы мертвы",graphic.interfaceLayer.getGraphicsContext2D());
+            }else {
+                Player.getPlayer().makeAlive();
+                graphic.mode = 0;
+            }
+        }
         playerDrawManage();
+    }
 
+    public void playerAtk(long currentNanoTime, int mapNumber){
+        if(KeyManager.getMousePresetButt("PRIMARY") && Player.getPlayer().canAtack(currentNanoTime)){
+            Player.getPlayer().attackArray(EnemyGenerator.getInstance().getEnemy(),currentNanoTime);
+        }
     }
 
     /**
      * метод который отвечает за сторону в которую смотрит персонаж а так же за его отрисовку
      */
     private void playerDrawManage(){
-        double mouseX = KeyManager.getMouseXPos() - PLAYER_SIZE_X / 2;
-        double mouseY = KeyManager.getMouseYPos() - PLAYER_SIZE_Y / 2;
+        if(Player.getPlayer().isAlive()) {
+            double mouseX = KeyManager.getMouseXPos() - PLAYER_SIZE_X / 2;
+            double mouseY = KeyManager.getMouseYPos() - PLAYER_SIZE_Y / 2;
+            double angleCos = (mouseX - screenXPos) /
+                    sqrt((mouseX - screenXPos) * (mouseX - screenXPos) +
+                            (mouseY - screenYPos) * (mouseY - screenYPos));
+            dir = 0;
 
-        double angleCos = (mouseX - screenXPos)/
-                sqrt((mouseX-screenXPos)*(mouseX-screenXPos) +
-                        (mouseY-screenYPos)*(mouseY-screenYPos));
-        dir = 0;
-
-        if(mouseY - screenYPos > 0){
-            if (angleCos > 0.707 && angleCos <= 1){
-                dir = 0;
+            if (mouseY - screenYPos > 0) {
+                if (angleCos > 0.707 && angleCos <= 1) {
+                    dir = 0;
+                }
+                if (angleCos > -0.707 && angleCos <= 0.707) {
+                    dir = 1;
+                }
+                if (angleCos > -1 && angleCos <= -0.707) {
+                    dir = 2;
+                }
+            } else {
+                if (angleCos > 0.707 && angleCos <= 1) {
+                    dir = 0;
+                }
+                if (angleCos > -0.707 && angleCos <= 0.707) {
+                    dir = 3;
+                }
+                if (angleCos > -1 && angleCos <= -0.707) {
+                    dir = 2;
+                }
             }
-            if (angleCos > -0.707 && angleCos <= 0.707){
-                dir = 1;
-            }
-            if (angleCos > -1 && angleCos <= -0.707){
-                dir = 2;
-            }
-        } else {
-            if (angleCos > 0.707 && angleCos <= 1){
-                dir = 0;
-            }
-            if (angleCos > -0.707 && angleCos <= 0.707){
-                dir = 3;
-            }
-            if (angleCos > -1 && angleCos <= -0.707){
-                dir = 2;
-            }
+            //System.out.println(dir);
         }
-        //System.out.println(dir);
-
         gc.clearRect(0, 0, graphic.theScene.getWidth(), graphic.theScene.getHeight());
-        gc.drawImage(playerTexture[dir * ANUMATION_FRAMES_COUNT + curentFrameNum], screenXPos - TEXTURE_OFFSET_X, screenYPos - TEXTURE_OFFSET_Y);
+        if(Player.getPlayer().isAlive()){
+            gc.drawImage(playerTexture[dir * ANUMATION_FRAMES_COUNT + curentFrameNum], screenXPos - TEXTURE_OFFSET_X, screenYPos - TEXTURE_OFFSET_Y);
+        }     else{
+            gc.drawImage(playerTexture[12], screenXPos - TEXTURE_OFFSET_X, screenYPos - TEXTURE_OFFSET_Y);
+        }
     }
 
     /**

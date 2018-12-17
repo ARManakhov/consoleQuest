@@ -31,6 +31,12 @@ abstract class Character {
      */
     abstract double getSpeed();
 
+    /**
+     *
+     * @return скорость персонажа
+     */
+    abstract boolean isAlive();
+
 
     /**
      * метод который обновляет параметры персонажа при смене уровня.

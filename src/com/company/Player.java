@@ -1,15 +1,20 @@
 package com.company;
 
 
+import java.util.List;
+
+import static java.lang.Math.sqrt;
 
 /**
  * класс который содержит параметры игрока, его передвижение и тд
  */
 public class Player extends Character {
-    private static final int DEFAULT_HP = 20;              // начальное колличество здровья
+
+    boolean alive = true;
+    private static final int DEFAULT_HP = 100;              // начальное колличество здровья
     private static final int DEFAULT_LVL = 0;              // начальный уровень
     private static final int DEFAULT_MONEY = 0;            // начальный уровень денег
-    private static final int DEFAULT_DAMAGE = 5;           // начальный наносимый урон
+    private static final int DEFAULT_DAMAGE = 25;           // начальный наносимый урон
     private static final int DEFAULT_EXP = 0;              // начальный уровень опыта
     private static final int DEFAULT_MAX_EXP = 10;              // начальный уровень опыта
     private static final double DEFAULT_SPEED  = 2.5;      // начальная скорость
@@ -19,7 +24,12 @@ public class Player extends Character {
     private static final int DEFAULT_HP_RISE = 2;          // увеличение здоровья
 
 
-                                                    //далее идут переменные статистик персонажа
+    private static int ATK_TIME_DELTA = 100000000;
+    private long ATK_TIME = 0;
+
+    private int PlayerAttackRange = 128;
+
+    //далее идут переменные статистик персонажа
     private  String name;
     private  int hp = DEFAULT_HP;
     private  int maxHP = DEFAULT_HP;
@@ -181,11 +191,77 @@ public class Player extends Character {
         return speed;
     }
 
+    @Override
+    boolean isAlive() {
+        if(hp <= 0){
+
+            alive = false;
+        }
+        return alive;
+    }
+
     public void setHp(int hp) {
         this.hp = hp;
     }
 
     public int getMaxHP() {
         return maxHP;
+    }
+
+    public  void attackArray(List<Enemy> chl, long curentNanoTime){
+        for (Enemy ch : chl) {
+            double x0 = (realXPos - ch.getRealXPos())*(realXPos - ch.getRealXPos());
+            double y0 = (realYPos - ch.getRealYPos())*(realYPos - ch.getRealYPos());
+            double attackRange = x0 + y0;
+
+            if (isAlive() && (ch.isAlive()) && (attackRange < PlayerAttackRange*PlayerAttackRange )){
+                double x = ch.getRealXPos();
+                double y = ch.getRealYPos();
+                double angleCos = (x - realXPos)/
+                        sqrt((x-realXPos)*(x-realXPos) + (y-realYPos)*(y-realYPos));
+                int dir = 0;
+                if(y - realYPos > 0){
+                    if (angleCos > 0.707 && angleCos <= 1){
+                        dir = 0;
+                    }
+                    if (angleCos > -0.707 && angleCos <= 0.707){
+                        dir = 1;
+                    }
+                    if (angleCos > -1 && angleCos <= -0.707){
+                        dir = 2;
+                    }
+                } else {
+                    if (angleCos > 0.707 && angleCos <= 1){
+                        dir = 0;
+                    }
+                    if (angleCos > -0.707 && angleCos <= 0.707){
+                        dir = 3;
+                    }
+                    if (angleCos > -1 && angleCos <= -0.707){
+                        dir = 2;
+                    }
+                }
+                if (dir == PlayerManager.getInstance().dir){
+                    attack(ch, curentNanoTime);
+                }
+            }
+        }
+    }
+
+    public void attack(Enemy ch, long currentNanoTime){
+        if(currentNanoTime - ATK_TIME >= ATK_TIME_DELTA){
+            ch.setHp(ch.getHp() - damage);
+            ATK_TIME = currentNanoTime;
+        }
+
+    }
+
+    public boolean canAtack(long currentNanoTime){
+        return currentNanoTime - ATK_TIME >= ATK_TIME_DELTA;
+    }
+
+    public void makeAlive(){
+        obj = new Player();
+
     }
 }
