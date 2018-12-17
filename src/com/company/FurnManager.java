@@ -175,6 +175,16 @@ public class FurnManager {
                             prevNanoTime1 = curentNanoTime;
                             textToScreenSecondary = null;
                         }
+                        if (furn.id == 55 || furn.id == 56 || furn.id == 57 || furn.id == 58 || furn.id == 59 || furn.id == 60 || furn.id == 61 || furn.id == 62) {
+                            textToScreenSecondary = new String[furn.text.length - 1];
+                            for (int i = 0; i < text.length - 1; i++) {
+                                textToScreenSecondary[i] = text[i + 1];
+                            }
+                            prevNanoTime0 = curentNanoTime;
+                            prevNanoTime1 = curentNanoTime;
+                        }
+
+
                     }
                 }
             }

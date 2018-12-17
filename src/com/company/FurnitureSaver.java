@@ -16,7 +16,7 @@ public class FurnitureSaver {
             }
             return instance;
         }
-        byte[] importantID = {7,8,11,15,16,23,24,25,26,27,28,29,33,34,35,42,43,44,45,46,53,54};
+        Byte[] importantID = {7,8,11,15,16,23,24,25,26,27,28,29,33,34,35,42,43,44,45,46,53,54,55,56,57,58,59,60,61,62};
 
         public void save(Map map, File file,int currentMapNumber){
             try {
@@ -81,6 +81,15 @@ public class FurnitureSaver {
                                     case 46:  writeString(new String[]{"Куча кристалов"},file); break;
                                     case 53:  writeString(new String[]{"Чтоб закрыть нажмите " + KeyManager.getButtAction(),"Это дверь"},file); break;
                                     case 54:  writeString(new String[]{"Чтоб закрыть нажмите " + KeyManager.getButtAction(),"Это дверь"},file); break;
+                                    case 55:  writeString(new String[]{"Чтоб поговорить нажмите " + KeyManager.getButtAction(), "PLS ADD TEXT"},file); break;
+                                    case 56:  writeString(new String[]{"Чтоб поговорить нажмите " + KeyManager.getButtAction(), "PLS ADD TEXT"},file); break;
+                                    case 57:  writeString(new String[]{"Чтоб поговорить нажмите " + KeyManager.getButtAction(), "PLS ADD TEXT"},file); break;
+                                    case 58:  writeString(new String[]{"Чтоб поговорить нажмите " + KeyManager.getButtAction(), "PLS ADD TEXT"},file); break;
+                                    case 59:  writeString(new String[]{"Чтоб поговорить нажмите " + KeyManager.getButtAction(), "PLS ADD TEXT"},file); break;
+                                    case 60:  writeString(new String[]{"Чтоб поговорить нажмите " + KeyManager.getButtAction(), "PLS ADD TEXT"},file); break;
+                                    case 61:  writeString(new String[]{"Чтоб поговорить нажмите " + KeyManager.getButtAction(), "PLS ADD TEXT"},file); break;
+                                    case 62:  writeString(new String[]{"Чтоб поговорить нажмите " + KeyManager.getButtAction(), "PLS ADD TEXT"},file); break;
+
                                     default:  writeString(new String[]{},file);
                                 }
                                pw.println();
