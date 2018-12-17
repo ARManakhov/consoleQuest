@@ -201,7 +201,7 @@ public class PlayerManager {
             }             if (screenXPos > limX1) {
                 screenXPos-=move;
             } else {
-                MapManager.moveMap(move,"H");
+                MapManager.getInstance().moveMap(move,"H");
             }
             realXPos-=move;
 
@@ -221,7 +221,7 @@ public class PlayerManager {
             if (screenXPos < limX2 ) {
                 screenXPos+=move;
             } else {
-                MapManager.moveMap(-move,"H");
+                MapManager.getInstance().moveMap(-move,"H");
             }
             realXPos+=move;
 
@@ -241,7 +241,7 @@ public class PlayerManager {
             if (screenYPos > limY1 ) {
                 screenYPos-=move;
             } else {
-                MapManager.moveMap(-move,"V");
+                MapManager.getInstance().moveMap(-move,"V");
             }
             realYPos-=move;
         }
@@ -260,7 +260,7 @@ public class PlayerManager {
             if (screenYPos < limY2) {
                 screenYPos+=move;
             } else {
-                MapManager.moveMap(move,"V");
+                MapManager.getInstance().moveMap(move,"V");
             }
             realYPos+=move;
         }
@@ -283,7 +283,7 @@ public class PlayerManager {
             graphic.currentMapNumber = Map.maps[mapNumber].teleportMap[(int) (realYPos)/ blockSize][(int) (realXPos)/ blockSize];
 
             firstCall = true;
-            MapManager.setAsFirstCall();
+            MapManager.getInstance().setAsFirstCall();
         }
 
         player.setRealXPos(realXPos);

@@ -18,45 +18,56 @@ public class MapManager {
     private static final int BLOCK_SIZE = 32;                                       //размер каждой текстуры
 
     private static GraphicsContext gc = graphic.mapLayer.getGraphicsContext2D();
-
+    private static MapManager instance = null;
 
     public static int getBlockSize() {
         return BLOCK_SIZE;
     }
 
+
+    public static MapManager getInstance() {
+        if(instance == null){
+            instance = new MapManager();
+        }
+        return instance;
+    }
+    public static void MapManagerReset(){
+        instance = new MapManager();
+    }
+    private MapManager(){};
     //координаты расположения блока[0][0] на экране
-    public static double currentXPos = 0;
-    public static double currentYPos = 0;
-    private static double currentXMove = 0;
-    private static double currentYMove = 0;
-    private static double currentXMoveBeforeRedraw = 0;
-    private static double currentYMoveBeforeRedraw = 0;
+    public double currentXPos = 0;
+    public double currentYPos = 0;
+    private  double currentXMove = 0;
+    private  double currentYMove = 0;
+    private  double currentXMoveBeforeRedraw = 0;
+    private  double currentYMoveBeforeRedraw = 0;
 
-    private static boolean drawFromAngle = false;
+    private  boolean drawFromAngle = false;
 
-    private static boolean firstCall = true;
+    private  boolean firstCall = true;
 
-    private static boolean NeedRedraw = false;
+    private  boolean NeedRedraw = false;
 
-    private static boolean ViewBlockMask = false;
-    private static boolean ViewSpawnMask = false;
+    private  boolean ViewBlockMask = false;
+    private  boolean ViewSpawnMask = false;
 
 
-    private static Block block = Block.getInstance();
+    private  Block block = Block.getInstance();
 
-    public static boolean isViewBlockMask() {
+    public  boolean isViewBlockMask() {
         return ViewBlockMask;
     }
 
-    public static void setViewBlockMask(boolean viewBlockMask) {
+    public  void setViewBlockMask(boolean viewBlockMask) {
         ViewBlockMask = viewBlockMask;
     }
 
-    public static boolean isViewSpawnMask() {
+    public  boolean isViewSpawnMask() {
         return ViewSpawnMask;
     }
 
-    public static void setViewSpawnMask(boolean viewSpawnMask) {
+    public  void setViewSpawnMask(boolean viewSpawnMask) {
         ViewSpawnMask = viewSpawnMask;
     }
 
@@ -64,7 +75,7 @@ public class MapManager {
      *
      * @param currentNanoTime текущее время в наносекундах
      */
-    public static void draw(long currentNanoTime, int currentMapNumber){
+    public  void draw(long currentNanoTime, int currentMapNumber){
 
         if(firstCall){
             EnemyGenerator.getInstance().generateMobs(currentMapNumber);
@@ -89,14 +100,14 @@ public class MapManager {
         //System.out.println(" 1 " + currentYMove + " 2 " +  graphic.theScene.getHeight());
     }
 
-    public static void serDrawFromAngle(boolean b){
+    public  void serDrawFromAngle(boolean b){
         drawFromAngle = b;
     }
 
     /**
      * метод заново отрисовывает текстуры //todo не рисовать то что за экраном
      */
-    private static void redrawBlocks(){
+    private  void redrawBlocks(){
 
         int drawLeftLim = 0;
         int drawRightLim = Map.maps[currentMapNumber].maxWidth;
@@ -155,7 +166,7 @@ public class MapManager {
      * метод который передвигает карту вверх
      * @param speed
      */
-    public static void moveMap(double speed, String dir) {
+    public  void moveMap(double speed, String dir) {
         Translate tr = new Translate();
         if (dir == "V") {
             currentYPos -= speed;
@@ -172,10 +183,10 @@ public class MapManager {
 
     }
 
-    public static void setAsFirstCall(){
+    public  void setAsFirstCall(){
         firstCall = true;
     }
-    public static void setNeedRedraw(){ NeedRedraw = true;}
+    public  void setNeedRedraw(){ NeedRedraw = true;}
 
 }
 

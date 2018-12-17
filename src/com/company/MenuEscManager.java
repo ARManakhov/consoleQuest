@@ -162,6 +162,7 @@ public class MenuEscManager implements IMenu {
                 if (chosButt == 1) {
                     SettingMenu.setReturnMode(1);
                     graphic.mode = 2;
+                    MapManager.MapManagerReset();
                 }
                 if (chosButt == 2) graphic.mode = 0;
             }

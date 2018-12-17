@@ -115,8 +115,8 @@ public class EnemyManager {
          }
 
      }
-        screenXPos = realXPos + MapManager.currentXPos;
-        screenYPos = realYPos + MapManager.currentYPos;
+        screenXPos = realXPos + MapManager.getInstance().currentXPos;
+        screenYPos = realYPos + MapManager.getInstance().currentYPos;
          enemy.setRealXPos(realXPos);
          enemy.setRealYPos(realYPos);
          if (enemy.isAlive()){

@@ -161,7 +161,7 @@ public class FurnManager {
                             furn.id += 25;
                             Map.maps[curentMap].furnitureMap[PlayerY][PlayerX] = (byte) furn.id;
                             Map.maps[curentMap].borderMap[PlayerY][PlayerX] = 0;
-                            MapManager.setNeedRedraw();
+                            MapManager.getInstance().setNeedRedraw();
                             prevNanoTime0 = curentNanoTime;
                             prevNanoTime1 = curentNanoTime;
                             textToScreenSecondary = null;
@@ -170,7 +170,7 @@ public class FurnManager {
                             furn.id -= 25;
                             Map.maps[curentMap].furnitureMap[PlayerY][PlayerX] = (byte) furn.id;
                             Map.maps[curentMap].borderMap[PlayerY][PlayerX] = 1;
-                            MapManager.setNeedRedraw();
+                            MapManager.getInstance().setNeedRedraw();
                             prevNanoTime0 = curentNanoTime;
                             prevNanoTime1 = curentNanoTime;
                             textToScreenSecondary = null;

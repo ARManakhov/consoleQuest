@@ -95,19 +95,20 @@ public class graphic extends Application {
                     mm.draw(currentNanoTime);
                     if (KeyManager.getActiveKeyHash().contains("F1")) {
                         mode = 20;
+                        MapManager.MapManagerReset();
                     }
                 }
                 if (mode == 1){
 
-                    if(MapManager.isViewBlockMask() && MapManager.isViewSpawnMask()){
-                        MapManager.setViewBlockMask(false);
-                        MapManager.setViewBlockMask(false);
+                    if(MapManager.getInstance().isViewBlockMask() && MapManager.getInstance().isViewSpawnMask()){
+                        MapManager.getInstance().setViewBlockMask(false);
+                        MapManager.getInstance().setViewBlockMask(false);
                     }
 
                     Interface.draw(currentNanoTime,currentMapNumber);
                     //FurnManager.draw(currentNanoTime,currentMapNumber);
-                    MapManager.serDrawFromAngle(false);
-                    MapManager.draw(currentNanoTime, currentMapNumber);
+                    MapManager.getInstance().serDrawFromAngle(false);
+                    MapManager.getInstance().draw(currentNanoTime, currentMapNumber);
                     PlayerManager.getInstance().draw(currentNanoTime,currentMapNumber);
                     eg.attackMobs(currentNanoTime,currentMapNumber);
                     eg.renderMobs(currentNanoTime,currentMapNumber);
@@ -129,8 +130,8 @@ public class graphic extends Application {
                 }
                 if(mode == 20){
                     interfaceLayer.getGraphicsContext2D().clearRect(0,0,theScene.getWidth(),theScene.getHeight());
-                    MapManager.serDrawFromAngle(true);
-                    MapManager.draw(currentNanoTime, currentMapNumber);
+                    MapManager.getInstance().serDrawFromAngle(true);
+                    MapManager.getInstance().draw(currentNanoTime, currentMapNumber);
                     MapEditor.draw(currentNanoTime,currentMapNumber);
                     if (KeyManager.pressedButt("ESCAPE")) {
                         mode = 0;
@@ -162,7 +163,7 @@ public class graphic extends Application {
             interfaceLayer.setWidth(theScene.getWidth());
             mapLayer.setTranslateX(-theScene.getWidth());
             mapLayer.setTranslateY(-theScene.getHeight());
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
 
             prevStageWidth = theScene.getWidth();
             prevStageHeight = theScene.getHeight();

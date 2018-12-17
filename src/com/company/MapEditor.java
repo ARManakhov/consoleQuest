@@ -155,7 +155,7 @@ public class MapEditor {
             resetTime0 = true;
         }
         if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) && KeyManager.getActiveKeyHash().contains(UP_BUT) && !((pointerPosY +1)*32>0)){
-            MapManager.moveMap(-32,"V");
+            MapManager.getInstance().moveMap(-32,"V");
             mapPosY--;
             resetTime0 = true;
         }
@@ -167,7 +167,7 @@ public class MapEditor {
         }
 
         if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(DOWN_BUT) && !KeyManager.getActiveKeyHash().contains(HOT_BUT) && !((pointerPosY + 1)*32 < graphic.theScene.getHeight())){
-            MapManager.moveMap(+32,"V");
+            MapManager.getInstance().moveMap(+32,"V");
             mapPosY++;
             resetTime0 = true;
         }
@@ -179,7 +179,7 @@ public class MapEditor {
         }
 
         if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(LEFT_BUT) && ((pointerPosX)*32 <= 0 )){     //передвижение курсра влево: мапа
-            MapManager.moveMap(32,"H");
+            MapManager.getInstance().moveMap(32,"H");
             mapPosX--;
             resetTime0 = true;
         }
@@ -190,7 +190,7 @@ public class MapEditor {
         }
 
         if((currentNanoTime > POINTER_WAIT_TIME_0 + prevNanoTime0) &&  KeyManager.getActiveKeyHash().contains(RIGHT_BUT) && !((pointerPosX + 1)*32 < graphic.theScene.getWidth())){     //передвижение курсра вправо: мапа
-            MapManager.moveMap(-32,"H");
+            MapManager.getInstance().moveMap(-32,"H");
             mapPosX++;
             resetTime0 = true;
         }
@@ -209,7 +209,7 @@ public class MapEditor {
             resetTime5 = true;
         }
         if(resetTime5){
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
             prevNanoTime5 = currentNanoTime;
         }
 
@@ -223,7 +223,7 @@ public class MapEditor {
             resetTime6 = true;
         }
         if(resetTime6){
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
             prevNanoTime6 = currentNanoTime;
         }
 
@@ -253,7 +253,7 @@ public class MapEditor {
 
         if(resetTime1){
             prevNanoTime1 = currentNanoTime;
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
         }
 
 
@@ -286,7 +286,7 @@ public class MapEditor {
 
         if(resetTime4){
             prevNanoTime4 = currentNanoTime;
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
         }
     }
 
@@ -363,7 +363,7 @@ public class MapEditor {
             }
 
             resetPos = true;
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
         }
 
         if( canPlace && KeyManager.getMousePresetButt("SECONDARY")){
@@ -373,7 +373,7 @@ public class MapEditor {
                 Map.maps[currentMap].borderMap[pointerPosY - mapPosY][pointerPosX - mapPosX] = 0;
             }
             resetPos = true;
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
         }
 
         if( canPlace && KeyManager.getMousePresetButt("MIDDLE")){
@@ -383,7 +383,7 @@ public class MapEditor {
                 Map.maps[currentMap].enemyMap[pointerPosY - mapPosY][pointerPosX - mapPosX] = 0;
             }
             resetPos = true;
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
         }
 
         if(resetPos){
@@ -393,13 +393,13 @@ public class MapEditor {
 
         boolean resetTime4 = false;
         if((currentNanoTime > POINTER_WAIT_TIME_4 + prevNanoTime4) && ((pointerPosX+1) >= (int) (graphic.theScene.getWidth()/32))){
-            MapManager.moveMap(-32,"H");
+            MapManager.getInstance().moveMap(-32,"H");
             mapPosX--;
             resetTime4 = true;
         }
 
         if((currentNanoTime > POINTER_WAIT_TIME_4 + prevNanoTime4) && ((pointerPosX) <=0 )){
-            MapManager.moveMap(+32,"H");
+            MapManager.getInstance().moveMap(+32,"H");
             mapPosX++;
             resetTime4 = true;
         }
@@ -410,13 +410,13 @@ public class MapEditor {
 
         boolean resetTime5 = false;
         if((currentNanoTime > POINTER_WAIT_TIME_5 + prevNanoTime5) && ((pointerPosY+1) >= (int) (graphic.theScene.getHeight()/32))){
-            MapManager.moveMap(+32,"V");
+            MapManager.getInstance().moveMap(+32,"V");
             mapPosY--;
             resetTime5 = true;
         }
 
         if((currentNanoTime > POINTER_WAIT_TIME_5 + prevNanoTime5) && ((pointerPosY) <=0 )){
-            MapManager.moveMap(-32,"V");
+            MapManager.getInstance().moveMap(-32,"V");
             mapPosY++;
             resetTime5 = true;
         }
@@ -463,30 +463,30 @@ public class MapEditor {
         }
         if (resetTime3) {
             prevNanoTime3 = currentNanoTime;
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
         }
 
         boolean resetTime7 = false;
         if((currentNanoTime > POINTER_WAIT_TIME_7 + prevNanoTime7) &&  KeyManager.getActiveKeyHash().contains(VIEW_SPAWN_MASK_BUT) ){   //включение отключение масок
-                MapManager.setViewSpawnMask(!MapManager.isViewSpawnMask());
+                MapManager.getInstance().setViewSpawnMask(!MapManager.getInstance().isViewSpawnMask());
             resetTime7 = true;
         }
 
         if(resetTime7){
             prevNanoTime7 = currentNanoTime;
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
 
         }
 
         boolean resetTime8 = false;
         if((currentNanoTime > POINTER_WAIT_TIME_8 + prevNanoTime8) &&  KeyManager.getActiveKeyHash().contains(VIEW_BORDER_MASK_BUT) ){
-            MapManager.setViewBlockMask(!MapManager.isViewBlockMask());
+            MapManager.getInstance().setViewBlockMask(!MapManager.getInstance().isViewBlockMask());
             resetTime8 = true;
         }
 
         if(resetTime8){
             prevNanoTime8 = currentNanoTime;
-            MapManager.setNeedRedraw();
+            MapManager.getInstance().setNeedRedraw();
 
         }
 
