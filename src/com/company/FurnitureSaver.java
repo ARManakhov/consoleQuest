@@ -39,6 +39,7 @@ public class FurnitureSaver {
                             writeInt(j,file); //координату y
                             writeInt(map.furnitureMap[j][k],file); // id
                             if( Furniture.furn != null && Furniture.furn.length != 0 &&  Furniture.furn[currentMapNumber] != null && Furniture.furn[currentMapNumber].length != 0 &&
+                                   Furniture.furn[currentMapNumber].length > i &&
                                     Furniture.furn[currentMapNumber][i].x == k & Furniture.furn[currentMapNumber][i].y == j ){
                                 writeInt(Furniture.furn[currentMapNumber][i].hp, file); // HP
                                 writeInt(Furniture.furn[currentMapNumber][i].exp,file);   //EXP

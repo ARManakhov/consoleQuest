@@ -52,6 +52,91 @@ public class Enemy extends Character {
         this.realYPos = y;
     }
 
+
+
+
+    public void statUpdate() {
+    }
+
+
+
+    public void EnemyAttack(Character ch, long curentNanoTime){
+        if(curentNanoTime - ATK_TIME >= ATK_TIME_DELTA){
+            double x = (realXPos - ch.getRealXPos())*(realXPos - ch.getRealXPos());
+            double y = (realYPos - ch.getRealYPos())*(realYPos - ch.getRealYPos());
+            double attackRange = Math.sqrt(x + y);
+            if (alive && ch.isAlive() && (attackRange < EnemyAttackRange )){ //todo сделать по красоте
+                ch.setHp(ch.getHp() - damage);
+            }
+            ATK_TIME = curentNanoTime;
+        }
+
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(int maxHP) {
+        this.maxHP = maxHP;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
+    public int getMaxExp() {
+        return maxExp;
+    }
+
+    public void setMaxExp(int maxExp) {
+        this.maxExp = maxExp;
+    }
+
+    public int getLvl() {
+        return lvl;
+    }
+
+    public void setLvl(int lvl) {
+        this.lvl = lvl;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
     public double getRealXPos() {
         return realXPos;
     }
@@ -68,43 +153,10 @@ public class Enemy extends Character {
         this.realYPos = realYPos;
     }
 
-    @Override
-    public double getSpeed() {
-        return speed;
-    }
-
-    @Override
     boolean isAlive() {
         if(hp <= 0){
             alive = false;
         }
         return alive;
-    }
-
-    public void statUpdate() {
-    }
-
-    @Override
-    public int getHp() {
-        return hp;
-    }
-
-
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-
-    public void EnemyAttack(Character ch, long curentNanoTime){
-        if(curentNanoTime - ATK_TIME >= ATK_TIME_DELTA){
-            double x = (realXPos - ch.getRealXPos())*(realXPos - ch.getRealXPos());
-            double y = (realYPos - ch.getRealYPos())*(realYPos - ch.getRealYPos());
-            double attackRange = Math.sqrt(x + y);
-            if (alive && ch.isAlive() && (attackRange < EnemyAttackRange )){ //todo сделать по красоте
-                ch.setHp(ch.getHp() - damage);
-            }
-            ATK_TIME = curentNanoTime;
-        }
-
     }
 }
